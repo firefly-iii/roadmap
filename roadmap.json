@@ -1,0 +1,164 @@
+{
+  "intro_text": "Quick overview of the Firefly III eco-system, roadmaps and statuses. ",
+  "categories": [
+    {
+      "key": "000_firefly_iii",
+      "title": "Firefly III",
+      "parent": null,
+      "description": "Firefly III is the main topic of this overview and the principal tool around which other stuff is built."
+    },
+    {
+      "key": "001_fidi",
+      "title": "Data Importer",
+      "description": "The Firefly III Data Importer is the main tool to import external data into Firefly III.",
+      "parent": null
+    },
+    {
+      "key": "v5.7",
+      "title": "v5.7 (main)",
+      "parent": "000_firefly_iii",
+      "description": "This is the current release. It is maintained and active, but there will be no new features built."
+    },
+    {
+      "key": "v5.8",
+      "title": "v5.8 (next)",
+      "parent": "000_firefly_iii",
+      "description": "TODO Next release."
+    },
+    {
+      "key": "v6.0",
+      "title": "v6.0 (future)",
+      "parent": "000_firefly_iii",
+      "description": "TODO Future release."
+    },
+    {
+      "key": "api1",
+      "title": "API v1",
+      "parent": "000_firefly_iii",
+      "description": "TODO Current API."
+    },
+    {
+      "key": "api2",
+      "title": "API v2",
+      "parent": "000_firefly_iii",
+      "description": "TODO Future API."
+    },
+    {
+      "key": "layoutv3",
+      "title": "Layout v3",
+      "parent": "000_firefly_iii",
+      "description": "TODO Future layout and UI."
+    },
+    {
+      "key": "v0.x",
+      "title": "v0.x",
+      "parent": "001_fidi",
+      "description": "TODO Current data importer."
+    }
+  ],
+  "info": [
+    {
+      "parent": "001_fidi",
+      "type": "star-counter",
+      "url": "https://api.github.com/repos/firefly-iii/data-importer",
+      "link": "https://github.com/firefly-iii/data-importer/",
+      "repo_title": "firefly-iii/data-importer"
+    },
+    {
+      "parent": "000_firefly_iii",
+      "type": "star-counter",
+      "url": "https://api.github.com/repos/firefly-iii/firefly-iii",
+      "link": "https://github.com/firefly-iii/firefly-iii/",
+      "repo_title": "firefly-iii/firefly-iii"
+    },
+    {
+      "parent": "000_firefly_iii",
+      "type": "last-release",
+      "url": "https://github.com/firefly-iii/firefly-iii/releases.atom",
+      "link": "https://github.com/firefly-iii/firefly-iii/releases/%s",
+      "title": "Firefly III"
+    },
+    {
+      "parent": "v5.7",
+      "type": "last-release",
+      "url": "https://github.com/firefly-iii/firefly-iii/releases.atom",
+      "link": "https://github.com/firefly-iii/firefly-iii/releases/%s",
+      "title": "Firefly III",
+      "prefix": "5.7."
+    },
+    {
+      "parent": "v5.7",
+      "type": "last-commit",
+      "url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/main",
+      "link": "https://github.com/firefly-iii/firefly-iii/tree/main",
+      "branch": "main"
+    },
+    {
+      "parent": "v5.7",
+      "type": "last-commit",
+      "url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/develop",
+      "link": "https://github.com/firefly-iii/firefly-iii/tree/develop",
+      "branch": "develop"
+    },
+    {
+      "parent": "v5.8",
+      "type": "last-commit",
+      "url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/5.8-dev",
+      "link": "https://github.com/firefly-iii/firefly-iii/tree/5.8-dev",
+      "branch": "5.8-dev"
+    },
+    {
+      "parent": "v5.8",
+      "type": "last-release",
+      "url": "https://github.com/firefly-iii/firefly-iii/releases.atom",
+      "link": "https://github.com/firefly-iii/firefly-iii/releases/%s",
+      "title": "Firefly III",
+      "prefix": "5.8."
+    },
+    {
+      "parent": "v5.7",
+      "type": "issue-count-simple",
+      "url": "https://api.github.com/search/issues",
+      "link": "https://github.com/firefly-iii/firefly-iii/issues",
+      "name_singular": "open bug",
+      "name_plural": "open bugs",
+      "query": "repo:firefly-iii/firefly-iii label:bug type:issue state:open -label:fixed milestone:\"next-minor\""
+    },
+    {
+      "parent": "v5.8",
+      "type": "issue-count-simple",
+      "url": "https://api.github.com/search/issues",
+      "link": "https://github.com/firefly-iii/firefly-iii/issues",
+      "name_singular": "open bug",
+      "name_plural": "open bugs",
+      "query": "repo:firefly-iii/firefly-iii label:bug type:issue state:open -label:fixed milestone:\"5.8.0\""
+    },
+    {
+      "parent": "v0.x",
+      "type": "issue-count-simple",
+      "url": "https://api.github.com/search/issues",
+      "link": "https://github.com/firefly-iii/firefly-iii/issues",
+      "name_singular": "open bug",
+      "name_plural": "open bugs",
+      "query": "repo:firefly-iii/firefly-iii label:import label:bug type:issue state:open -label:fixed"
+    },
+    {
+      "parent": "v5.8",
+      "type": "issue-count-simple",
+      "url": "https://api.github.com/search/issues",
+      "link": "https://github.com/firefly-iii/firefly-iii/issues",
+      "name_singular": "enhancement to be implemented",
+      "name_plural": "enhancements to be implemented",
+      "query": "repo:firefly-iii/firefly-iii label:enhancement type:issue state:open -label:fixed milestone:\"5.8.0\""
+    },
+    {
+      "parent": "v5.8",
+      "type": "issue-count-simple",
+      "url": "https://api.github.com/search/issues",
+      "link": "https://github.com/firefly-iii/firefly-iii/issues",
+      "name_singular": "feature to be added",
+      "name_plural": "features to be added",
+      "query": "repo:firefly-iii/firefly-iii label:feature type:issue state:open -label:fixed milestone:\"5.8.0\""
+    }
+  ]
+}

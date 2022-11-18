@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firefly III eco-system overview</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Firefly III eco-system overview</h1>
+    <p class="lead">
+        {{ intro_text }}
+    </p>
+    {% for i, category in categories %}
+        {# show main category information #}
+        <h2>{{ category.title }}</h2>
+        {% if category.description %}<p>{{ category.description }}</p>{% endif %}
+
+        {# show main category information items #}
+        {% if category.info|length > 0 %}
+            <ul>
+                {% for ii,info in category.info %}
+                    {% if '' != info %}
+                        <li>{{ info|raw }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {# list all sub categories #}
+        {% for ii,subcategory in category.children %}
+
+            {#  basic info for subcategory #}
+            <h3>{{ subcategory.title }}</h3>
+            {% if subcategory.description %}<p>{{ subcategory.description }}</p>{% endif %}
+
+            {# show subcategory info items. #}
+            {% if subcategory.info|length > 0 %}
+                <ul>
+                    {% for iii,info in subcategory.info %}
+                        {% if '' != info %}
+                            <li>{{ info|raw }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {#  set of debug / example items. #}
+            <ul>
+                <li>PHPStan has complaints</li>
+                <li>sonar cloud tags if project exists</li>
+                <li>Last docker build for tags that start with X.X</li>
+                <li>Last docker build for tags that are "something"</li>
+                <li>Roadmap can be found here</li>
+                <li>X new features are currently being in status X</li>
+                <li>X new features are currently being in status Y</li>
+                <li>X enhancements are currently being in status Y</li>
+
+            </ul>
+        {% endfor %}
+
+    {% endfor %}
+    <h1>Support</h1>
+    <p>
+        If you need support using Firefly III or the associated tools, come find us!
+    </p>
+    <ul>
+        <li><a href="https://github.com/orgs/firefly-iii/discussions">GitHub Discussions for questions and support</a></li>
+        <li><a href="https://gitter.im/firefly-iii/firefly-iii">Gitter.im for a good chat and a quick answer</a></li>
+        <li><a href="https://github.com/firefly-iii/firefly-iii/issues">GitHub Issues for bugs and issues</a></li>
+        <li><a href="https://fosstodon.org/@ff3">Follow me around for news and updates on Mastodon</a></li>
+        <li><a href="mailto:james@firefly-iii.org">Email me</a></li>
+    </ul>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+</html>
