@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Twig\Environment;
@@ -7,9 +8,9 @@ use Twig\Loader\FilesystemLoader;
 require_once './vendor/autoload.php';
 require_once './functions.php';
 
-$loader = new FilesystemLoader(__DIR__ . '/templates');
+$loader = new FilesystemLoader(__DIR__.'/templates');
 $twig   = new Environment($loader, [
-    'cache' => __DIR__ . '/cache/templates',
+    'cache' => __DIR__.'/cache/templates',
     'debug' => true,
 ]);
 
@@ -18,7 +19,7 @@ $dotenv->load();
 
 
 // TODO make this env variable?
-$content    = file_get_contents(__DIR__ . '/roadmap.json');
+$content    = file_get_contents(__DIR__.'/roadmap.json');
 $json       = json_decode($content, true);
 $categories = [];
 
@@ -31,8 +32,10 @@ foreach ($json['categories'] as $entry) {
         $categories[$key]['children'] = [];
 
         // render info items for this category
-        $categories[$key]['info'] = renderAllInfo($entry['key'], $json['info']);
+        $items = renderAllInfo($entry['key'], $json['info']);
 
+        usort($items, 'customItemOrder');
+        $categories[$key]['info'] = $items;
     }
 }
 
@@ -46,14 +49,18 @@ foreach ($json['categories'] as $entry) {
         if (null === $parentKey) {
             continue;
         }
-        if(!array_key_exists('order', $entry)) {
-            var_dump($entry);exit;
+        if (!array_key_exists('order', $entry)) {
+            var_dump($entry);
+            exit;
         }
-        $key                                      = sprintf('%03d-%s', $entry['order'], $entry['key']);
+        $key   = sprintf('%03d-%s', $entry['order'], $entry['key']);
+        $items = renderAllInfo($entry['key'], $json['info']);
+
+        usort($items, 'customItemOrder');
         $categories[$parentKey]['children'][$key] = [
             'title'       => $entry['title'],
             'description' => $entry['description'],
-            'info'        => renderAllInfo($entry['key'], $json['info']),
+            'info'        => $items,
         ];
     }
 }

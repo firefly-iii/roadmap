@@ -87,21 +87,21 @@
     },
     {
       "key": "v0.9",
-      "title": "v0.9",
+      "title": "v0.9 (current)",
       "order": 1,
       "parent": "fidi",
       "description": "The current release of the Firefly III Data Importer. No active development but maintenance only."
     },
     {
       "key": "v1.0",
-      "title": "v1.0",
+      "title": "v1.0 (next)",
       "order": 2,
       "parent": "fidi",
       "description": "The next release of the Firefly III Data Importer."
     },
     {
       "key": "v2.0",
-      "title": "v2.0",
+      "title": "v2.0 (future)",
       "order": 3,
       "parent": "fidi",
       "description": "The future release of the Firefly III Data Importer (far away)."
@@ -206,10 +206,10 @@
     },
     {
       "key": "k8s",
-      "title": "Firefly III kubernetes",
+      "title": "Firefly III Kubernetes",
       "parent": "build",
       "order": 4,
-      "description": "A collection of Kubernetes scripts and configurations."
+      "description": "A collection of Kubernetes scripts and configurations. Use it to set up Firefly III in a Kubernetes cluster."
     }
   ],
   "info": [
@@ -370,6 +370,15 @@
       "type": "issue-count-simple",
       "data_url": "https://api.github.com/search/issues",
       "website": "https://github.com/firefly-iii/firefly-iii/issues",
+      "name_singular": "open bug",
+      "name_plural": "open bugs",
+      "query": "repo:firefly-iii/firefly-iii label:bug type:issue state:open -label:fixed label:kubernetes"
+    },
+    {
+      "parent": "k8s",
+      "type": "issue-count-simple",
+      "data_url": "https://api.github.com/search/issues",
+      "website": "https://github.com/firefly-iii/firefly-iii/issues",
       "name_singular": "open feature",
       "name_plural": "open features",
       "query": "repo:firefly-iii/firefly-iii label:feature type:issue state:open -label:fixed label:kubernetes"
@@ -517,6 +526,36 @@
       "website": "https://github.com/jc5/recovery/releases/%s",
       "release_title": "2FA recovery",
       "release_prefix": ""
+    },
+    {
+      "parent": "k8s",
+      "type": "last-release",
+      "data_url": "https://github.com/firefly-iii/kubernetes/releases.atom",
+      "website": "https://github.com/firefly-iii/kubernetes/releases/%s",
+      "release_title": "Kubernetes (full stack)",
+      "release_prefix": "firefly-iii-stack-"
+    },
+    {
+      "parent": "k8s",
+      "type": "last-release",
+      "data_url": "https://github.com/firefly-iii/kubernetes/releases.atom",
+      "website": "https://github.com/firefly-iii/kubernetes/releases/%s",
+      "release_title": "Kubernetes (importer)",
+      "release_prefix": "importer-"
+    },
+    {
+      "parent": "k8s",
+      "type": "last-release",
+      "data_url": "https://github.com/firefly-iii/kubernetes/releases.atom",
+      "website": "https://github.com/firefly-iii/kubernetes/releases/%s",
+      "release_title": "Kubernetes (Firefly III)",
+      "release_prefix": "firefly-iii-"
+    },
+    {
+      "parent": "k8s",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
     }
   ]
 }

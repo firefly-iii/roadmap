@@ -2,14 +2,12 @@
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use SimplePie\Item;
 
 /**
- * @param string $key
- * @param array $array
+ * @param  string  $key
+ * @param  array  $array
  * @return array
- * @throws GuzzleException
  */
 function renderAllInfo(string $key, array $array): array
 {
@@ -55,10 +53,9 @@ function renderAllInfo(string $key, array $array): array
                 }
                 break;
             case 'issue-count-simple':
-                $info['search_link'] = $info['website'] . '?' . http_build_query(['q' => $info['query']]);
+                $info['search_link'] = $info['website'].'?'.http_build_query(['q' => $info['query']]);
                 $info['issue_count'] = simpleIssueCount($info);
                 break;
-
         }
         $return[] = $info;
     }
@@ -67,6 +64,7 @@ function renderAllInfo(string $key, array $array): array
 
 function simpleIssueCount(array $info): string
 {
+    debugMessage(sprintf('Collect issue count for "%s"', $info['website']));
     $client = new Client;
 
     $opts   = [
@@ -79,16 +77,16 @@ function simpleIssueCount(array $info): string
     $params = [
         'q' => $info['query'],
     ];
-    $full   = $info['data_url'] . '?' . http_build_query($params);
+    $full   = $info['data_url'].'?'.http_build_query($params);
     $res    = $client->get($full, $opts);
     $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
-    //sleep(1);
+    sleep(1);
     return $json['total_count'] ?? 0;
 }
 
 /**
- * @param array $data
+ * @param  array  $data
  * @return string
  */
 function starCounter(array $data): string
@@ -115,16 +113,18 @@ function starCounter(array $data): string
 }
 
 /**
- * @param array $info
+ * @param  array  $info
  * @return array|null
  */
 function lastRelease(array $info): ?array
 {
+    debugMessage(sprintf('Getting last release info for "%s" (prefix: "%s").', $info['release_title'], $info['release_prefix']));
     $prefix = $info['release_prefix'];
 
     // information:
     $lastDate    = Carbon::create(2000, 1, 1);
     $lastVersion = '0.0.1';
+    $fullVersion = $lastVersion;
     $feed        = new \SimplePie\SimplePie();
     $feed->set_feed_url($info['data_url']);
     $feed->enable_cache(false);
@@ -137,17 +137,33 @@ function lastRelease(array $info): ?array
             // check if version starts with prefix.
             continue;
         }
+
+        // replace some obvious prefixes:
         if (str_starts_with($version, 'v')) {
             $version = substr($version, 1);
         }
+        // firefly-iii-stack-
+        if (str_starts_with($version, 'firefly-iii-stack-')) {
+            $version = substr($version, 18);
+        }
+        // importer-
+        if (str_starts_with($version, 'importer-')) {
+            $version = substr($version, 9);
+        }
+        // firefly-iii-
+        if (str_starts_with($version, 'firefly-iii-')) {
+            $version = substr($version, 12);
+        }
+
         $result = version_compare($lastVersion, $version);
         if (-1 === $result) {
             // this one is newer!
             $lastVersion = $version;
+            $fullVersion = $item->get_title();
             $lastDate    = Carbon::parse($item->get_date());
         }
     }
-    //sleep(1);
+    sleep(1);
     if ('0.0.1' === $lastVersion) {
         return null;
     }
@@ -155,17 +171,17 @@ function lastRelease(array $info): ?array
         [
             'last_release_date'    => $lastDate,
             'last_release_name'    => $lastVersion,
-            'last_release_website' => sprintf($info['website'], $lastVersion),
+            'last_release_website' => sprintf($info['website'], $fullVersion),
         ];
-
 }
 
 /**
- * @param array $info
+ * @param  array  $info
  * @return array|null
  */
 function lastCommit(array $info): ?array
 {
+    debugMessage(sprintf('Collect last commit information for "%s"', $info['website']));
     $client = new Client;
 
     $opts = [
@@ -182,9 +198,8 @@ function lastCommit(array $info): ?array
         echo $body;
         exit;
     }
-    $body = (string)$res->getBody();
-    $json = json_decode($body, true);
-    //sleep(1);
+    $body       = (string)$res->getBody();
+    $json       = json_decode($body, true);
     $lastCommit = $json['commit'] ?? null;
     if (null === $lastCommit) {
         return null;
@@ -200,8 +215,8 @@ function lastCommit(array $info): ?array
 /**
  * Quick loop to find the parent key value.
  *
- * @param array $categories
- * @param mixed $parent
+ * @param  array  $categories
+ * @param  mixed  $parent
  * @return string|null
  */
 function findParentKey(array $categories, mixed $parent): ?string
@@ -212,4 +227,35 @@ function findParentKey(array $categories, mixed $parent): ?string
         }
     }
     return null;
+}
+
+/**
+ * @param  string  $string
+ * @return void
+ */
+function debugMessage(string $string): void
+{
+    echo sprintf("%s\n", $string);
+}
+
+/**
+ * I think there is a better way to do this but OK.
+ * @param  array  $left
+ * @param  array  $right
+ * @return int
+ */
+function customItemOrder(array $left, array $right): int
+{
+    $orders = [
+        'badge'        => 20,
+        'star-counter' => 25,
+        'simple-link'  => 30,
+        'last-release' => 35,
+    ];
+    $a      = $orders[$left['type']] ?? 100;
+    $b      = $orders[$right['type']] ?? 100;
+    if ($a === $b) {
+        return 0;
+    }
+    return ($a < $b) ? -1 : 1;
 }

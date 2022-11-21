@@ -1,5 +1,5 @@
 {% if 'star-counter' == info.type %}
-    <li>
+    <li class="small">
         {% if info.stars == 1 %}
             Repository <a href="{{ info.website }}">{{ info.repository_title }}</a> has one star.
         {% else %}
@@ -9,23 +9,23 @@
 {% endif %}
 {% if 'last-release' == info.type %}
     {% if true == info.has_last_release %}
-        <li>Version <a href="{{ info.last_release_website }}" title="{{ info.last_release_name }}">{{ info.last_release_name }}</a> was released on {{ info.last_release_date.format('j F Y') }}</li>
+        <li class="small">Version <a href="{{ info.last_release_website }}" title="{{ info.last_release_name }}">{{ info.last_release_name }}</a> ({{ info.release_title }}) was released on {{ info.last_release_date.format('j F Y') }}</li>
     {% else %}
-        <li>No information is currently available on the latest version of this product.</li>
+        <li class="small">No information is currently available on the latest version of this product.</li>
     {% endif %}
 {% endif %}
 
 {% if 'last-commit' == info.type %}
     {% if true == info.has_last_commit %}
-        <li>
+        <li class="small">
             The <a href="{{ info.last_commit_website }}">last commit</a> to branch <code>{{ info.branch }}</code> was made on {{ info.last_commit_date.format('j F Y') }} by {{ info.last_commit_author }}.</li>
     {% else %}
-        <li>No information is currently available on the latest commit to branch <code>{{ info.branch }}</code>.</li>
+        <li class="small">No information is currently available on the latest commit to branch <code>{{ info.branch }}</code>.</li>
     {% endif %}
 {% endif %}
 
 {% if 'issue-count-simple' == info.type %}
-    <li>
+    <li class="small">
         {% if 1 == info.issue_count %}
             There is <a href="{{ info.search_link }}">one {{ info.name_singular }}</a>.
         {% else %}
@@ -34,7 +34,7 @@
     </li>
 {% endif %}
 {% if 'simple-link' == info.type %}
-<li>
+<li class="small">
     <a href="{{ info.url }}" title="{{ info.title }}">{{ info.title }}</a>
 </li>
 {% endif %}

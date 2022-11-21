@@ -27,37 +27,73 @@
             </ul>
         {% endif %}
 
-        {# list all sub categories #}
-        {% for ii,subcategory in category.children %}
+        <div class="row">
+            {# list all sub categories #}
+            {% for ii,subcategory in category.children %}
+                <div class="col-4">
+                    <div class="card mb-3">
+                        <h5 class="card-title card-header">{{ subcategory.title }}</h5>
+                        <div class="card-body">
+                            {#  basic info for subcategory #}
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                {% if subcategory.info|length > 0 %}
+                                    {% for iii,info in subcategory.info %}
+                                        {% if 'badge' == info.type %}
+                                            <img src="{{ info.image }}" title="{{ info.title }}"
+                                                 alt="{{ info.title }}"/>
+                                        {% endif %}
+                                        {#     {% include './partials/info-line.twig' with info %} #}
+                                    {% endfor %}
+                                {% endif %}
+                            </h6>
 
-            {#  basic info for subcategory #}
-            <h3>{{ subcategory.title }}</h3>
-            {% if subcategory.description %}<p>{{ subcategory.description }}</p>{% endif %}
+                            {% if subcategory.description %}
+                                <p class="card-text">{{ subcategory.description }}</p>
+                            {% endif %}
 
-            {# show subcategory info items. #}
-            {% if subcategory.info|length > 0 %}
-                <ul>
-                    {% for iii,info in subcategory.info %}
-                        {% include './partials/info-line.twig' with info %}
-                    {% endfor %}
-                </ul>
-            {% endif %}
+                            {# show subcategory info items. #}
+                            {% if subcategory.info|length > 0 %}
+                                <ul>
+                                    {% for iii,info in subcategory.info %}
+                                        {% if 'simple-link' != info.type %}
+                                            {% include './partials/info-line.twig' with info %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
 
-            {#  set of debug / example items. #}
-            {#
-            <ul>
-                <li>Basic link for more info (title + URL)</a>
+                            {#  set of debug / example items. #}
+                            {#
+                            <ul>
+                                    <li>Has website?</li>
+                                    <li>Has repo?</li>
+                                    <li>Has docker container?</li>
+                                    <li>Has bug counter?</li>
+                                    <li>Has roadmap?</li>
                 <li>PHPStan has complaints</li>
-                <li>sonar cloud tags if project exists</li>
-                <li>Last docker build for tags that start with X.X</li>
-                <li>Last docker build for tags that are "something"</li>
-                <li>Roadmap can be found here</li>
-                <li>X new features are currently being in status X</li>
-                <li>X new features are currently being in status Y</li>
-                <li>X enhancements are currently being in status Y</li>
-            </ul>
-            #}
-        {% endfor %}
+                                <li>sonar cloud tags if project exists</li>
+                                <li>Last docker build for tags that start with X.X</li>
+                                <li>Last docker build for tags that are "something"</li>
+                                <li>Roadmap can be found here</li>
+                                <li>X new features are currently being in status X</li>
+                                <li>X new features are currently being in status Y</li>
+                                <li>X enhancements are currently being in status Y</li>
+                            </ul>
+                            #}
+                        </div>
+                        <div class="card-footer">
+                            {% for iii,info in subcategory.info %}
+                                {% if 'simple-link' == info.type %}
+                                    <a class="card-link" href="{{ info.url }}"
+                                       title="{{ info.title }}">{{ info.title }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
 
     {% endfor %}
     <h1>Support</h1>
@@ -65,7 +101,8 @@
         If you need support using Firefly III or the associated tools, come find us!
     </p>
     <ul>
-        <li><a href="https://github.com/orgs/firefly-iii/discussions">GitHub Discussions for questions and support</a></li>
+        <li><a href="https://github.com/orgs/firefly-iii/discussions">GitHub Discussions for questions and support</a>
+        </li>
         <li><a href="https://gitter.im/firefly-iii/firefly-iii">Gitter.im for a good chat and a quick answer</a></li>
         <li><a href="https://github.com/firefly-iii/firefly-iii/issues">GitHub Issues for bugs and issues</a></li>
         <li><a href="https://fosstodon.org/@ff3">Follow me around for news and updates on Mastodon</a></li>
