@@ -13,6 +13,9 @@ $twig   = new Environment($loader, [
     'debug' => true,
 ]);
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 
 // TODO make this env variable?
 $content    = file_get_contents(__DIR__ . '/roadmap.json');
@@ -23,34 +26,41 @@ $categories = [];
 /** @var array $entry */
 foreach ($json['categories'] as $entry) {
     if (null === $entry['parent']) {
-        $key              = $entry['key'];
-        $categories[$key] = [
-            'title'       => $entry['title'],
-            'description' => $entry['description'] ?? '',
-            'children'    => [],
-        ];
+        $key                          = sprintf('%03d-%s', $entry['order'], $entry['key']);
+        $categories[$key]             = $entry;
+        $categories[$key]['children'] = [];
 
         // render info items for this category
-        $categories[$key]['info'] = renderAllInfo($key, $json['info']);
+        $categories[$key]['info'] = renderAllInfo($entry['key'], $json['info']);
 
     }
 }
+
 ksort($categories);
 
 // load all subcategories
-/** @var array $entry */
+
 foreach ($json['categories'] as $entry) {
     if (null !== $entry['parent']) {
-        $parent  = $entry['parent'];
-        $key     = $entry['key'];
-        $categories[$parent]['children'][$key] = [
+        $parentKey = findParentKey($categories, $entry['parent']);
+        if (null === $parentKey) {
+            continue;
+        }
+        if(!array_key_exists('order', $entry)) {
+            var_dump($entry);exit;
+        }
+        $key                                      = sprintf('%03d-%s', $entry['order'], $entry['key']);
+        $categories[$parentKey]['children'][$key] = [
             'title'       => $entry['title'],
             'description' => $entry['description'],
-            'info'        => renderAllInfo($key, $json['info']),
+            'info'        => renderAllInfo($entry['key'], $json['info']),
         ];
     }
 }
 
-$html = $twig->render('roadmap.twig', ['categories' => $categories,'intro_text' => $json['intro_text']]);
+foreach (array_keys($categories) as $i) {
+    ksort($categories[$i]['children']);
+}
+$html = $twig->render('roadmap.twig', ['categories' => $categories, 'intro_text' => $json['intro_text']]);
 
 file_put_contents('build/index.html', $html);

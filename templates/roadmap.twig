@@ -21,10 +21,8 @@
         {# show main category information items #}
         {% if category.info|length > 0 %}
             <ul>
-                {% for ii,info in category.info %}
-                    {% if '' != info %}
-                        <li>{{ info|raw }}</li>
-                    {% endif %}
+                {% for ii, info in category.info %}
+                    {% include './partials/info-line.twig' with info %}
                 {% endfor %}
             </ul>
         {% endif %}
@@ -40,15 +38,15 @@
             {% if subcategory.info|length > 0 %}
                 <ul>
                     {% for iii,info in subcategory.info %}
-                        {% if '' != info %}
-                            <li>{{ info|raw }}</li>
-                        {% endif %}
+                        {% include './partials/info-line.twig' with info %}
                     {% endfor %}
                 </ul>
             {% endif %}
 
             {#  set of debug / example items. #}
+            {#
             <ul>
+                <li>Basic link for more info (title + URL)</a>
                 <li>PHPStan has complaints</li>
                 <li>sonar cloud tags if project exists</li>
                 <li>Last docker build for tags that start with X.X</li>
@@ -57,8 +55,8 @@
                 <li>X new features are currently being in status X</li>
                 <li>X new features are currently being in status Y</li>
                 <li>X enhancements are currently being in status Y</li>
-
             </ul>
+            #}
         {% endfor %}
 
     {% endfor %}

@@ -3,6 +3,7 @@
         "twig/twig": "^3.0",
         "guzzlehttp/guzzle": "^7.0",
         "simplepie/simplepie": "^1.7",
-        "nesbot/carbon": "^2.63"
+        "nesbot/carbon": "^2.63",
+        "vlucas/phpdotenv": "^5.5"
     }
 }
