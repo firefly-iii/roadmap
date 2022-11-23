@@ -3,24 +3,29 @@
         {% if info.stars == 1 %}
             Repository <a href="{{ info.website }}">{{ info.repository_title }}</a> has one star.
         {% else %}
-            Repository <a href="{{ info.website }}">{{ info.repository_title }}</a> has {{ info.stars|number_format }} stars.
+            Repository <a
+                href="{{ info.website }}">{{ info.repository_title }}</a> has {{ info.stars|number_format }} stars.
         {% endif %}
     </li>
 {% endif %}
 {% if 'last-release' == info.type %}
     {% if true == info.has_last_release %}
-        <li class="small">Version <a href="{{ info.last_release_website }}" title="{{ info.last_release_name }}">{{ info.last_release_name }}</a> ({{ info.release_title }}) was released on {{ info.last_release_date.format('j F Y') }}</li>
-    {% else %}
-        <li class="small">No information is currently available on the latest version of this product.</li>
+        <li class="small">Version <a href="{{ info.last_release_website }}"
+                                     title="{{ info.last_release_name }}">{{ info.last_release_name }}</a> {% if '' != info.release_title %}({{ info.release_title }}){% endif %}
+            was released on {{ info.last_release_date }}</li>
     {% endif %}
 {% endif %}
 
 {% if 'last-commit' == info.type %}
     {% if true == info.has_last_commit %}
         <li class="small">
-            The <a href="{{ info.last_commit_website }}">last commit</a> to branch <code>{{ info.branch }}</code> was made on {{ info.last_commit_date.format('j F Y') }} by {{ info.last_commit_author }}.</li>
+            The <a href="{{ info.last_commit_website }}">last commit</a> to branch <code>{{ info.branch }}</code> was
+            made on {{ info.last_commit_date }} by {{ info.last_commit_author }}.
+        </li>
     {% else %}
-        <li class="small">No information is currently available on the latest commit to branch <code>{{ info.branch }}</code>.</li>
+        <li class="small">No information is currently available on the latest commit to branch
+            <code>{{ info.branch }}</code>.
+        </li>
     {% endif %}
 {% endif %}
 
@@ -29,12 +34,53 @@
         {% if 1 == info.issue_count %}
             There is <a href="{{ info.search_link }}">one {{ info.name_singular }}</a>.
         {% else %}
-            There are <a href="{{ info.search_link }}">{{ info.issue_count}} {{ info.name_plural }}</a>.
+            There are <a href="{{ info.search_link }}">{{ info.issue_count }} {{ info.name_plural }}</a>.
         {% endif %}
     </li>
 {% endif %}
+
+{% if 'combined-count' == info.type %}
+    {# bugs #}
+    {% if 0 != info.bug_issue_count %}
+        <li class="small">
+            {% if 1 == info.bug_issue_count %}
+                There is <a href="{{ info.bug_search_link }}">one open bug</a>.
+            {% else %}
+                There are <a href="{{ info.bug_search_link }}">{{ info.bug_issue_count }} open bugs</a>.
+            {% endif %}
+        </li>
+    {% endif %}
+    {# enhancements #}
+    {% if 0 != info.enhancement_issue_count %}
+        <li class="small">
+            {% if 1 == info.enhancement_issue_count %}
+                There is <a href="{{ info.enhancement_search_link }}">one open enhancement</a>.
+            {% else %}
+                There are <a href="{{ info.enhancement_search_link }}">{{ info.enhancement_issue_count }} open
+                enhancements</a>.
+            {% endif %}
+        </li>
+    {% endif %}
+    {# new features #}
+    {% if 0 != info.feature_issue_count %}
+        <li class="small">
+            {% if 1 == info.feature_issue_count %}
+                There is <a href="{{ info.feature_search_link }}">one open feature</a>.
+            {% else %}
+                There are <a href="{{ info.feature_search_link }}">{{ info.feature_issue_count }} open features</a>.
+            {% endif %}
+        </li>
+    {% endif %}
+{% endif %}
+
 {% if 'simple-link' == info.type %}
-<li class="small">
-    <a href="{{ info.url }}" title="{{ info.title }}">{{ info.title }}</a>
-</li>
+    <li class="small">
+        <a href="{{ info.url }}" title="{{ info.title }}">{{ info.title }}</a>
+    </li>
+{% endif %}
+{% if 'last-docker-image' == info.type %}
+    <li class="small">
+        Docker image <code>{{ info.namespace }}/{{ info.repository }}:{{ info.tag }}</code> was last pushed on <a
+                href="https://hub.docker.com/r/{{ info.namespace }}/{{ info.repository }}">{{ info.date }}</a>
+    </li>
 {% endif %}
