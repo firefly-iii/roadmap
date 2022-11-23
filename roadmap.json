@@ -44,32 +44,53 @@
       "parent": null
     },
     {
-      "key": "v5.7",
+      "key": "docker_ff",
+      "title": "Firefly III Docker image",
+      "parent": "build",
       "order": 1,
-      "title": "v5.7 (current)",
-      "parent": "firefly_iii",
-      "description": "This is the current release. It is maintained and active, but there will be no new features built."
+      "description": "The Docker container for Firefly III is feature complete."
     },
     {
-      "key": "v5.8",
+      "key": "docker_fidi",
+      "title": "Firefly III Data Importer Docker container",
+      "parent": "build",
+      "order": 2,
+      "description": "The Docker container for the Firefly III Data Importer is feature complete."
+    },
+    {
+      "key": "docker_base",
+      "title": "Firefly III Base Docker container",
+      "parent": "build",
       "order": 3,
-      "title": "v5.8 (next)",
-      "parent": "firefly_iii",
-      "description": "The next release of Firefly III. Under active development."
+      "description": "Firefly III and FIDI share this base image. It is pretty much feature complete and gets built every so often to update the OS and software."
     },
     {
-      "key": "v6.0",
-      "title": "v6.0 (future)",
-      "parent": "firefly_iii",
-      "order": 6,
-      "description": "The future release of Firefly III. No development activities (yet)."
+      "key": "k8s",
+      "title": "Firefly III Kubernetes",
+      "parent": "build",
+      "order": 4,
+      "description": "A collection of Kubernetes scripts and configurations. Use it to set up Firefly III in a Kubernetes cluster."
     },
     {
-      "key": "layoutv3",
-      "title": "Layout v3",
-      "parent": "firefly_iii",
-      "order": 5,
-      "description": "The new Firefly III layout, to be built as a Single Page Application. See also v5.8 and v6.0."
+      "key": "documentation",
+      "title": "Firefly III documentation",
+      "parent": "docs",
+      "order": 1,
+      "description": "The main Firefly III documentation."
+    },
+    {
+      "key": "api_docs",
+      "title": "API documentation",
+      "parent": "docs",
+      "order": 2,
+      "description": "The generated API documentation is hosted on Azure."
+    },
+    {
+      "key": "api_docs_generator",
+      "title": "API documentation generator",
+      "parent": "docs",
+      "order": 3,
+      "description": "The API documentation is stitched together from a collection of YAML files. This repository contains the source YAML and the combination script."
     },
     {
       "key": "v0.9",
@@ -100,25 +121,53 @@
       "description": "The Firefly III Data Importer uses JSON files for its configuration. These can be shared by users amongst each other."
     },
     {
-      "key": "api_docs",
-      "title": "API documentation",
-      "parent": "docs",
-      "order": 2,
-      "description": "The generated API documentation is hosted on Azure."
-    },
-    {
-      "key": "api_docs_generator",
-      "title": "API documentation generator",
-      "parent": "docs",
-      "order": 3,
-      "description": "The API documentation is stitched together from a collection of YAML files. This repository contains the source YAML and the combination script."
-    },
-    {
-      "key": "documentation",
-      "title": "Firefly III documentation",
-      "parent": "docs",
+      "key": "v5.7",
       "order": 1,
-      "description": "The main Firefly III documentation."
+      "title": "v5.7 (current)",
+      "parent": "firefly_iii",
+      "description": "This is the current release. It is maintained and active, but there will be no new features built."
+    },
+    {
+      "key": "v5.8",
+      "order": 3,
+      "title": "v5.8 (next)",
+      "parent": "firefly_iii",
+      "description": "The next release of Firefly III. Under active development."
+    },
+    {
+      "key": "layoutv3",
+      "title": "Layout v3",
+      "parent": "firefly_iii",
+      "order": 5,
+      "description": "The new Firefly III layout, to be built as a Single Page Application. See also v5.8 and v6.0."
+    },
+    {
+      "key": "v6.0",
+      "title": "v6.0 (future)",
+      "parent": "firefly_iii",
+      "order": 6,
+      "description": "The future release of Firefly III. No development activities (yet)."
+    },
+    {
+      "key": "apisupport",
+      "title": "API support classes",
+      "parent": "libraries",
+      "order": 1,
+      "description": "A collection of support classes for the Firefly III API. Used in the data importer and some other tools."
+    },
+    {
+      "key": "google2fa",
+      "title": "Google 2FA",
+      "parent": "libraries",
+      "order": 2,
+      "description": "A small forked library to assist in generating 2FA codes. Every now and then updates are pull from upstream."
+    },
+    {
+      "key": "2fa_recovery",
+      "title": "Google 2FA recovery",
+      "parent": "libraries",
+      "order": 3,
+      "description": "A small forked library to assist in generating 2FA recovery codes. Every now and then updates are pull from upstream."
     },
     {
       "key": "autosave",
@@ -147,58 +196,134 @@
       "parent": "tools",
       "order": 4,
       "description": "A (currently private) collection of import test files. These files to validate the data importer and do exception validation."
-    },
-    {
-      "key": "apisupport",
-      "title": "API support classes",
-      "parent": "libraries",
-      "order": 1,
-      "description": "A collection of support classes for the Firefly III API. Used in the data importer and some other tools."
-    },
-    {
-      "key": "google2fa",
-      "title": "Google 2FA",
-      "parent": "libraries",
-      "order": 2,
-      "description": "A small forked library to assist in generating 2FA codes. Every now and then updates are pull from upstream."
-    },
-    {
-      "key": "2fa_recovery",
-      "title": "Google 2FA recovery",
-      "parent": "libraries",
-      "order": 3,
-      "description": "A small forked library to assist in generating 2FA recovery codes. Every now and then updates are pull from upstream."
-    },
-    {
-      "key": "docker_ff",
-      "title": "Firefly III Docker image",
-      "parent": "build",
-      "order": 1,
-      "description": "The Docker container for Firefly III is feature complete."
-    },
-    {
-      "key": "docker_fidi",
-      "title": "Firefly III Data Importer Docker container",
-      "parent": "build",
-      "order": 2,
-      "description": "The Docker container for the Firefly III Data Importer is feature complete."
-    },
-    {
-      "key": "docker_base",
-      "title": "Firefly III Base Docker container",
-      "parent": "build",
-      "order": 3,
-      "description": "Firefly III and FIDI share this base image. It is pretty much feature complete and gets built every so often to update the OS and software."
-    },
-    {
-      "key": "k8s",
-      "title": "Firefly III Kubernetes",
-      "parent": "build",
-      "order": 4,
-      "description": "A collection of Kubernetes scripts and configurations. Use it to set up Firefly III in a Kubernetes cluster."
     }
   ],
   "info": [
+    {
+      "parent": "2fa_recovery",
+      "type": "badge",
+      "title": "Inactively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+    },
+    {
+      "parent": "2fa_recovery",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/recovery\/branches\/main",
+      "website": "https:\/\/github.com\/jc5\/recovery\/tree\/main",
+      "branch": "main"
+    },
+    {
+      "parent": "2fa_recovery",
+      "type": "last-release",
+      "data_url": "https:\/\/github.com\/jc5\/recovery\/releases.atom",
+      "website": "https:\/\/github.com\/jc5\/recovery\/releases\/%s",
+      "release_title": "",
+      "release_prefix": ""
+    },
+    {
+      "type": "star-counter",
+      "parent": "2fa_recovery",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/recovery",
+      "website": "https:\/\/github.com\/jc5\/recovery\/",
+      "repository_title": "jc5\/recovery"
+    },
+    {
+      "parent": "api_docs_generator",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "api_docs_generator",
+      "type": "simple-link",
+      "url": "https:\/\/api-docs.firefly-iii.org",
+      "title": "API documentation"
+    },
+    {
+      "type": "star-counter",
+      "parent": "api_docs_generator",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/api-docs-generator",
+      "website": "https:\/\/github.com\/firefly-iii\/api-docs-generator",
+      "repository_title": "firefly-iii\/api-docs-generator"
+    },
+    {
+      "parent": "api_docs",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "api_docs",
+      "type": "simple-link",
+      "url": "https:\/\/api-docs.firefly-iii.org",
+      "title": "API documentation"
+    },
+    {
+      "type": "star-counter",
+      "parent": "api_docs",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/api-docs",
+      "website": "https:\/\/github.com\/firefly-iii\/api-docs",
+      "repository_title": "firefly-iii\/api-docs"
+    },
+    {
+      "parent": "apisupport",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "apisupport",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/api-support-classes\/branches\/main",
+      "website": "https:\/\/github.com\/jc5\/api-support-classes\/tree\/main",
+      "branch": "main"
+    },
+    {
+      "type": "star-counter",
+      "parent": "apisupport",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/api-support-classes",
+      "website": "https:\/\/github.com\/jc5\/api-support-classes\/",
+      "repository_title": "jc5\/api-support-classes"
+    },
+    {
+      "parent": "autosave",
+      "type": "badge",
+      "title": "Inactively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+    },
+    {
+      "parent": "autosave",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/jc5\/product-manager\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"autosave\""
+    },
+    {
+      "type": "star-counter",
+      "parent": "autosave",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/autosave",
+      "website": "https:\/\/github.com\/jc5\/autosave",
+      "repository_title": "jc5\/autosave"
+    },
+    {
+      "parent": "data-generator",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "docker_base",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "docker_base",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed label:\"docker-base\""
+    },
     {
       "parent": "docker_base",
       "type": "last-docker-image",
@@ -207,18 +332,30 @@
       "prefix": ""
     },
     {
-      "parent": "docker_fidi",
-      "type": "last-docker-image",
-      "namespace": "fireflyiii",
-      "repository": "data-importer",
-      "prefix": "latest"
+      "type": "simple-link",
+      "parent": "docker_base",
+      "title": "Repository and information",
+      "url": "https:\/\/dev.azure.com\/Firefly-III\/_git\/BaseImage"
     },
     {
-      "parent": "docker_fidi",
-      "type": "last-docker-image",
-      "namespace": "fireflyiii",
-      "repository": "data-importer",
-      "prefix": "develop"
+      "type": "star-counter",
+      "parent": "docker_base",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/docker",
+      "website": "https:\/\/github.com\/firefly-iii\/docker",
+      "repository_title": "firefly-iii\/docker"
+    },
+    {
+      "parent": "docker_ff",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "docker_ff",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed label:\"docker-ff3\""
     },
     {
       "parent": "docker_ff",
@@ -235,609 +372,470 @@
       "prefix": "develop"
     },
     {
-      "type": "star-counter",
-      "parent": "fidi",
-      "data_url": "https://api.github.com/repos/firefly-iii/data-importer",
-      "website": "https://github.com/firefly-iii/data-importer/",
-      "repository_title": "firefly-iii/data-importer"
-    },
-    {
-      "type": "star-counter",
-      "parent": "v0.9",
-      "data_url": "https://api.github.com/repos/firefly-iii/data-importer",
-      "website": "https://github.com/firefly-iii/data-importer/",
-      "repository_title": "firefly-iii/data-importer"
-    },
-    {
-      "type": "star-counter",
-      "parent": "import-configs",
-      "data_url": "https://api.github.com/repos/firefly-iii/import-configurations",
-      "website": "https://github.com/firefly-iii/import-configurations",
-      "repository_title": "firefly-iii/import-configurations"
-    },
-
-    {
-      "type": "star-counter",
-      "parent": "api_docs_generator",
-      "data_url": "https://api.github.com/repos/firefly-iii/api-docs-generator",
-      "website": "https://github.com/firefly-iii/api-docs-generator",
-      "repository_title": "firefly-iii/api-docs-generator"
-    },
-
-    {
-      "type": "star-counter",
-      "parent": "pm",
-      "data_url": "https://api.github.com/repos/jc5/product-manager",
-      "website": "https://github.com/jc5/product-manager",
-      "repository_title": "jc5/product-manager"
-    },
-    {
-      "type": "star-counter",
-      "parent": "autosave",
-      "data_url": "https://api.github.com/repos/jc5/autosave",
-      "website": "https://github.com/jc5/autosave",
-      "repository_title": "jc5/autosave"
-    },
-    {
-      "parent": "firefly_iii",
-      "type": "star-counter",
-      "data_url": "https://api.github.com/repos/firefly-iii/firefly-iii",
-      "website": "https://github.com/firefly-iii/firefly-iii/",
-      "repository_title": "firefly-iii/firefly-iii"
-    },
-    {
-      "parent": "firefly_iii",
-      "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/firefly-iii/releases.atom",
-      "website": "https://github.com/firefly-iii/firefly-iii/releases/%s",
-      "release_title": "",
-      "release_prefix": ""
-    },
-    {
-      "parent": "fidi",
-      "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/data-importer/releases.atom",
-      "website": "https://github.com/firefly-iii/data-importer/releases/%s",
-      "release_title": "",
-      "release_prefix": ""
-    },
-    {
-      "parent": "v0.9",
-      "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/data-importer/releases.atom",
-      "website": "https://github.com/firefly-iii/data-importer/releases/%s",
-      "release_title": "",
-      "release_prefix": "0.9"
-    },
-    {
-      "parent": "v5.7",
-      "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/firefly-iii/releases.atom",
-      "website": "https://github.com/firefly-iii/firefly-iii/releases/%s",
-      "release_title": "",
-      "release_prefix": "5.7."
-    },
-    {
-      "parent": "v5.7",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/main",
-      "website": "https://github.com/firefly-iii/firefly-iii/tree/main",
-      "branch": "main"
-    },
-    {
-      "parent": "v0.9",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/main",
-      "website": "https://github.com/firefly-iii/data-importer/tree/main",
-      "branch": "main"
-    },
-    {
-      "parent": "v0.9",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/develop",
-      "website": "https://github.com/firefly-iii/data-importer/tree/develop",
-      "branch": "develop"
-    },
-    {
-      "parent": "v1.0",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/1.0-dev",
-      "website": "https://github.com/firefly-iii/data-importer/tree/1.0-dev",
-      "branch": "1.0-dev"
-    },
-    {
-      "parent": "apisupport",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/jc5/api-support-classes/branches/main",
-      "website": "https://github.com/jc5/api-support-classes/tree/main",
-      "branch": "main"
-    },
-    {
-      "parent": "v5.7",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/develop",
-      "website": "https://github.com/firefly-iii/firefly-iii/tree/develop",
-      "branch": "develop"
-    },
-    {
-      "parent": "v5.8",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/5.8-dev",
-      "website": "https://github.com/firefly-iii/firefly-iii/tree/5.8-dev",
-      "branch": "5.8-dev"
-    },
-    {
-      "parent": "layoutv3",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/5.8-dev",
-      "website": "https://github.com/firefly-iii/firefly-iii/tree/5.8-dev",
-      "branch": "5.8-dev"
-    },
-    {
-      "parent": "v5.8",
-      "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/firefly-iii/releases.atom",
-      "website": "https://github.com/firefly-iii/firefly-iii/releases/%s",
-      "release_title": "Firefly III",
-      "release_prefix": "5.8."
-    },
-    {
-      "parent": "pm",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"product-manager\""
-    },
-    {
-      "parent": "v6.0",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"6.0\""
-    },
-    {
-      "parent": "v2.0",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 2.0\""
-    },
-    {
-      "parent": "v5.8",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"5.8.0\""
-    },
-    {
-      "parent": "v5.7",
       "type": "simple-link",
-      "url": "https://api-docs.firefly-iii.org/?urls.primaryName=2.0.0%20(v1)",
-      "title": "API documentation (v1, 2.0.0)"
+      "parent": "docker_ff",
+      "title": "Repository and information",
+      "url": "https:\/\/dev.azure.com\/Firefly-III\/MainImage\/_wiki\/"
     },
     {
-      "parent": "v5.7",
+      "type": "star-counter",
+      "parent": "docker_ff",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/docker",
+      "website": "https:\/\/github.com\/firefly-iii\/docker",
+      "repository_title": "firefly-iii\/docker"
+    },
+    {
+      "parent": "docker_fidi",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "docker_fidi",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed label:\"docker-fidi\""
+    },
+    {
+      "parent": "docker_fidi",
+      "type": "last-docker-image",
+      "namespace": "fireflyiii",
+      "repository": "data-importer",
+      "prefix": "latest"
+    },
+    {
+      "parent": "docker_fidi",
+      "type": "last-docker-image",
+      "namespace": "fireflyiii",
+      "repository": "data-importer",
+      "prefix": "develop"
+    },
+    {
       "type": "simple-link",
-      "url": "https://docs.firefly-iii.org/firefly-iii/",
-      "title": "Documentation"
+      "parent": "docker_fidi",
+      "title": "Repository and information",
+      "url": "https:\/\/dev.azure.com\/Firefly-III\/ImportToolImage\/_wiki\/"
+    },
+    {
+      "type": "star-counter",
+      "parent": "docker_fidi",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/docker",
+      "website": "https:\/\/github.com\/firefly-iii\/docker",
+      "repository_title": "firefly-iii\/docker"
     },
     {
       "parent": "documentation",
-      "type": "simple-link",
-      "url": "https://docs.firefly-iii.org/",
-      "title": "Documentation"
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
     },
     {
       "parent": "documentation",
       "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"documentation\""
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"documentation\""
     },
     {
-      "parent": "api_docs",
+      "parent": "documentation",
       "type": "simple-link",
-      "url": "https://api-docs.firefly-iii.org",
-      "title": "API documentation"
-    },
-    {
-      "parent": "api_docs_generator",
-      "type": "simple-link",
-      "url": "https://api-docs.firefly-iii.org",
-      "title": "API documentation"
-    },
-    {
-      "parent": "v5.8",
-      "type": "simple-link",
-      "url": "https://api-docs.firefly-iii.org/?urls.primaryName=2.0.0%20(v2)",
-      "title": "API documentation (v2, 2.0.0)"
-    },
-    {
-      "parent": "v1.0",
-      "type": "simple-link",
-      "url": "https://github.com/orgs/firefly-iii/projects/1/views/9",
-      "title": "Roadmap for FIDI v1.0"
-    },
-    {
-      "parent": "v0.9",
-      "type": "simple-link",
-      "url": "https://docs.firefly-iii.org/data-importer/",
+      "url": "https:\/\/docs.firefly-iii.org\/",
       "title": "Documentation"
+    },
+    {
+      "type": "star-counter",
+      "parent": "documentation",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/docs",
+      "website": "https:\/\/github.com\/firefly-iii\/docs",
+      "repository_title": "firefly-iii\/docs"
+    },
+    {
+      "parent": "fidi",
+      "type": "last-release",
+      "data_url": "https:\/\/github.com\/firefly-iii\/data-importer\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/releases\/%s",
+      "release_title": "",
+      "release_prefix": ""
+    },
+    {
+      "type": "star-counter",
+      "parent": "fidi",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/",
+      "repository_title": "firefly-iii\/data-importer"
+    },
+    {
+      "parent": "firefly_iii",
+      "type": "last-release",
+      "data_url": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases\/%s",
+      "release_title": "",
+      "release_prefix": ""
+    },
+    {
+      "parent": "firefly_iii",
+      "type": "star-counter",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/",
+      "repository_title": "firefly-iii\/firefly-iii"
+    },
+    {
+      "parent": "google2fa",
+      "type": "badge",
+      "title": "Inactively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+    },
+    {
+      "parent": "google2fa",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/google2fa-laravel\/branches\/main",
+      "website": "https:\/\/github.com\/jc5\/google2fa-laravel\/tree\/main",
+      "branch": "main"
+    },
+    {
+      "parent": "google2fa",
+      "type": "last-release",
+      "data_url": "https:\/\/github.com\/jc5\/google2fa-laravel\/releases.atom",
+      "website": "https:\/\/github.com\/jc5\/google2fa-laravel\/releases\/%s",
+      "release_title": "",
+      "release_prefix": ""
+    },
+    {
+      "type": "star-counter",
+      "parent": "google2fa",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/google2fa-laravel",
+      "website": "https:\/\/github.com\/jc5\/google2fa-laravel\/",
+      "repository_title": "jc5\/google2fa-laravel"
+    },
+    {
+      "parent": "import-configs",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
     },
     {
       "parent": "import-configs",
       "type": "simple-link",
-      "url": "https://github.com/firefly-iii/import-configurations",
+      "url": "https:\/\/github.com\/firefly-iii\/import-configurations",
       "title": "Repository"
     },
     {
-      "parent": "layoutv3",
-      "type": "simple-link",
-      "url": "https://github.com/orgs/firefly-iii/projects/1/views/12",
-      "title": "Roadmap for v3"
+      "type": "star-counter",
+      "parent": "import-configs",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/import-configurations",
+      "website": "https:\/\/github.com\/firefly-iii\/import-configurations",
+      "repository_title": "firefly-iii\/import-configurations"
     },
     {
-      "parent": "v2.0",
-      "type": "simple-link",
-      "url": "https://github.com/orgs/firefly-iii/projects/1/views/13",
-      "title": "Roadmap for FIDI v2.0"
+      "parent": "import-test",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
     },
     {
-      "parent": "v5.8",
-      "type": "simple-link",
-      "url": "https://github.com/orgs/firefly-iii/projects/1/views/5",
-      "title": "Roadmap for Firefly III v5.8.0"
-    },
-    {
-      "parent": "v6.0",
-      "type": "simple-link",
-      "url": "https://github.com/orgs/firefly-iii/projects/1/views/8",
-      "title": "Roadmap for Firefly III v6.0"
-    },
-    {
-      "parent": "v0.9",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue -label:fixed milestone:\"Data Importer 0.9\""
-    },
-    {
-      "parent": "layoutv3",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue -label:fixed milestone:\"Layout 3.0+\""
-    },
-    {
-      "parent": "layoutv3",
-      "type": "issue-count-simple",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "name_singular": "layout tracking issue",
-      "name_plural": "layout tracking issues",
-      "query": "repo:firefly-iii/firefly-iii label:layout-v3 type:issue state:open -label:fixed"
-    },
-    {
-      "parent": "v1.0",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 1.0\""
-    },
-    {
-      "type": "simple-link",
       "parent": "k8s",
-      "title": "Repository and information",
-      "url": "https://github.com/firefly-iii/kubernetes/"
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
     },
     {
       "parent": "k8s",
       "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed label:kubernetes"
-    },
-    {
-      "type": "simple-link",
-      "parent": "docker_base",
-      "title": "Repository and information",
-      "url": "https://dev.azure.com/Firefly-III/_git/BaseImage"
-    },
-    {
-      "type": "simple-link",
-      "parent": "docker_fidi",
-      "title": "Repository and information",
-      "url": "https://dev.azure.com/Firefly-III/ImportToolImage/_wiki/"
-    },
-    {
-      "type": "simple-link",
-      "parent": "docker_ff",
-      "title": "Repository and information",
-      "url": "https://dev.azure.com/Firefly-III/MainImage/_wiki/"
-    },
-    {
-      "parent": "docker_base",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed label:\"docker-base\""
-    },
-    {
-      "parent": "docker_fidi",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed label:\"docker-fidi\""
-    },
-    {
-      "parent": "docker_ff",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed label:\"docker-ff3\""
-    },
-    {
-      "parent": "2fa_recovery",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/jc5/recovery/branches/main",
-      "website": "https://github.com/jc5/recovery/tree/main",
-      "branch": "main"
-    },
-    {
-      "parent": "google2fa",
-      "type": "last-commit",
-      "data_url": "https://api.github.com/repos/jc5/google2fa-laravel/branches/main",
-      "website": "https://github.com/jc5/google2fa-laravel/tree/main",
-      "branch": "main"
-    },
-    {
-      "type": "star-counter",
-      "parent": "2fa_recovery",
-      "data_url": "https://api.github.com/repos/jc5/recovery",
-      "website": "https://github.com/jc5/recovery/",
-      "repository_title": "jc5/recovery"
-    },
-    {
-      "type": "star-counter",
-      "parent": "documentation",
-      "data_url": "https://api.github.com/repos/firefly-iii/docs",
-      "website": "https://github.com/firefly-iii/docs",
-      "repository_title": "firefly-iii/docs"
-    },
-    {
-      "type": "star-counter",
-      "parent": "api_docs",
-      "data_url": "https://api.github.com/repos/firefly-iii/api-docs",
-      "website": "https://github.com/firefly-iii/api-docs",
-      "repository_title": "firefly-iii/api-docs"
-    },
-    {
-      "type": "star-counter",
-      "parent": "apisupport",
-      "data_url": "https://api.github.com/repos/jc5/api-support-classes",
-      "website": "https://github.com/jc5/api-support-classes/",
-      "repository_title": "jc5/api-support-classes"
-    },
-    {
-      "type": "star-counter",
-      "parent": "google2fa",
-      "data_url": "https://api.github.com/repos/jc5/google2fa-laravel",
-      "website": "https://github.com/jc5/google2fa-laravel/",
-      "repository_title": "jc5/google2fa-laravel"
-    },
-    {
-      "type": "star-counter",
-      "parent": "docker_ff",
-      "data_url": "https://api.github.com/repos/firefly-iii/docker",
-      "website": "https://github.com/firefly-iii/docker",
-      "repository_title": "firefly-iii/docker"
-    },
-    {
-      "type": "star-counter",
-      "parent": "docker_fidi",
-      "data_url": "https://api.github.com/repos/firefly-iii/docker",
-      "website": "https://github.com/firefly-iii/docker",
-      "repository_title": "firefly-iii/docker"
-    },
-    {
-      "type": "star-counter",
-      "parent": "docker_base",
-      "data_url": "https://api.github.com/repos/firefly-iii/docker",
-      "website": "https://github.com/firefly-iii/docker",
-      "repository_title": "firefly-iii/docker"
-    },
-    {
-      "parent": "2fa_recovery",
-      "type": "last-release",
-      "data_url": "https://github.com/jc5/recovery/releases.atom",
-      "website": "https://github.com/jc5/recovery/releases/%s",
-      "release_title": "",
-      "release_prefix": ""
-    },
-    {
-      "parent": "google2fa",
-      "type": "last-release",
-      "data_url": "https://github.com/jc5/google2fa-laravel/releases.atom",
-      "website": "https://github.com/jc5/google2fa-laravel/releases/%s",
-      "release_title": "",
-      "release_prefix": ""
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed label:kubernetes"
     },
     {
       "parent": "k8s",
       "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/kubernetes/releases.atom",
-      "website": "https://github.com/firefly-iii/kubernetes/releases/%s",
+      "data_url": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases\/%s",
       "release_title": "full stack",
       "release_prefix": "firefly-iii-stack-"
     },
     {
       "parent": "k8s",
       "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/kubernetes/releases.atom",
-      "website": "https://github.com/firefly-iii/kubernetes/releases/%s",
+      "data_url": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases\/%s",
       "release_title": "FIDI",
       "release_prefix": "importer-"
     },
     {
       "parent": "k8s",
       "type": "last-release",
-      "data_url": "https://github.com/firefly-iii/kubernetes/releases.atom",
-      "website": "https://github.com/firefly-iii/kubernetes/releases/%s",
+      "data_url": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases\/%s",
       "release_title": "Firefly III",
       "release_prefix": "firefly-iii-"
     },
     {
+      "type": "simple-link",
       "parent": "k8s",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "v5.8",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Status-Active development-green.svg"
+      "title": "Repository and information",
+      "url": "https:\/\/github.com\/firefly-iii\/kubernetes\/"
     },
     {
       "parent": "layoutv3",
       "type": "badge",
       "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Status-Active development-green.svg"
+      "image": "https:\/\/img.shields.io\/badge\/Status-Active development-green.svg"
     },
     {
-      "parent": "v1.0",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "parent": "layoutv3",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue -label:fixed milestone:\"Layout 3.0+\""
     },
     {
-      "parent": "import-configs",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "parent": "layoutv3",
+      "type": "issue-count-simple",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "name_singular": "layout tracking issue",
+      "name_plural": "layout tracking issues",
+      "query": "repo:firefly-iii\/firefly-iii label:layout-v3 type:issue state:open -label:fixed"
     },
     {
-      "parent": "documentation",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "parent": "layoutv3",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/5.8-dev",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/5.8-dev",
+      "branch": "5.8-dev"
     },
     {
-      "parent": "v2.0",
-      "type": "badge",
-      "title": "Not Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Not%20Maintained-yellow.svg"
-    },
-    {
-      "parent": "v6.0",
-      "type": "badge",
-      "title": "Not Maintained",
-      "image": "https://img.shields.io/badge/Status-Not%20started%20yet-inactive.svg"
-    },
-    {
-      "parent": "docker_base",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "docker_fidi",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "docker_ff",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "2fa_recovery",
-      "type": "badge",
-      "title": "Inactively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
-    },
-    {
-      "parent": "v5.7",
-      "type": "badge",
-      "title": "No development",
-      "image": "https://img.shields.io/badge/Status-Maintenance only-yellow.svg"
-    },
-    {
-      "parent": "google2fa",
-      "type": "badge",
-      "title": "Inactively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
-    },
-    {
-      "parent": "apisupport",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "v0.9",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "import-test",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "api_docs_generator",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "data-generator",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
-    },
-    {
-      "parent": "api_docs",
-      "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "parent": "layoutv3",
+      "type": "simple-link",
+      "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/12",
+      "title": "Roadmap for v3"
     },
     {
       "parent": "pm",
       "type": "badge",
       "title": "Inactively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
     },
     {
-      "parent": "autosave",
+      "parent": "pm",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"product-manager\""
+    },
+    {
+      "type": "star-counter",
+      "parent": "pm",
+      "data_url": "https:\/\/api.github.com\/repos\/jc5\/product-manager",
+      "website": "https:\/\/github.com\/jc5\/product-manager",
+      "repository_title": "jc5\/product-manager"
+    },
+    {
+      "parent": "v0.9",
       "type": "badge",
-      "title": "Inactively Maintained",
-      "image": "https://img.shields.io/badge/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
-    },
-    {
-      "parent": "autosave",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/jc5/product-manager/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"autosave\""
-    },
-    {
-      "parent": "v5.7",
-      "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"next-minor\""
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
     },
     {
       "parent": "v0.9",
       "type": "combined-count",
-      "data_url": "https://api.github.com/search/issues",
-      "website": "https://github.com/firefly-iii/firefly-iii/issues",
-      "query": "repo:firefly-iii/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 0.9\""
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue -label:fixed milestone:\"Data Importer 0.9\""
+    },
+    {
+      "parent": "v0.9",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 0.9\""
+    },
+    {
+      "parent": "v0.9",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer\/branches\/main",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/tree\/main",
+      "branch": "main"
+    },
+    {
+      "parent": "v0.9",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer\/branches\/develop",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/tree\/develop",
+      "branch": "develop"
+    },
+    {
+      "parent": "v0.9",
+      "type": "last-release",
+      "data_url": "https:\/\/github.com\/firefly-iii\/data-importer\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/releases\/%s",
+      "release_title": "",
+      "release_prefix": "0.9"
+    },
+    {
+      "parent": "v0.9",
+      "type": "simple-link",
+      "url": "https:\/\/docs.firefly-iii.org\/data-importer\/",
+      "title": "Documentation"
+    },
+    {
+      "type": "star-counter",
+      "parent": "v0.9",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/",
+      "repository_title": "firefly-iii\/data-importer"
+    },
+    {
+      "parent": "v1.0",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+    },
+    {
+      "parent": "v1.0",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 1.0\""
+    },
+    {
+      "parent": "v1.0",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer\/branches\/1.0-dev",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/tree\/1.0-dev",
+      "branch": "1.0-dev"
+    },
+    {
+      "parent": "v1.0",
+      "type": "simple-link",
+      "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/9",
+      "title": "Roadmap for FIDI v1.0"
+    },
+    {
+      "parent": "v2.0",
+      "type": "badge",
+      "title": "Not Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Not%20Maintained-yellow.svg"
+    },
+    {
+      "parent": "v2.0",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 2.0\""
+    },
+    {
+      "parent": "v2.0",
+      "type": "simple-link",
+      "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/13",
+      "title": "Roadmap for FIDI v2.0"
+    },
+    {
+      "parent": "v5.7",
+      "type": "badge",
+      "title": "No development",
+      "image": "https:\/\/img.shields.io\/badge\/Status-Maintenance only-yellow.svg"
+    },
+    {
+      "parent": "v5.7",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"next-minor\""
+    },
+    {
+      "parent": "v5.7",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/main",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/main",
+      "branch": "main"
+    },
+    {
+      "parent": "v5.7",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/develop",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/develop",
+      "branch": "develop"
+    },
+    {
+      "parent": "v5.7",
+      "type": "last-release",
+      "data_url": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases\/%s",
+      "release_title": "",
+      "release_prefix": "5.7."
+    },
+    {
+      "parent": "v5.7",
+      "type": "simple-link",
+      "url": "https:\/\/api-docs.firefly-iii.org\/?urls.primaryName=2.0.0%20(v1)",
+      "title": "API documentation (v1, 2.0.0)"
+    },
+    {
+      "parent": "v5.7",
+      "type": "simple-link",
+      "url": "https:\/\/docs.firefly-iii.org\/firefly-iii\/",
+      "title": "Documentation"
+    },
+    {
+      "parent": "v5.8",
+      "type": "badge",
+      "title": "Actively Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Status-Active development-green.svg"
+    },
+    {
+      "parent": "v5.8",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"5.8.0\""
+    },
+    {
+      "parent": "v5.8",
+      "type": "last-commit",
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/5.8-dev",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/5.8-dev",
+      "branch": "5.8-dev"
+    },
+    {
+      "parent": "v5.8",
+      "type": "last-release",
+      "data_url": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases.atom",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases\/%s",
+      "release_title": "Firefly III",
+      "release_prefix": "5.8."
+    },
+    {
+      "parent": "v5.8",
+      "type": "simple-link",
+      "url": "https:\/\/api-docs.firefly-iii.org\/?urls.primaryName=2.0.0%20(v2)",
+      "title": "API documentation (v2, 2.0.0)"
+    },
+    {
+      "parent": "v5.8",
+      "type": "simple-link",
+      "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/5",
+      "title": "Roadmap for Firefly III v5.8.0"
+    },
+    {
+      "parent": "v6.0",
+      "type": "badge",
+      "title": "Not Maintained",
+      "image": "https:\/\/img.shields.io\/badge\/Status-Not%20started%20yet-inactive.svg"
+    },
+    {
+      "parent": "v6.0",
+      "type": "combined-count",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"6.0\""
+    },
+    {
+      "parent": "v6.0",
+      "type": "simple-link",
+      "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/8",
+      "title": "Roadmap for Firefly III v6.0"
     }
   ]
 }
