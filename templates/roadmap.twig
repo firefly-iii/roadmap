@@ -33,7 +33,7 @@
         <div class="row">
             {# list all sub categories #}
             {% for ii,subcategory in category.children %}
-                <div class="col-4">
+                <div class="col-3">
                     <div class="card mb-3">
                         <h5 class="card-title card-header">{{ subcategory.title }}</h5>
                         <div class="card-body">
@@ -55,19 +55,8 @@
                             {#  set of debug / example items. #}
                             {#
                             <ul>
-                                    <li>Has website?</li>
-                                    <li>Has repo?</li>
-                                    <li>Has docker container?</li>
-                                    <li>Has bug counter?</li>
-                                    <li>Has roadmap?</li>
-                <li>PHPStan has complaints</li>
+                                <li>PHPStan has complaints</li>
                                 <li>sonar cloud tags if project exists</li>
-                                <li>Last docker build for tags that start with X.X</li>
-                                <li>Last docker build for tags that are "something"</li>
-                                <li>Roadmap can be found here</li>
-                                <li>X new features are currently being in status X</li>
-                                <li>X new features are currently being in status Y</li>
-                                <li>X enhancements are currently being in status Y</li>
                             </ul>
                             #}
 
@@ -75,8 +64,17 @@
                                 {% if subcategory.info|length > 0 %}
                                     {% for iii,info in subcategory.info %}
                                         {% if 'badge' == info.type %}
-                                            <img src="{{ info.image }}" title="{{ info.title }}"
-                                                 alt="{{ info.title }}"/>
+                                            {% if 'up2date' == info.label %}
+                                                <img src="https://img.shields.io/static/v1?label=Status&message=Kept%20up-to-date&color=blue" title="Kept up-to-date" alt="Kept up-to-date"/>
+                                            {% elseif 'bugfixes' == info.label %}
+                                                <img src="https://img.shields.io/static/v1?label=Status&message=Bugfixes%20only&color=yellow" title="Bugfixes only" alt="Bugfixes only"/>
+                                            {% elseif 'active' == info.label %}
+                                                <img src="https://img.shields.io/static/v1?label=Status&message=Active%20development&color=green" title="Active development" alt="Active development"/>
+                                            {% elseif 'inactive' == info.label %}
+                                                <img src="https://img.shields.io/static/v1?label=Status&message=No%20activity%20(yet)&color=inactive" title="Active development" alt="Active development"/>
+                                            {% else %}
+                                                <img src="https://img.shields.io/static/v1?label=BAD&message=BAD&color=critical">
+                                            {% endif %}
                                         {% endif %}
                                         {#     {% include './partials/info-line.twig' with info %} #}
                                     {% endfor %}

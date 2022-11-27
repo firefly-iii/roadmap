@@ -202,8 +202,7 @@
     {
       "parent": "2fa_recovery",
       "type": "badge",
-      "title": "Inactively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+      "label": "up2date"
     },
     {
       "parent": "2fa_recovery",
@@ -230,8 +229,7 @@
     {
       "parent": "api_docs_generator",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "api_docs_generator",
@@ -249,8 +247,7 @@
     {
       "parent": "api_docs",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "api_docs",
@@ -268,8 +265,7 @@
     {
       "parent": "apisupport",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "apisupport",
@@ -288,8 +284,7 @@
     {
       "parent": "autosave",
       "type": "badge",
-      "title": "Inactively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+      "label": "bugfixes"
     },
     {
       "parent": "autosave",
@@ -308,14 +303,12 @@
     {
       "parent": "data-generator",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "bugfixes"
     },
     {
       "parent": "docker_base",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "docker_base",
@@ -347,8 +340,7 @@
     {
       "parent": "docker_ff",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "docker_ff",
@@ -387,8 +379,7 @@
     {
       "parent": "docker_fidi",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "docker_fidi",
@@ -427,8 +418,7 @@
     {
       "parent": "documentation",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "documentation",
@@ -483,8 +473,7 @@
     {
       "parent": "google2fa",
       "type": "badge",
-      "title": "Inactively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+      "label": "up2date"
     },
     {
       "parent": "google2fa",
@@ -511,8 +500,7 @@
     {
       "parent": "import-configs",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "up2date"
     },
     {
       "parent": "import-configs",
@@ -530,14 +518,12 @@
     {
       "parent": "import-test",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "bugfixes"
     },
     {
       "parent": "k8s",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "active"
     },
     {
       "parent": "k8s",
@@ -579,8 +565,7 @@
     {
       "parent": "layoutv3",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Status-Active development-green.svg"
+      "label": "active"
     },
     {
       "parent": "layoutv3",
@@ -599,6 +584,13 @@
       "query": "repo:firefly-iii\/firefly-iii label:layout-v3 type:issue state:open -label:fixed"
     },
     {
+      "parent": "firefly_iii",
+      "type": "ticket-task-chart",
+      "data_url": "https:\/\/api.github.com\/search\/issues",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
+      "query": "repo:firefly-iii\/firefly-iii label:layout-v3 type:issue state:open -label:fixed"
+    },
+    {
       "parent": "layoutv3",
       "type": "last-commit",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/5.8-dev",
@@ -614,8 +606,7 @@
     {
       "parent": "pm",
       "type": "badge",
-      "title": "Inactively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg"
+      "label": "bugfixes"
     },
     {
       "parent": "pm",
@@ -634,8 +625,7 @@
     {
       "parent": "v0.9",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "bugfixes"
     },
     {
       "parent": "v0.9",
@@ -689,8 +679,7 @@
     {
       "parent": "v1.0",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Actively%20Maintained-green.svg"
+      "label": "active"
     },
     {
       "parent": "v1.0",
@@ -715,8 +704,7 @@
     {
       "parent": "v2.0",
       "type": "badge",
-      "title": "Not Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Maintenance%20Level-Not%20Maintained-yellow.svg"
+      "label": "inactive"
     },
     {
       "parent": "v2.0",
@@ -734,8 +722,7 @@
     {
       "parent": "v5.7",
       "type": "badge",
-      "title": "No development",
-      "image": "https:\/\/img.shields.io\/badge\/Status-Maintenance only-yellow.svg"
+      "label": "bugfixes"
     },
     {
       "parent": "v5.7",
@@ -781,8 +768,7 @@
     {
       "parent": "v5.8",
       "type": "badge",
-      "title": "Actively Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Status-Active development-green.svg"
+      "label": "active"
     },
     {
       "parent": "v5.8",
@@ -821,8 +807,7 @@
     {
       "parent": "v6.0",
       "type": "badge",
-      "title": "Not Maintained",
-      "image": "https:\/\/img.shields.io\/badge\/Status-Not%20started%20yet-inactive.svg"
+      "label": "inactive"
     },
     {
       "parent": "v6.0",

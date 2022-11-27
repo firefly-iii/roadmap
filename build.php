@@ -54,8 +54,8 @@ foreach ($json['categories'] as $entry) {
             exit;
         }
         $key   = sprintf('%03d-%s', $entry['order'], $entry['key']);
-        $items = renderAllInfo($entry['key'], $json['info']);
 
+        $items = renderAllInfo($entry['key'], $json['info']);
         usort($items, 'customItemOrder');
         $categories[$parentKey]['children'][$key] = [
             'title'       => $entry['title'],
@@ -70,4 +70,16 @@ foreach (array_keys($categories) as $i) {
 }
 $html = $twig->render('roadmap.twig', ['categories' => $categories, 'intro_text' => $json['intro_text']]);
 
-file_put_contents('build/index.html', $html);
+$config = array(
+    'indent'         => true,
+    'output-xml'     => true,
+    'input-xml'     => true,
+    'wrap'         => '1000');
+
+// Tidy
+$tidy = new tidy();
+$tidy->parseString($html, $config, 'utf8');
+$tidy->cleanRepair();
+$result = tidy_get_output($tidy);
+
+file_put_contents('build/index.html', $result);

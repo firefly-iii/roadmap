@@ -20,10 +20,18 @@ function renderAllInfo(string $key, array $array): array
         if ($info['parent'] !== $key) {
             continue;
         }
+        if ('ticket-task-chart' !== $info['type']) {
+            continue;
+        }
+
+
         switch ($info['type']) {
             default:
                 //throw new RuntimeException(sprintf('Cannot handle "%s"', $info['type']));
                 echo sprintf("Skip %s\n", $info['type']);
+                break;
+            case 'ticket-task-chart':
+                renderChart($info);
                 break;
             case 'star-counter':
                 $info['stars'] = starCounter($info);
@@ -75,6 +83,60 @@ function renderAllInfo(string $key, array $array): array
         $return[] = $info;
     }
     return $return;
+}
+
+function renderChart(array $info)
+{
+    $opts   = [
+        'headers' => [
+            'Accept'        => 'application/vnd.github+json',
+            'User-Agent'    => 'Firefly III roadmap script/1.0',
+            'Authorization' => sprintf('Bearer %s', $_ENV['GITHUB_TOKEN']),
+        ],
+    ];
+    $params = [
+        'q' => $info['query'],
+    ];
+    $full   = $info['data_url'].'?'.http_build_query($params);
+    $hash   = hash('sha256', sprintf('chart-%s', $full));
+    if (hasCache($hash)) {
+        $result = getCache($hash);
+    }
+    if (!hasCache($hash)) {
+        $client = new Client;
+        $res    = $client->get($full, $opts);
+        $body   = (string)$res->getBody();
+        $result   = json_decode($body, true);
+        sleep(2);
+        saveCache($hash, json_encode($result));
+    }
+    $return = [];
+    foreach($result['items'] as $item) {
+        $current = [
+            'title' => $item['title'],
+            'tasks' => [],
+            'completed' => [],
+            'total' => 0,
+            'html_url' => $item['html_url'],
+        ];
+        $body = $item['body'];
+        $lines = explode("\n", $body);
+        foreach($lines as $line) {
+            if (preg_match('/- \[ \] (.*)/', $line, $matches)) {
+                $current['tasks'][] = trim($matches[1]);
+                $current['total']++;
+            }
+            if (preg_match('/- \[x\] (.*)/', $line, $matches)) {
+                $current['completed'][] = trim($matches[1]);
+                $current['total']++;
+            }
+        }
+        echo $body;
+        var_dump($current);exit;
+    }
+
+    var_dump($result);
+    exit;
 }
 
 /**
@@ -218,6 +280,8 @@ function simpleIssueCount(array $info): string
     $body = (string)$res->getBody();
     $json = json_decode($body, true);
     sleep(2);
+    var_dump($json);
+    exit;
     $total = $json['total_count'] ?? 0;
     saveCache($hash, json_encode($total));
     return $total;

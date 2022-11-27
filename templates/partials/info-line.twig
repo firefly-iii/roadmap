@@ -8,11 +8,10 @@
         {% endif %}
     </li>
 {% endif %}
+
 {% if 'last-release' == info.type %}
     {% if true == info.has_last_release %}
-        <li class="small">Version <a href="{{ info.last_release_website }}"
-                                     title="{{ info.last_release_name }}">{{ info.last_release_name }}</a> {% if '' != info.release_title %}({{ info.release_title }}){% endif %}
-            was released on {{ info.last_release_date }}</li>
+        <li class="small">Version <a href="{{ info.last_release_website }}" title="{{ info.last_release_name }}">{{ info.last_release_name }}</a> {% if '' != info.release_title %}({{ info.release_title }}){% endif %} was released on {{ info.last_release_date }}</li>
     {% endif %}
 {% endif %}
 
