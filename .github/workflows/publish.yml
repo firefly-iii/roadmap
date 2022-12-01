@@ -13,14 +13,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-        run: |
-          cd $GITHUB_WORKSPACE
-          ./build.sh
-      - name: Upload to Azure Blob Storage
-        env:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.connectionString }}
         run: |
           cd $GITHUB_WORKSPACE
+          ./build.sh
           az storage blob upload-batch \
                             -s ./dist \
                             -d 'https://ff3roadmap.z6.web.core.windows.net/$web' \
