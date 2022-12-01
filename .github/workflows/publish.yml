@@ -15,7 +15,6 @@ jobs:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
           cd $GITHUB_WORKSPACE
-          composer install
           ./build.sh
       - name: Upload to Azure Blob Storage
         env:
