@@ -1,0 +1,43 @@
+import { Chart } from 'chart.js/auto'
+
+(async function() {
+    const data = [
+    {% for line in data %}
+        { title: "{{ line.title }}", todo: {{ line.todo }}, done: {{ line.done }} },
+    {% endfor %}
+    ];
+
+    new Chart(
+        document.getElementById('{{ hash }}'),
+        {
+            type: 'bar',
+            options: {
+                animation: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            },
+            data: {
+                labels: data.map(row => row.title),
+                datasets: [
+                    {
+                        label: 'Tasks done',
+                        data: data.map(row => row.done),
+                        stack: 0
+                    },
+                    {
+                    label: 'Tasks to do',
+                    data: data.map(row => row.todo),
+                    stack: 0
+                    }
+                ]
+            }
+        }
+    );
+})();
+

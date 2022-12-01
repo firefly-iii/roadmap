@@ -20,10 +20,6 @@ function renderAllInfo(string $key, array $array): array
         if ($info['parent'] !== $key) {
             continue;
         }
-        if ('ticket-task-chart' !== $info['type']) {
-            continue;
-        }
-
 
         switch ($info['type']) {
             default:
@@ -31,7 +27,7 @@ function renderAllInfo(string $key, array $array): array
                 echo sprintf("Skip %s\n", $info['type']);
                 break;
             case 'ticket-task-chart':
-                renderChart($info);
+                $info['hash'] = renderChart($info);
                 break;
             case 'star-counter':
                 $info['stars'] = starCounter($info);
@@ -85,8 +81,14 @@ function renderAllInfo(string $key, array $array): array
     return $return;
 }
 
-function renderChart(array $info)
+/**
+ * @param  array  $info
+ * @return string
+ * @throws GuzzleException
+ */
+function renderChart(array $info): string
 {
+    global $twig;
     $opts   = [
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
@@ -106,22 +108,24 @@ function renderChart(array $info)
         $client = new Client;
         $res    = $client->get($full, $opts);
         $body   = (string)$res->getBody();
-        $result   = json_decode($body, true);
+        $result = json_decode($body, true);
         sleep(2);
         saveCache($hash, json_encode($result));
     }
     $return = [];
-    foreach($result['items'] as $item) {
+    foreach ($result['items'] as $item) {
+        $title = str_replace(': tracking and progress', '', $item['title']);
+
         $current = [
-            'title' => $item['title'],
-            'tasks' => [],
+            'title'     => $title,
+            'tasks'     => [],
             'completed' => [],
-            'total' => 0,
-            'html_url' => $item['html_url'],
+            'total'     => 0,
+            'html_url'  => $item['html_url'],
         ];
-        $body = $item['body'];
-        $lines = explode("\n", $body);
-        foreach($lines as $line) {
+        $body    = $item['body'];
+        $lines   = explode("\n", $body);
+        foreach ($lines as $line) {
             if (preg_match('/- \[ \] (.*)/', $line, $matches)) {
                 $current['tasks'][] = trim($matches[1]);
                 $current['total']++;
@@ -131,12 +135,16 @@ function renderChart(array $info)
                 $current['total']++;
             }
         }
-        echo $body;
-        var_dump($current);exit;
+        $return[] = $current;
     }
-
-    var_dump($result);
-    exit;
+    $datahash  = substr(hash('sha256', json_encode($return)), 0, 12);
+    $chartData = [];
+    foreach ($return as $item) {
+        $chartData[] = ['title' => $item['title'], 'todo' => count($item['tasks']), 'done' => count($item['completed'])];
+    }
+    $rendered = $twig->render('chart.twig', ['data' => $chartData, 'hash' => $datahash]);
+    file_put_contents('build/'.$datahash.'.js', $rendered);
+    return $datahash;
 }
 
 /**
@@ -280,8 +288,6 @@ function simpleIssueCount(array $info): string
     $body = (string)$res->getBody();
     $json = json_decode($body, true);
     sleep(2);
-    var_dump($json);
-    exit;
     $total = $json['total_count'] ?? 0;
     saveCache($hash, json_encode($total));
     return $total;

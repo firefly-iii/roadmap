@@ -1,0 +1,15 @@
+{
+  "name": "roadmap",
+  "version": "1.0.0",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "dev": "parcel build/index.html",
+    "build": "parcel build build/index.html"
+  },
+  "devDependencies": {
+    "parcel": "^2.6.2"
+  },
+  "dependencies": {
+    "chart.js": "^4.0.0"
+  }
+}

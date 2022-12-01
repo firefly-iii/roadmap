@@ -17,7 +17,6 @@ $twig   = new Environment($loader, [
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-
 // TODO make this env variable?
 $content    = file_get_contents(__DIR__.'/roadmap.json');
 $json       = json_decode($content, true);
@@ -53,7 +52,7 @@ foreach ($json['categories'] as $entry) {
             var_dump($entry);
             exit;
         }
-        $key   = sprintf('%03d-%s', $entry['order'], $entry['key']);
+        $key = sprintf('%03d-%s', $entry['order'], $entry['key']);
 
         $items = renderAllInfo($entry['key'], $json['info']);
         usort($items, 'customItemOrder');
@@ -70,16 +69,4 @@ foreach (array_keys($categories) as $i) {
 }
 $html = $twig->render('roadmap.twig', ['categories' => $categories, 'intro_text' => $json['intro_text']]);
 
-$config = array(
-    'indent'         => true,
-    'output-xml'     => true,
-    'input-xml'     => true,
-    'wrap'         => '1000');
-
-// Tidy
-$tidy = new tidy();
-$tidy->parseString($html, $config, 'utf8');
-$tidy->cleanRepair();
-$result = tidy_get_output($tidy);
-
-file_put_contents('build/index.html', $result);
+file_put_contents('build/index.html', $html);

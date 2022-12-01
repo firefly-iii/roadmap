@@ -1,12 +1,12 @@
 {
-  "intro_text": "Quick overview of the Firefly III eco-system, roadmaps and statuses.",
+  "intro_text": "A quick-and-dirty overview of the Firefly III ecosystem, roadmaps and statuses and what I'm currently working on.",
   "categories": [
     {
       "key": "firefly_iii",
       "order": 1,
       "title": "Firefly III",
       "parent": null,
-      "description": "Firefly III is the main topic of this overview and the principal tool around which other stuff is built."
+      "description": "Firefly III is the main topic of this overview and the principal tool around which other stuff is built. "
     },
     {
       "key": "fidi",
@@ -587,8 +587,11 @@
       "parent": "firefly_iii",
       "type": "ticket-task-chart",
       "data_url": "https:\/\/api.github.com\/search\/issues",
-      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
-      "query": "repo:firefly-iii\/firefly-iii label:layout-v3 type:issue state:open -label:fixed"
+      "website": "https://github.com/orgs/firefly-iii/projects/1/views/12",
+      "website_title": "the layout v3 project on GitHub",
+      "query": "repo:firefly-iii\/firefly-iii label:layout-v3 type:issue state:open -label:fixed",
+      "title": "Layout v3 roadmap",
+      "description": "These are the issues collected for the work on the new layout. Each bar represents the number of tasks in each issue, both to be done and already done."
     },
     {
       "parent": "layoutv3",
