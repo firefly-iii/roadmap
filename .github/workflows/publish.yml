@@ -11,6 +11,7 @@ jobs:
       - name: Build roadmap
         run: |
           cd $GITHUB_WORKSPACE
+          composer install
           ./build.sh
       - name: Upload to Azure Blob Storage
         env:
