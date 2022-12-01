@@ -217,8 +217,8 @@ function lastDockerImage(array $info): ?array
             'User-Agent' => 'Firefly III roadmap script/1.0',
         ],
         'form_params' => [
-            'username' => $_ENV['DOCKER_HUB_USERNAME'],
-            'password' => $_ENV['DOCKER_HUB_PASSWORD'],
+            'username' => getenv('DOCKER_HUB_USERNAME'),
+            'password' => getenv('DOCKER_HUB_PASSWORD'),
         ],
     ];
     $res    = $client->post($url, $opts);
