@@ -7,8 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Build roadmap
         run: |
+          cd $GITHUB_WORKSPACE
+          composer install
           ./build.sh
       - name: Upload to Azure Blob Storage
         env:
