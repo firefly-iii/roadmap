@@ -16,9 +16,11 @@ jobs:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.connectionString }}
         run: |
           cd $GITHUB_WORKSPACE
+          pwd
           ./build.sh
+          ls dist
           az storage blob upload-batch \
-                            -s ./dist \
+                            -s './dist' \
                             -d 'https://ff3roadmap.z6.web.core.windows.net/$web' \
                             --no-progress \
                             --overwrite

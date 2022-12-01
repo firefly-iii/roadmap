@@ -12,3 +12,5 @@ npm install
 mkdir build dist
 php build.php
 npm run build
+
+echo 'Done!'
