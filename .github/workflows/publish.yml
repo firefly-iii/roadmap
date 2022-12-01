@@ -20,9 +20,9 @@ jobs:
         env:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.connectionString }}
         run: |
-          cd $GITHUB_WORKSPACE/docs
+          cd $GITHUB_WORKSPACE/dist
           az storage blob upload-batch \
-                            -s ./site \
-                            -d 'https://fireflyiiidocs.blob.core.windows.net/$web' \
+                            -s . \
+                            -d 'https://ff3roadmap.z6.web.core.windows.net/$web' \
                             --no-progress \
                             --overwrite
