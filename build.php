@@ -15,7 +15,7 @@ $twig   = new Environment($loader, [
 ]);
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$dotenv->safeLoad();
 
 // TODO make this env variable?
 $content    = file_get_contents(__DIR__.'/roadmap.json');

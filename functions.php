@@ -93,7 +93,7 @@ function renderChart(array $info): string
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
             'User-Agent'    => 'Firefly III roadmap script/1.0',
-            'Authorization' => sprintf('Bearer %s', $_ENV['GITHUB_TOKEN']),
+            'Authorization' => sprintf('Bearer %s', $_ENV['GH_TOKEN']),
         ],
     ];
     $params = [
@@ -163,7 +163,7 @@ function combinedIssueCount(array $info): array
             'headers' => [
                 'Accept'        => 'application/vnd.github+json',
                 'User-Agent'    => 'Firefly III roadmap script/1.0',
-                'Authorization' => sprintf('Bearer %s', $_ENV['GITHUB_TOKEN']),
+                'Authorization' => sprintf('Bearer %s', $_ENV['GH_TOKEN']),
             ],
         ];
         $query  = sprintf($info['query'], $label);
@@ -270,7 +270,7 @@ function simpleIssueCount(array $info): string
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
             'User-Agent'    => 'Firefly III roadmap script/1.0',
-            'Authorization' => sprintf('Bearer %s', $_ENV['GITHUB_TOKEN']),
+            'Authorization' => sprintf('Bearer %s', $_ENV['GH_TOKEN']),
         ],
     ];
     $params = [
@@ -308,7 +308,7 @@ function starCounter(array $data): string
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
             'User-Agent'    => 'Firefly III roadmap script/1.0',
-            'Authorization' => sprintf('Bearer %s', $_ENV['GITHUB_TOKEN']),
+            'Authorization' => sprintf('Bearer %s', $_ENV['GH_TOKEN']),
         ],
     ];
     try {
@@ -451,7 +451,7 @@ function lastCommit(array $info): ?array
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
             'User-Agent'    => 'Firefly III roadmap script/1.0',
-            'Authorization' => sprintf('Bearer %s', $_ENV['GITHUB_TOKEN']),
+            'Authorization' => sprintf('Bearer %s', $_ENV['GH_TOKEN']),
         ],
     ];
     try {
