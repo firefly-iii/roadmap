@@ -14,7 +14,7 @@ $twig   = new Environment($loader, [
     'debug' => true,
 ]);
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->safeLoad();
 
 // TODO make this env variable?

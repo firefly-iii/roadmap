@@ -173,10 +173,12 @@ function combinedIssueCount(array $info): array
         $full   = $info['data_url'].'?'.http_build_query($params);
         $hash   = hash('sha256', $full);
         if (hasCache($hash)) {
+            $count = getCache($hash);
             $result[$label] = [
                 'query' => http_build_query($params),
-                'count' => getCache($hash),
+                'count' => $count,
             ];
+            debugMessage(sprintf('"%s" issue count is %d (cached)', $label, $count));
             continue;
         }
         $client = new Client;
@@ -189,7 +191,9 @@ function combinedIssueCount(array $info): array
             'query' => http_build_query($params),
             'count' => $total,
         ];
+        debugMessage(sprintf('"%s" issue count is %d', $label, $total));
         saveCache($hash, json_encode($total));
+
     }
     return $result;
 }
@@ -316,11 +320,14 @@ function starCounter(array $data): string
     } catch (ClientException $e) {
         $body = (string)$e->getResponse()->getBody();
         echo $body;
+        echo 'Error in star counter';
         exit;
     }
     $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
     $result = (int)($json['stargazers_count'] ?? 0);
+
+    debugMessage(sprintf('Star count is %d', $result));
 
     saveCache($hash, json_encode($result));
 
