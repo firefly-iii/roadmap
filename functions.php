@@ -173,7 +173,7 @@ function combinedIssueCount(array $info): array
         $full   = $info['data_url'].'?'.http_build_query($params);
         $hash   = hash('sha256', $full);
         if (hasCache($hash)) {
-            $count = getCache($hash);
+            $count          = getCache($hash);
             $result[$label] = [
                 'query' => http_build_query($params),
                 'count' => $count,
@@ -193,7 +193,6 @@ function combinedIssueCount(array $info): array
         ];
         debugMessage(sprintf('"%s" issue count is %d', $label, $total));
         saveCache($hash, json_encode($total));
-
     }
     return $result;
 }
@@ -305,7 +304,9 @@ function starCounter(array $data): string
 {
     $hash = hash('sha256', $data['data_url']);
     if (hasCache($hash)) {
-        return getCache($hash);
+        $result = getCache($hash);
+        debugMessage(sprintf('Star count is %d (cached).', $result));
+        return $result;
     }
     $client = new Client;
     $opts   = [
@@ -327,7 +328,7 @@ function starCounter(array $data): string
     $json   = json_decode($body, true);
     $result = (int)($json['stargazers_count'] ?? 0);
 
-    debugMessage(sprintf('Star count is %d', $result));
+    debugMessage(sprintf('Star count is %d.', $result));
 
     saveCache($hash, json_encode($result));
 
@@ -380,7 +381,9 @@ function lastRelease(array $info): ?array
     $hash   = hash('sha256', $info['data_url'].$prefix);
 
     if (hasCache($hash)) {
-        return getCache($hash);
+        $result = getCache($hash);
+        debugMessage(sprintf('Last release was "%s" on %s (cached).', $result['last_release_name'], $result['last_release_date']));
+        return $result;
     }
 
     // information:
@@ -427,6 +430,7 @@ function lastRelease(array $info): ?array
     }
     sleep(2);
     if ('0.0.1' === $lastVersion) {
+        debugMessage('Could not find last release.');
         return null;
     }
     $result =
@@ -435,6 +439,7 @@ function lastRelease(array $info): ?array
             'last_release_name'    => $lastVersion,
             'last_release_website' => sprintf($info['website'], $fullVersion),
         ];
+    debugMessage(sprintf('Last release was "%s" on %s.', $lastVersion, $lastDate));
     saveCache($hash, json_encode($result));
     return $result;
 }
@@ -451,7 +456,9 @@ function lastCommit(array $info): ?array
     $hash = hash('sha256', $info['data_url']);
 
     if (hasCache($hash)) {
-        return getCache($hash);
+        $result = getCache($hash);
+        debugMessage(sprintf('Last commit was on %s by %s (cached).', $result['last_commit_date'], $result['last_commit_author']));
+        return $result;
     }
 
     $opts = [
@@ -481,6 +488,7 @@ function lastCommit(array $info): ?array
         'last_commit_author'  => $lastCommit['commit']['author']['name'],
         'last_commit_website' => $lastCommit['html_url'],
     ];
+    debugMessage(sprintf('Last commit was on %s by %s.', $result['last_commit_date'], $result['last_commit_author']));
     saveCache($hash, json_encode($result));
     return $result;
 }
