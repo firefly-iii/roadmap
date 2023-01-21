@@ -128,9 +128,9 @@
       "description": "This is the current release. It is maintained and active, but there will be no new features built."
     },
     {
-      "key": "v5.8",
+      "key": "v6.0",
       "order": 3,
-      "title": "v5.8 (next)",
+      "title": "v6.0 (next)",
       "parent": "firefly_iii",
       "description": "The next release of Firefly III. Under active development."
     },
@@ -139,11 +139,11 @@
       "title": "Layout v3",
       "parent": "firefly_iii",
       "order": 5,
-      "description": "The new Firefly III layout, to be built as a Single Page Application. See also v5.8 and v6.0."
+      "description": "The new Firefly III layout, to be built as a Single Page Application. See also v6.0 and v7.0."
     },
     {
-      "key": "v6.0",
-      "title": "v6.0 (future)",
+      "key": "v7.0",
+      "title": "v7.0 (future)",
       "parent": "firefly_iii",
       "order": 6,
       "description": "The future release of Firefly III. No development activities (yet)."
@@ -606,9 +606,9 @@
     {
       "parent": "layoutv3",
       "type": "last-commit",
-      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/5.8-dev",
-      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/5.8-dev",
-      "branch": "5.8-dev"
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/develop",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/develop",
+      "branch": "develop"
     },
     {
       "parent": "layoutv3",
@@ -779,61 +779,61 @@
       "title": "Documentation"
     },
     {
-      "parent": "v5.8",
+      "parent": "v6.0",
       "type": "badge",
       "label": "active"
     },
     {
-      "parent": "v5.8",
+      "parent": "v6.0",
       "type": "combined-count",
       "data_url": "https:\/\/api.github.com\/search\/issues",
       "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
-      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"5.8.0\""
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"6.0.0\""
     },
     {
-      "parent": "v5.8",
+      "parent": "v6.0",
       "type": "last-commit",
-      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/5.8-dev",
-      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/5.8-dev",
-      "branch": "5.8-dev"
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/firefly-iii\/branches\/develop",
+      "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/tree\/develop",
+      "branch": "develop"
     },
     {
-      "parent": "v5.8",
+      "parent": "v6.0",
       "type": "last-release",
       "data_url": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases.atom",
       "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases\/%s",
       "release_title": "Firefly III",
-      "release_prefix": "5.8."
+      "release_prefix": "6.0."
     },
     {
-      "parent": "v5.8",
+      "parent": "v6.0",
       "type": "simple-link",
       "url": "https:\/\/api-docs.firefly-iii.org\/?urls.primaryName=2.0.0%20(v2)",
       "title": "API documentation (v2, 2.0.0)"
     },
     {
-      "parent": "v5.8",
+      "parent": "v6.0",
       "type": "simple-link",
       "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/5",
-      "title": "Roadmap for Firefly III v5.8.0"
+      "title": "Roadmap for Firefly III v6.0.0"
     },
     {
-      "parent": "v6.0",
+      "parent": "v7.0",
       "type": "badge",
       "label": "inactive"
     },
     {
-      "parent": "v6.0",
+      "parent": "v7.0",
       "type": "combined-count",
       "data_url": "https:\/\/api.github.com\/search\/issues",
       "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
-      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"6.0\""
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"7.0\""
     },
     {
-      "parent": "v6.0",
+      "parent": "v7.0",
       "type": "simple-link",
       "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/8",
-      "title": "Roadmap for Firefly III v6.0"
+      "title": "Roadmap for Firefly III v7.0"
     }
   ]
 }
