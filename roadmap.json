@@ -12,7 +12,7 @@
       "key": "fidi",
       "order": 2,
       "title": "Data Importer",
-      "description": "The Firefly III Data Importer (\"FIDI\") is the main tool to import external data into Firefly III.",
+      "description": "The Firefly III Data Importer is the main tool to import external data into Firefly III.",
       "parent": null
     },
     {
@@ -62,7 +62,7 @@
       "title": "Firefly III Base Docker container",
       "parent": "build",
       "order": 3,
-      "description": "Firefly III and FIDI share this base image. It is pretty much feature complete and gets built every so often to update the OS and software."
+      "description": "Firefly III and the Data Importer share this base image. It is pretty much feature complete and gets built every so often to update the OS and software."
     },
     {
       "key": "k8s",
@@ -93,25 +93,25 @@
       "description": "The API documentation is stitched together from a collection of YAML files. This repository contains the source YAML and the combination script."
     },
     {
-      "key": "v0.9",
-      "title": "v0.9 (current)",
+      "key": "v1.0",
+      "title": "v1.0 (current)",
       "order": 1,
       "parent": "fidi",
       "description": "The current release of the Firefly III Data Importer."
     },
     {
-      "key": "v1.0",
-      "title": "v1.0 (next)",
+      "key": "v2.0",
+      "title": "v2.0 (next)",
       "order": 2,
       "parent": "fidi",
       "description": "The next release of the Firefly III Data Importer."
     },
     {
-      "key": "v2.0",
-      "title": "v2.0 (future)",
+      "key": "v3.0",
+      "title": "v3.0 (future)",
       "order": 3,
       "parent": "fidi",
-      "description": "The future release of the Firefly III Data Importer (far away)."
+      "description": "The future release of the Firefly III Data Importer (far far away)."
     },
     {
       "key": "import-configs",
@@ -403,14 +403,14 @@
       "prefix": "develop"
     },
     {
-      "type": "simple-link",
       "parent": "docker_fidi",
+      "type": "simple-link",
       "title": "Repository and information",
       "url": "https:\/\/dev.azure.com\/Firefly-III\/ImportToolImage\/_wiki\/"
     },
     {
-      "type": "star-counter",
       "parent": "docker_fidi",
+      "type": "star-counter",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/docker",
       "website": "https:\/\/github.com\/firefly-iii\/docker",
       "repository_title": "firefly-iii\/docker"
@@ -434,8 +434,8 @@
       "title": "Documentation"
     },
     {
-      "type": "star-counter",
       "parent": "documentation",
+      "type": "star-counter",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/docs",
       "website": "https:\/\/github.com\/firefly-iii\/docs",
       "repository_title": "firefly-iii\/docs"
@@ -449,8 +449,8 @@
       "release_prefix": ""
     },
     {
-      "type": "star-counter",
       "parent": "fidi",
+      "type": "star-counter",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer",
       "website": "https:\/\/github.com\/firefly-iii\/data-importer\/",
       "repository_title": "firefly-iii\/data-importer"
@@ -598,10 +598,10 @@
       "type": "ticket-task-chart",
       "data_url": "https:\/\/api.github.com\/search\/issues",
       "website": "https://github.com/orgs/firefly-iii/projects/1/views/9",
-      "website_title": "the layout v3 project on GitHub",
+      "website_title": "the Data Importer 1.x project on GitHub",
       "query": "repo:firefly-iii\/firefly-iii label:import type:issue state:open -label:fixed",
-      "title": "FIDI 1.0 roadmap",
-      "description": "Bla bla bla."
+      "title": "Data Importer 1.x roadmap",
+      "description": "Data Importer roadmap."
     },
     {
       "parent": "layoutv3",
@@ -629,90 +629,90 @@
       "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"product-manager\""
     },
     {
-      "type": "star-counter",
       "parent": "pm",
+      "type": "star-counter",
       "data_url": "https:\/\/api.github.com\/repos\/jc5\/product-manager",
       "website": "https:\/\/github.com\/jc5\/product-manager",
       "repository_title": "jc5\/product-manager"
     },
     {
-      "parent": "v0.9",
+      "parent": "v1.0",
       "type": "badge",
       "label": "bugfixes"
     },
     {
-      "parent": "v0.9",
+      "parent": "v1.0",
       "type": "combined-count",
       "data_url": "https:\/\/api.github.com\/search\/issues",
       "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
-      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue -label:fixed milestone:\"Data Importer 0.9\""
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue -label:fixed milestone:\"Data Importer 1.x\""
     },
     {
-      "parent": "v0.9",
+      "parent": "v1.0",
       "type": "combined-count",
       "data_url": "https:\/\/api.github.com\/search\/issues",
       "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
-      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 0.9\""
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 1.x\""
     },
     {
-      "parent": "v0.9",
+      "parent": "v1.0",
       "type": "last-commit",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer\/branches\/main",
       "website": "https:\/\/github.com\/firefly-iii\/data-importer\/tree\/main",
       "branch": "main"
     },
     {
-      "parent": "v0.9",
+      "parent": "v1.0",
       "type": "last-commit",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer\/branches\/develop",
       "website": "https:\/\/github.com\/firefly-iii\/data-importer\/tree\/develop",
       "branch": "develop"
     },
     {
-      "parent": "v0.9",
+      "parent": "v1.0",
       "type": "last-release",
       "data_url": "https:\/\/github.com\/firefly-iii\/data-importer\/releases.atom",
       "website": "https:\/\/github.com\/firefly-iii\/data-importer\/releases\/%s",
       "release_title": "",
-      "release_prefix": "0.9"
+      "release_prefix": "v1"
     },
     {
-      "parent": "v0.9",
+      "parent": "v1.0",
       "type": "simple-link",
       "url": "https:\/\/docs.firefly-iii.org\/data-importer\/",
       "title": "Documentation"
     },
     {
+      "parent": "v1.0",
       "type": "star-counter",
-      "parent": "v0.9",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer",
       "website": "https:\/\/github.com\/firefly-iii\/data-importer\/",
       "repository_title": "firefly-iii\/data-importer"
     },
     {
-      "parent": "v1.0",
+      "parent": "v2.0",
       "type": "badge",
       "label": "active"
     },
     {
-      "parent": "v1.0",
+      "parent": "v2.0",
       "type": "combined-count",
       "data_url": "https:\/\/api.github.com\/search\/issues",
       "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
-      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 1.0\""
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 2.x\""
     },
     {
-      "parent": "v1.0",
+      "parent": "v2.0",
       "type": "last-commit",
-      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer\/branches\/1.0-dev",
-      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/tree\/1.0-dev",
-      "branch": "1.0-dev"
+      "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/data-importer\/branches\/develop",
+      "website": "https:\/\/github.com\/firefly-iii\/data-importer\/tree\/develop",
+      "branch": "develop"
     },
     {
       "parent": "v1.0",
       "type": "simple-link",
       "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/9",
-      "title": "Roadmap for FIDI v1.0"
+      "title": "Roadmap for Data Importer v1.0"
     },
     {
       "parent": "v2.0",
@@ -724,13 +724,13 @@
       "type": "combined-count",
       "data_url": "https:\/\/api.github.com\/search\/issues",
       "website": "https:\/\/github.com\/firefly-iii\/firefly-iii\/issues",
-      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 2.0\""
+      "query": "repo:firefly-iii\/firefly-iii label:%s type:issue state:open -label:fixed milestone:\"Data Importer 2.x\""
     },
     {
       "parent": "v2.0",
       "type": "simple-link",
       "url": "https:\/\/github.com\/orgs\/firefly-iii\/projects\/1\/views\/13",
-      "title": "Roadmap for FIDI v2.0"
+      "title": "Roadmap for Data Importer v2.0"
     },
     {
       "parent": "v5.7",
