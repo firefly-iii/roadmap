@@ -148,7 +148,7 @@ function renderChart(array $info): string
     return $datahash;
 }
 
-function queryResult(string $query): array
+function countIssues(string $query): array
 {
     debugMessage(sprintf('Collect issue count for "%s"', $query));
     $result = [];
@@ -163,10 +163,14 @@ function queryResult(string $query): array
     $full   = 'https://api.github.com/search/issues?'.http_build_query($params);
     $hash   = hash('sha256', $full);
     if (hasCache($hash)) {
-        $count  = getCache($hash);
+        $array  = getCache($hash);
         $result = [
-            'query' => http_build_query($params),
-            'count' => $count,
+            'query'             => http_build_query($params),
+            'count'             => $array['count'],
+            'bug_count'         => $array['bug_count'],
+            'feature_count'     => $array['feature_count'],
+            'enhancement_count' => $array['enhancement_count'],
+            'other_count'       => $array['other_count'],
         ];
         debugMessage(sprintf('"%s" issue count is %d (cached)', $query, $count));
         return $result;
@@ -176,14 +180,55 @@ function queryResult(string $query): array
     $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
     sleep(2);
-    $total  = $json['total_count'] ?? 0;
+    $total = $json['total_count'] ?? 0;
+
+
+    // also do separate count for bug, feature, enhancement.
+    $bugCount         = 0;
+    $featureCount     = 0;
+    $enhancementCount = 0;
+    $otherCount       = 0;
+    if ($total > 0) {
+        foreach ($json['items'] as $item) {
+            if (hasLabel($item['labels'], 'bug')) {
+                $bugCount++;
+                continue;
+            }
+            if (hasLabel($item['labels'], 'feature')) {
+                $featureCount++;
+                continue;
+            }
+            if (hasLabel($item['labels'], 'enhancement')) {
+                $enhancementCount++;
+                continue;
+            }
+            $otherCount++;
+        }
+    }
     $result = [
-        'query' => http_build_query($params),
-        'count' => $total,
+        'query'             => http_build_query($params),
+        'count'             => $total,
+        'bug_count'         => $bugCount,
+        'feature_count'     => $featureCount,
+        'enhancement_count' => $enhancementCount,
+        'other_count'       => $otherCount,
     ];
     debugMessage(sprintf('"%s" issue count is %d', $query, $total));
-    saveCache($hash, json_encode($total));
+    saveCache($hash, json_encode($result));
     return $result;
+}
+
+function hasLabel(?array $labels, string $label): bool
+{
+    if (null === $labels) {
+        return false;
+    }
+    foreach ($labels as $current) {
+        if ($current['name'] === $label) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -520,9 +565,9 @@ function createOrFindMilestone(string $repository, string $key, string $version,
     if (null === $result) {
         debugMessage(sprintf('Create new milestone "%s"', $expectedKey));
         // create milestone
-        $url  = sprintf('https://api.github.com/repos/%s/milestones', $repository);
-        $client      = new Client;
-        $info = [
+        $url          = sprintf('https://api.github.com/repos/%s/milestones', $repository);
+        $client       = new Client;
+        $info         = [
             // {"title":"v1.0","state":"open","description":"Tracking milestone for version 1.0","due_on":"2012-10-09T23:39:01Z"}
             'title'       => $expectedKey,
             'state'       => 'open',
@@ -533,7 +578,7 @@ function createOrFindMilestone(string $repository, string $key, string $version,
             $res = $client->post($url, $opts);
         } catch (ClientException $e) {
             $response = $e->getResponse();
-            $body = (string)$response->getBody();
+            $body     = (string)$response->getBody();
             echo $response->getStatusCode();
             echo PHP_EOL;
             echo $body;

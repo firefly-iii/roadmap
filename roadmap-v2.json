@@ -12,6 +12,12 @@
       "milestone_repos": "firefly-iii/firefly-iii",
       "milestone_search": "repo:firefly-iii/firefly-iii type:issue state:open -label:fixed milestone:\"%s\"",
       "milestone_name": "firefly-iii-v%s",
+      "project_url": {
+        "patch": "https://github.com/orgs/firefly-iii/projects/1/views/18",
+        "minor": "https://github.com/orgs/firefly-iii/projects/1/views/17",
+        "major": "https://github.com/orgs/firefly-iii/projects/1/views/19"
+      },
+
       "projects": [
         {
           "title": "Layout (v3)",
@@ -28,6 +34,11 @@
     {
       "key": "data-importer",
       "title": "Data Importer",
+      "project_url": {
+        "patch": "https://github.com/orgs/firefly-iii/projects/4/views/2",
+        "minor": "https://github.com/orgs/firefly-iii/projects/4/views/3",
+        "major": "https://github.com/orgs/firefly-iii/projects/4/views/4"
+      },
       "description": "The Firefly III Data Importer is the main tool to import external data into Firefly III.",
       "release_url": "https:\/\/github.com\/firefly-iii\/data-importer\/releases.atom",
       "main_repo_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/main",

@@ -46,10 +46,14 @@ foreach ($json['categories'] as $item) {
             $milestone   = createOrFindMilestone($item['milestone_repos'], $item['milestone_name'], $string, $item['title']);
 
             // append current
-            $search             = queryResult(sprintf($item['milestone_search'], $milestone));
-            $current['version'] = $string;
-            $current['count']   = $search['count'];
-            $current['url']     = 'https://github.com/firefly-iii/firefly-iii/issues?'.$search['query'];
+            $search                       = countIssues(sprintf($item['milestone_search'], $milestone));
+            $current['version']           = $string;
+            $current['count']             = $search['count'];
+            $current['bug_count']         = $search['bug_count'];
+            $current['feature_count']     = $search['feature_count'];
+            $current['enhancement_count'] = $search['enhancement_count'];
+            $current['other_count']       = $search['other_count'];
+            $current['url']               = 'https://github.com/firefly-iii/firefly-iii/issues?'.$search['query'];
 
             // add to array
             $category['info'][$release][] = $current;
