@@ -13,7 +13,6 @@ use SimplePie\Item;
  */
 function renderAllInfo(string $key, array $array): array
 {
-    die('i dont work');
     $return = [];
     // loop each info byte and render it.
     /** @var array $info */
@@ -28,6 +27,7 @@ function renderAllInfo(string $key, array $array): array
                 echo sprintf("Skip %s\n", $info['type']);
                 break;
             case 'ticket-task-chart':
+                die('1cant handle me'.PHP_EOL);
                 $info['hash'] = renderChart($info);
                 break;
             case 'star-counter':
@@ -36,18 +36,20 @@ function renderAllInfo(string $key, array $array): array
                 break;
             case 'last-release':
                 // get last release info
-                $data                     = lastRelease($info);
+                $data                     = lastRelease($info['data_url']);
                 $info['has_last_release'] = false;
+
+
                 if (null !== $data) {
                     $info['has_last_release']     = true;
+                    $info['last_release_website'] = sprintf($info['website'], $data['last_release_name']);
                     $info['last_release_date']    = $data['last_release_date'];
                     $info['last_release_name']    = $data['last_release_name'];
-                    $info['last_release_website'] = $data['last_release_website'];
                 }
                 break;
             case 'last-commit':
                 // get last commit date and author.
-                $data                    = lastCommit($info);
+                $data                    = lastCommit($info['data_url']);
                 $info['has_last_commit'] = false;
                 if (null !== $data) {
                     $info['has_last_commit']     = true;
@@ -57,6 +59,7 @@ function renderAllInfo(string $key, array $array): array
                 }
                 break;
             case 'issue-count-simple':
+                die('5cant handle me'.PHP_EOL);
                 $info['search_link'] = $info['website'].'?'.http_build_query(['q' => $info['query']]);
                 $info['issue_count'] = simpleIssueCount($info);
                 break;
@@ -172,7 +175,6 @@ function countIssues(string $query): array
             'enhancement_count' => $array['enhancement_count'],
             'other_count'       => $array['other_count'],
         ];
-        debugMessage(sprintf('"%s" issue count is %d (cached)', $query, $count));
         return $result;
     }
     $client = new Client;
