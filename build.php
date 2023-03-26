@@ -85,7 +85,6 @@ foreach ($json['categories'] as $item) {
 
     $categories[] = $category;
 }
-print_r($categories);
 
 $html = $twig->render('roadmap-v2.twig', ['releaseTypes' => $releaseTypes, 'categories' => $categories, 'intro_text' => $json['intro_text']]);
 

@@ -23,7 +23,7 @@ jobs:
           ls dist
       - uses: bacongobbler/azure-blob-storage-upload@main
         with:
-          source_dir: dist
+          source_dir: build
           container_name: $web
           connection_string: ${{ secrets.connectionString }}
           extra_args: '--no-progress --overwrite'
