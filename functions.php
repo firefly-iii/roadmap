@@ -13,6 +13,7 @@ use SimplePie\Item;
  */
 function renderAllInfo(string $key, array $array): array
 {
+    die('i dont work');
     $return = [];
     // loop each info byte and render it.
     /** @var array $info */
@@ -145,6 +146,44 @@ function renderChart(array $info): string
     $rendered = $twig->render('chart.twig', ['data' => $chartData, 'hash' => $datahash]);
     file_put_contents('build/'.$datahash.'.js', $rendered);
     return $datahash;
+}
+
+function queryResult(string $query): array
+{
+    debugMessage(sprintf('Collect issue count for "%s"', $query));
+    $result = [];
+    $opts   = [
+        'headers' => [
+            'Accept'        => 'application/vnd.github+json',
+            'User-Agent'    => 'Firefly III roadmap script/1.0',
+            'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
+        ],
+    ];
+    $params = ['q' => $query,];
+    $full   = 'https://api.github.com/search/issues?'.http_build_query($params);
+    $hash   = hash('sha256', $full);
+    if (hasCache($hash)) {
+        $count  = getCache($hash);
+        $result = [
+            'query' => http_build_query($params),
+            'count' => $count,
+        ];
+        debugMessage(sprintf('"%s" issue count is %d (cached)', $query, $count));
+        return $result;
+    }
+    $client = new Client;
+    $res    = $client->get($full, $opts);
+    $body   = (string)$res->getBody();
+    $json   = json_decode($body, true);
+    sleep(2);
+    $total  = $json['total_count'] ?? 0;
+    $result = [
+        'query' => http_build_query($params),
+        'count' => $total,
+    ];
+    debugMessage(sprintf('"%s" issue count is %d', $query, $total));
+    saveCache($hash, json_encode($total));
+    return $result;
 }
 
 /**
@@ -374,12 +413,10 @@ function hasCache(string $hash): bool
  * @param  array  $info
  * @return array|null
  */
-function lastRelease(array $info): ?array
+function lastRelease(string $url): ?array
 {
-    debugMessage(sprintf('Getting last release info for "%s" (prefix: "%s").', $info['parent'], $info['release_prefix']));
-    $prefix = $info['release_prefix'];
-    $hash   = hash('sha256', $info['data_url'].$prefix);
-
+    debugMessage(sprintf('Getting last release info for %s.', $url));
+    $hash = hash('sha256', $url);
     if (hasCache($hash)) {
         $result = getCache($hash);
         debugMessage(sprintf('Last release was "%s" on %s (cached).', $result['last_release_name'], $result['last_release_date']));
@@ -391,17 +428,13 @@ function lastRelease(array $info): ?array
     $lastVersion = '0.0.1';
     $fullVersion = $lastVersion;
     $feed        = new \SimplePie\SimplePie();
-    $feed->set_feed_url($info['data_url']);
+    $feed->set_feed_url($url);
     $feed->enable_cache(false);
     $feed->set_useragent('Firefly III get feed/1.0');
     $feed->init();
     /** @var Item $item */
     foreach ($feed->get_items() as $item) {
         $version = $item->get_title();
-        if ('' !== $prefix && !str_starts_with($version, $prefix)) {
-            // check if version starts with prefix.
-            continue;
-        }
 
         // replace some obvious prefixes:
         if (str_starts_with($version, 'v')) {
@@ -435,25 +468,91 @@ function lastRelease(array $info): ?array
     }
     $result =
         [
-            'last_release_date'    => $lastDate,
-            'last_release_name'    => $lastVersion,
-            'last_release_website' => sprintf($info['website'], $fullVersion),
+            'last_release_date' => $lastDate,
+            'last_release_name' => $lastVersion,
         ];
     debugMessage(sprintf('Last release was "%s" on %s.', $lastVersion, $lastDate));
     saveCache($hash, json_encode($result));
     return $result;
 }
 
+/** @var array $item */
+function createOrFindMilestone(string $repository, string $key, string $version, string $title): string
+{
+    $url         = sprintf('https://api.github.com/repos/%s/milestones?per_page=100', $repository);
+    $hash        = hash('sha256', $url);
+    $client      = new Client;
+    $expectedKey = sprintf($key, $version);
+    $cached      = hasCache($hash);
+    $result      = null;
+    if (!$cached) {
+        $opts = [
+            'headers' => [
+                'Accept'        => 'application/vnd.github+json',
+                'User-Agent'    => 'Firefly III roadmap script/1.0',
+                'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
+            ],
+        ];
+        try {
+            $res = $client->get($url, $opts);
+        } catch (ClientException $e) {
+            $body = (string)$e->getRequest()->getBody();
+            echo $body;
+            die('here we are');
+            exit;
+        }
+        $body = (string)$res->getBody();
+        $json = json_decode($body, true);
+        foreach ($json as $item) {
+            if ($item['title'] === $expectedKey) {
+                $result = $item;
+                break;
+            }
+        }
+        if (null !== $result) {
+            saveCache($hash, json_encode($result));
+        }
+    }
+
+    if ($cached) {
+        $result = getCache($hash);
+    }
+    if (null === $result) {
+        debugMessage(sprintf('Create new milestone "%s"', $expectedKey));
+        // create milestone
+        $url  = sprintf('https://api.github.com/repos/%s/milestones', $repository);
+        $client      = new Client;
+        $info = [
+            // {"title":"v1.0","state":"open","description":"Tracking milestone for version 1.0","due_on":"2012-10-09T23:39:01Z"}
+            'title'       => $expectedKey,
+            'state'       => 'open',
+            'description' => sprintf('Automatically generated milestone to track %s version v%s', $title, $version),
+        ];
+        $opts['json'] = $info;
+        try {
+            $res = $client->post($url, $opts);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+            $body = (string)$response->getBody();
+            echo $response->getStatusCode();
+            echo PHP_EOL;
+            echo $body;
+            exit;
+        }
+    }
+    return $expectedKey;
+}
+
 /**
  * @param  array  $info
  * @return array|null
  */
-function lastCommit(array $info): ?array
+function lastCommit(string $url): ?array
 {
-    debugMessage(sprintf('Collect last commit information for "%s"', $info['website']));
+    debugMessage(sprintf('Collect last commit information for "%s"', $url));
     $client = new Client;
 
-    $hash = hash('sha256', $info['data_url']);
+    $hash = hash('sha256', $url);
 
     if (hasCache($hash)) {
         $result = getCache($hash);
@@ -469,7 +568,7 @@ function lastCommit(array $info): ?array
         ],
     ];
     try {
-        $res = $client->get($info['data_url'], $opts);
+        $res = $client->get($url, $opts);
     } catch (ClientException $e) {
         $body = (string)$e->getRequest()->getBody();
         echo $body;

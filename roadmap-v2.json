@@ -1,0 +1,52 @@
+{
+  "intro_text": "A quick-and-dirty overview of the Firefly III ecosystem, roadmaps and statuses and what I'm currently working on.",
+  "categories": [
+    {
+      "key": "firefly_iii",
+      "title": "Firefly III",
+      "description": "Firefly III is the main topic of this overview and the principal tool around which other stuff is built. ",
+      "release_url": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases.atom",
+      "main_repo_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/main",
+      "develop_repo_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/develop",
+      "repos": "firefly-iii/firefly-iii",
+      "milestone_repos": "firefly-iii/firefly-iii",
+      "milestone_search": "repo:firefly-iii/firefly-iii type:issue state:open -label:fixed milestone:\"%s\"",
+      "milestone_name": "firefly-iii-v%s",
+      "projects": [
+        {
+          "title": "Layout (v3)",
+          "description": "I'm building a new layout for Firefly III using Quasar. It's a JS based single page application. Every single page needs to be rebuilt in Vue, and also requires the necessary API endpoints.",
+          "chart": "OK"
+        },
+        {
+          "title": "API (v2)",
+          "description": "The next major release of Firefly III will feature the ability to manage multiple financial administrations per user. Firefly III is already multi-user but it's one administration per user now. This, in combination with the new layout, requires a major API overhaul.",
+          "chart": "OK"
+        }
+      ]
+    },
+    {
+      "key": "data-importer",
+      "title": "Data Importer",
+      "description": "The Firefly III Data Importer is the main tool to import external data into Firefly III.",
+      "release_url": "https:\/\/github.com\/firefly-iii\/data-importer\/releases.atom",
+      "main_repo_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/main",
+      "develop_repo_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/develop",
+      "milestone_search": "repo:firefly-iii/firefly-iii type:issue state:open -label:fixed milestone:\"%s\"",
+      "repos": "firefly-iii/data-importer",
+      "milestone_repos": "firefly-iii/firefly-iii",
+      "milestone_name": "importer-v%s",
+      "next_release_search": "repo:firefly-iii/firefly-iii type:issue state:open -label:fixed milestone:\"importer-next-%s\"",
+      "projects": [
+        {
+          "title": "Multi-file and compressed files import",
+          "Description": "A project to build multi-file import support for the Firefly III data importer. This would allow you to upload multiple files, or even a compressed file with multiple importable files."
+        },
+        {
+          "title": "Multi-type import",
+          "Description": "A project to build multi-type import support for the Firefly III data importer. This would allow the data importer to import XML's and other financial data types."
+        }
+      ]
+    }
+  ]
+}
