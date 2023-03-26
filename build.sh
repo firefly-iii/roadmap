@@ -5,7 +5,7 @@ rm -rf dist
 rm -rf build
 
 # install stuff
-# composer install
+composer install
 # npm install
 
 # build stuff
