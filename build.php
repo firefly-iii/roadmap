@@ -12,7 +12,7 @@ require_once './config.php';
 
 /** @var array $releaseTypes */
 /** @var array $releaseFunctions */
-
+/** @var array $columnTypes */
 
 $loader = new FilesystemLoader(__DIR__.'/templates');
 $twig   = new Environment($loader, [
@@ -65,10 +65,11 @@ foreach ($json['streams'] as $item) {
             // add to array
             $stream['info'][$release][] = $current;
         }
-        $current['projects'] = [];
+        $stream['projects'] = [];
         // todo parse projects
-        foreach($item['projects'] as $project) {
-            $info = parseProject($project);
+        foreach ($item['projects'] as $project) {
+            $current              = parseProject($project);
+            $stream['projects'][] = $current;
         }
     }
     $streams[] = $stream;
@@ -94,7 +95,13 @@ foreach ($json['categories'] as $category) {
 
 $html = $twig->render(
     'roadmap-v2.twig',
-    ['releaseTypes' => $releaseTypes, 'categories' => $categories, 'streams' => $streams, 'intro_text' => $json['intro_text']]
+    [
+        'releaseTypes' => $releaseTypes,
+        'categories'   => $categories,
+        'streams'      => $streams,
+        'intro_text'   => $json['intro_text'],
+        'columnTypes'  => $columnTypes,
+    ]
 );
 
 file_put_contents('build/index.html', $html);

@@ -140,10 +140,44 @@
                             {% for project in stream.projects %}
                                 <h3>{{ stream.title }} - Project "{{ project.title }}"</h3>
                                 <p><em>{{ project.description }}</em></p>
-                                <p>
-                                    TODO how to display this?
-                                </p>
-                            {% endfor %}
+                                <p><a href="{{ project.roadmap }}">Project roadmap</a></p>
+                                <div class="row mb-3">
+                                    {% for key, value in columnTypes %}
+                                    <div class="col">
+                                        <div class="card mb-1">
+                                            <div class="card-header">
+                                                {{ value }}
+                                            </div>
+                                            <div class="card-body">
+                                                {% if project.epics[key]|length == 0 %}
+                                                <em>Nothing yet</em>
+                                                {% endif %}
+                                                {% if project.epics[key]|length > 0 %}
+                                                    <ul>
+                                                        {% for epic in project.epics[key] %}
+                                                            <li>
+                                                                <a href="{{ epic.html_url }}"
+                                                                   title="{{ epic.title }}">#{{ epic.number }}</a> {{ epic.title }}
+                                                                {% if epic.tasks.todo|length > 0 or epic.tasks.doing|length > 0 or epic.tasks.done|length > 0 %}
+                                                                    <br>
+                                                                    {% if epic.tasks.todo|length > 0 %}
+                                                                        <small>{{ epic.tasks.todo|length }} tasks to
+                                                                            do</small>
+                                                                    {% endif %}
+                                                                    {% if epic.tasks.done|length > 0 %}
+                                                                        <small>and {{ epic.tasks.done|length }} tasks done</small>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                        {% endfor %}
+                                </div>
+                            {% endfor %} {# end project #}
                         {% endif %}
                     </div>
                 </div>
@@ -212,15 +246,15 @@
                                     {% endif %}
                                 {% endfor %}
                                 {% if count > 0 %}
-                                <div class="card-footer">
-                                    {# more links if present #}
-                                    {% for iii,info in item.metadata %}
-                                        {% if 'simple-link' == info.type %}
-                                            <a class="card-link" href="{{ info.url }}"
-                                               title="{{ info.title }}">{{ info.title }}</a>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+                                    <div class="card-footer">
+                                        {# more links if present #}
+                                        {% for iii,info in item.metadata %}
+                                            {% if 'simple-link' == info.type %}
+                                                <a class="card-link" href="{{ info.url }}"
+                                                   title="{{ info.title }}">{{ info.title }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>

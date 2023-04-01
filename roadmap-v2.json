@@ -23,12 +23,14 @@
           "title": "Layout (v3)",
           "description": "I'm building a new layout for Firefly III using Quasar. It's a JS based single page application. Every single page needs to be rebuilt in Vue, and also requires the necessary API endpoints.",
           "roadmap": "https://github.com/orgs/firefly-iii/projects/5/views/2",
-          "label": "layout-v3"
+          "label": "layout-v3",
+          "id": "PVT_kwDOAVw8Ys4AOKxO"
         },
         {
           "title": "API (v2)",
           "description": "The next major release of Firefly III will feature the ability to manage multiple financial administrations per user. Firefly III is already multi-user but it's one administration per user now. This, in combination with the new layout, requires a major API overhaul.",
-          "label": "api-v2"
+          "label": "api-v2",
+          "id": "PVT_kwDOAVw8Ys4AOOVO"
         }
       ]
     },
@@ -52,11 +54,17 @@
       "projects": [
         {
           "title": "Multi-file and compressed files import",
-          "Description": "A project to build multi-file import support for the Firefly III data importer. This would allow you to upload multiple files, or even a compressed file with multiple importable files."
+          "description": "A project to build multi-file import support for the Firefly III data importer. This would allow you to upload multiple files, or even a compressed file with multiple importable files.",
+          "label": "multi-file",
+          "id": "PVT_kwDOAVw8Ys4AOOVO",
+          "roadmap": "https://github.com/orgs/firefly-iii/projects/5/views/2"
         },
         {
           "title": "Multi-type import",
-          "Description": "A project to build multi-type import support for the Firefly III data importer. This would allow the data importer to import XML's and other financial data types."
+          "description": "A project to build multi-type import support for the Firefly III data importer. This would allow the data importer to import XML's and other financial data types.",
+          "label": "multi-type",
+          "id": "PVT_kwDOAVw8Ys4AOOVO",
+          "roadmap": "https://github.com/orgs/firefly-iii/projects/6/views/1"
         }
       ]
     }

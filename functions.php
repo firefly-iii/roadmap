@@ -6,7 +6,11 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use SimplePie\Item;
 
-
+/**
+ * @param  array  $project
+ * @return array
+ * @throws GuzzleException
+ */
 function parseProject(array $project): array
 {
     $return = [
@@ -22,12 +26,135 @@ function parseProject(array $project): array
 
     // count and sort all epics.
     $issues = getIssueList(sprintf('repo:firefly-iii/firefly-iii type:issue state:open -label:fixed label:epic label:%s', $project['label']));
-    var_dump($issues);
-    exit;
 
+    // grab project info (using graphQL)
+    $statuses = getProjectInfo($project['id']);
+
+    $new = [];
+    foreach ($issues as $issue) {
+        $issue['status'] = $statuses[$issue['number']] ?? 'No status';
+        $new[]           = $issue;
+    }
     // count how many tasks per epic and also mention how many already are issues.
+    foreach ($new as $epic) {
+        switch ($epic['status']) {
+            default:
+                die(sprintf('Cannot deal with status "%s"', $epic['status']));
+            case 'Todo':
+                $return['epics']['todo'][] = $epic;
+                break;
+            case 'In Progress':
+                $return['epics']['doing'][] = $epic;
+                break;
+            case 'Done':
+                $return['epics']['done'][] = $epic;
+                break;
+        }
+    }
 
     return $return;
+}
+
+/**
+ * @param  string  $id
+ * @return array
+ * @throws GuzzleException
+ */
+function getProjectInfo(string $id): array
+{
+    $hash = hash('sha256', $id);
+    if (hasCache($hash)) {
+        return getCache($hash);
+    }
+    $statuses = [];
+    $array    = [
+        'query' => sprintf(
+            'query { 
+                        node(id: "%s") {
+                            ... on ProjectV2 {
+                                items(first: 50) { 
+                                    nodes { 
+                                        id 
+                                        fieldValues(first: 8) { 
+                                            nodes { 
+                                                ... on ProjectV2ItemFieldTextValue { 
+                                                    id text field { 
+                                                        ... on ProjectV2FieldCommon {
+                                                            id name 
+                                                        }
+                                                    }
+                                                } 
+                                                ... on ProjectV2ItemFieldDateValue { 
+                                                    date field { 
+                                                        ... on ProjectV2FieldCommon {
+                                                            name 
+                                                        } 
+                                                    } 
+                                                } 
+                                                    ... on ProjectV2ItemFieldSingleSelectValue {
+                                                     name field {
+                                                        ... on ProjectV2FieldCommon {
+                                                            name 
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        content {
+                                            ... on DraftIssue {
+                                                title body 
+                                            } 
+                                            ...on Issue {
+                                                number title
+                                            } 
+                                            ...on PullRequest {
+                                                number title 
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }',
+            $id
+        ),
+    ];
+    $opts     = [
+        'headers' => [
+            'Accept'        => 'application/vnd.github+json',
+            'User-Agent'    => 'Firefly III roadmap script/1.0',
+            'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
+        ],
+        'json'    => $array,
+    ];
+    $full     = 'https://api.github.com/graphql';
+
+    $client = new Client;
+    $res    = $client->post($full, $opts);
+    $body   = (string)$res->getBody();
+    $json   = json_decode($body, true);
+    $info   = $json['data']['node']['items']['nodes'];
+    /** @var array $projectItem */
+    foreach ($info as $projectItem) {
+        $status  = 'No status';
+        $issueId = $projectItem['content']['number'] ?? 0;
+        /** @var array $fieldValue */
+        foreach ($projectItem['fieldValues'] as $fieldValue) {
+            /** @var array $currentFieldItem */
+            foreach ($fieldValue as $currentFieldItem) {
+                if (0 === count($currentFieldItem)) {
+                    continue;
+                }
+                $fieldName = $currentFieldItem['field']['name'] ?? 'unknown';
+                if ('Status' === $fieldName) {
+                    $status = $currentFieldItem['name'];
+                }
+            }
+        }
+        $statuses[$issueId] = $status;
+    }
+    saveCache($hash, json_encode($statuses));
+    return $statuses;
 }
 
 /**
@@ -131,20 +258,18 @@ function getIssueList(string $query): array
     debugMessage(sprintf('Found %d issue(s)', $total));
     foreach ($json['items'] as $item) {
         sleep(2);
-        $current  = [
+        $current               = [
             'html_url' => $item['html_url'],
             'title'    => $item['title'],
             'number'   => $item['number'],
         ];
-        $moreInfo = getIssueDetails($item['url']);
-        // parse issue
-        var_dump($moreInfo);
-        var_dump($item);
-        exit;
+        $moreInfo              = getIssueDetails($item['url']);
+        $current['task_count'] = $moreInfo['total'];
+        $current['tasks']      = $moreInfo['todo_items'];
+
+        // even more processing here!
 
 
-//        var_dump($item);
-//        exit;
         $return[] = $current;
     }
 
@@ -156,7 +281,7 @@ function getIssueList(string $query): array
 
 function getIssueDetails(string $url): array
 {
-    debugMessage(sprintf('Get issue list for "%s"', $url));
+    debugMessage(sprintf('Get issue details for "%s"', $url));
     $opts = [
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
@@ -169,11 +294,32 @@ function getIssueDetails(string $url): array
         debugMessage('From cache...');
         return getCache($hash);
     }
-    $client = new Client;
-    $res    = $client->get($url, $opts);
-    $body   = (string)$res->getBody();
-    $json   = json_decode($body, true);
+    $client             = new Client;
+    $res                = $client->get($url, $opts);
+    $body               = (string)$res->getBody();
+    $json               = json_decode($body, true);
+    $json['total']      = 0;
+    $json['todo_items'] = [
+        'todo'  => [],
+        'doing' => [],
+        'done'  => [],
+    ];
     saveCache($hash, json_encode($json));
+
+    $body  = $json['body'];
+    $lines = explode("\n", $body);
+    foreach ($lines as $line) {
+        // still to do
+        if (preg_match('/- \[ \] (.*)/', $line, $matches)) {
+            $json['todo_items']['todo'][] = trim($matches[1]);
+            $json['total']++;
+        }
+        // done!
+        if (preg_match('/- \[x\] (.*)/', $line, $matches)) {
+            $json['todo_items']['done'][] = trim($matches[1]);
+            $json['total']++;
+        }
+    }
     return $json;
 }
 
