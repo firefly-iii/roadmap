@@ -527,12 +527,14 @@ function lastRelease(string $url): ?array
 function createOrFindMilestone(string $repository, string $key, string $version, string $title): string
 {
     $url         = sprintf('https://api.github.com/repos/%s/milestones?per_page=100', $repository);
-    $hash        = hash('sha256', $url);
     $client      = new Client;
     $expectedKey = sprintf($key, $version);
+    $hash        = hash('sha256', $url.$expectedKey);
     $cached      = hasCache($hash);
     $result      = null;
+    debugMessage(sprintf('Looking for milestone "%s" in %s.', $expectedKey, $repository));
     if (!$cached) {
+        debugMessage('No cache found, will fetch from GitHub.');
         $opts = [
             'headers' => [
                 'Accept'        => 'application/vnd.github+json',
@@ -553,16 +555,19 @@ function createOrFindMilestone(string $repository, string $key, string $version,
         foreach ($json as $item) {
             if ($item['title'] === $expectedKey) {
                 $result = $item;
+                debugMessage(sprintf('Found a milestone.  "%s" vs "%s" at %s', $item['title'], $expectedKey, $item['url']));
                 break;
             }
         }
         if (null !== $result) {
+            debugMessage('Saving cache.');
             saveCache($hash, json_encode($result));
         }
     }
 
     if ($cached) {
         $result = getCache($hash);
+        debugMessage('Returning cache: '.$result['url']);
     }
     if (null === $result) {
         debugMessage(sprintf('Create new milestone "%s"', $expectedKey));
