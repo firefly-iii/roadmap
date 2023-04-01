@@ -22,12 +22,13 @@
         {
           "title": "Layout (v3)",
           "description": "I'm building a new layout for Firefly III using Quasar. It's a JS based single page application. Every single page needs to be rebuilt in Vue, and also requires the necessary API endpoints.",
-          "chart": "OK"
+          "roadmap": "https://github.com/orgs/firefly-iii/projects/5/views/2",
+          "label": "layout-v3"
         },
         {
           "title": "API (v2)",
           "description": "The next major release of Firefly III will feature the ability to manage multiple financial administrations per user. Firefly III is already multi-user but it's one administration per user now. This, in combination with the new layout, requires a major API overhaul.",
-          "chart": "OK"
+          "label": "api-v2"
         }
       ]
     },

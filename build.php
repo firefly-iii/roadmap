@@ -65,7 +65,11 @@ foreach ($json['streams'] as $item) {
             // add to array
             $stream['info'][$release][] = $current;
         }
+        $current['projects'] = [];
         // todo parse projects
+        foreach($item['projects'] as $project) {
+            $info = parseProject($project);
+        }
     }
     $streams[] = $stream;
 }
@@ -95,105 +99,4 @@ $html = $twig->render(
 
 file_put_contents('build/index.html', $html);
 
-
 exit;
-
-/*
- * Firefly III
- * patch, minor, major
- *
- * Projects
- * Layout v3
- * API v2
- */
-
-/*
- * Data Importer
- * patch, minor, major
- *
- * Projects
- * Shared import configurations
- */
-
-/*
- * Documentation
- *
- * Documentation
- * API documentation
- * API documentation generator
- */
-
-/*
- * Tools and utils
- * Auto-save tool
- * PM
- * Data generator
- * Import test data repository
- */
-
-/*
- * Libraries
- *
- * API support
- * Google 2FA
- * Google 2FA recovery
- */
-
-/*
- * Builds and releases
- * Docker base
- * Docker FF3
- * Docker data
- * kubernetes
- *
- */
-
-
-// load categories into n-deep array (max 2 levels)
-/** @var array $entry */
-foreach ($json['categories'] as $entry) {
-    if (null === $entry['parent']) {
-        $key                          = sprintf('%03d-%s', $entry['order'], $entry['key']);
-        $categories[$key]             = $entry;
-        $categories[$key]['children'] = [];
-
-        // render info items for this category
-        $items = renderAllInfo($entry['key'], $json['info']);
-
-        usort($items, 'customItemOrder');
-        $categories[$key]['info'] = $items;
-    }
-}
-
-ksort($categories);
-
-// load all subcategories
-
-foreach ($json['categories'] as $entry) {
-    if (null !== $entry['parent']) {
-        $parentKey = findParentKey($categories, $entry['parent']);
-        if (null === $parentKey) {
-            continue;
-        }
-        if (!array_key_exists('order', $entry)) {
-            var_dump($entry);
-            exit;
-        }
-        $key = sprintf('%03d-%s', $entry['order'], $entry['key']);
-
-        $items = renderAllInfo($entry['key'], $json['info']);
-        usort($items, 'customItemOrder');
-        $categories[$parentKey]['children'][$key] = [
-            'title'       => $entry['title'],
-            'description' => $entry['description'],
-            'info'        => $items,
-        ];
-    }
-}
-
-foreach (array_keys($categories) as $i) {
-    ksort($categories[$i]['children']);
-}
-$html = $twig->render('roadmap.twig', ['categories' => $categories, 'intro_text' => $json['intro_text']]);
-
-file_put_contents('build/index.html', $html);

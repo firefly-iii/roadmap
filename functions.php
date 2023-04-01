@@ -6,6 +6,30 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use SimplePie\Item;
 
+
+function parseProject(array $project): array
+{
+    $return = [
+        'title'       => $project['title'],
+        'description' => $project['description'],
+        'epics'       => [
+            'todo'  => [],
+            'doing' => [],
+            'done'  => [],
+        ],
+    ];
+    debugMessage(sprintf('Start of parseProject("%s")', $project['title']));
+
+    // count and sort all epics.
+    $issues = getIssueList(sprintf('repo:firefly-iii/firefly-iii type:issue state:open -label:fixed label:epic label:%s', $project['label']));
+    var_dump($issues);
+    exit;
+
+    // count how many tasks per epic and also mention how many already are issues.
+
+    return $return;
+}
+
 /**
  * @param  string  $key
  * @param  array  $array
@@ -25,10 +49,6 @@ function renderAllInfo(string $key, array $array): array
             default:
                 //throw new RuntimeException(sprintf('Cannot handle "%s"', $info['type']));
                 echo sprintf("Skip %s\n", $info['type']);
-                break;
-            case 'ticket-task-chart':
-                die('1cant handle me'.PHP_EOL);
-                $info['hash'] = renderChart($info);
                 break;
             case 'star-counter':
                 $info['stars'] = starCounter($info);
@@ -58,11 +78,6 @@ function renderAllInfo(string $key, array $array): array
                     $info['last_commit_website'] = $data['last_commit_website'];
                 }
                 break;
-            case 'issue-count-simple':
-                die('5cant handle me'.PHP_EOL);
-                $info['search_link'] = $info['website'].'?'.http_build_query(['q' => $info['query']]);
-                $info['issue_count'] = simpleIssueCount($info);
-                break;
             case 'combined-count':
                 $extra = combinedIssueCount($info);
                 foreach ($extra as $label => $details) {
@@ -85,14 +100,15 @@ function renderAllInfo(string $key, array $array): array
     return $return;
 }
 
+
 /**
- * @param  array  $info
- * @return string
+ * @param  string  $query
+ * @return array
  * @throws GuzzleException
  */
-function renderChart(array $info): string
+function getIssueList(string $query): array
 {
-    global $twig;
+    debugMessage(sprintf('Get issue list for "%s"', $query));
     $opts   = [
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
@@ -100,61 +116,76 @@ function renderChart(array $info): string
             'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
         ],
     ];
-    $params = [
-        'q' => $info['query'],
-    ];
-    $full   = $info['data_url'].'?'.http_build_query($params);
-    $hash   = hash('sha256', sprintf('chart-%s', $full));
+    $params = ['q' => $query, 'limit' => 100];
+    $full   = 'https://api.github.com/search/issues?'.http_build_query($params);
+    $hash   = hash('sha256', $full.'list');
     if (hasCache($hash)) {
-        $result = getCache($hash);
+        return getCache($hash);
     }
-    if (!hasCache($hash)) {
-        $client = new Client;
-        $res    = $client->get($full, $opts);
-        $body   = (string)$res->getBody();
-        $result = json_decode($body, true);
-        sleep(2);
-        saveCache($hash, json_encode($result));
-    }
+    $client = new Client;
+    $res    = $client->get($full, $opts);
+    $body   = (string)$res->getBody();
+    $json   = json_decode($body, true);
+    $total  = $json['total_count'] ?? 0;
     $return = [];
-    foreach ($result['items'] as $item) {
-        $title = str_replace(': tracking and progress', '', $item['title']);
-
-        $current = [
-            'title'     => $title,
-            'tasks'     => [],
-            'completed' => [],
-            'total'     => 0,
-            'html_url'  => $item['html_url'],
+    debugMessage(sprintf('Found %d issue(s)', $total));
+    foreach ($json['items'] as $item) {
+        sleep(2);
+        $current  = [
+            'html_url' => $item['html_url'],
+            'title'    => $item['title'],
+            'number'   => $item['number'],
         ];
-        $body    = $item['body'];
-        $lines   = explode("\n", $body);
-        foreach ($lines as $line) {
-            if (preg_match('/- \[ \] (.*)/', $line, $matches)) {
-                $current['tasks'][] = trim($matches[1]);
-                $current['total']++;
-            }
-            if (preg_match('/- \[x\] (.*)/', $line, $matches)) {
-                $current['completed'][] = trim($matches[1]);
-                $current['total']++;
-            }
-        }
+        $moreInfo = getIssueDetails($item['url']);
+        // parse issue
+        var_dump($moreInfo);
+        var_dump($item);
+        exit;
+
+
+//        var_dump($item);
+//        exit;
         $return[] = $current;
     }
-    $datahash  = substr(hash('sha256', json_encode($return)), 0, 12);
-    $chartData = [];
-    foreach ($return as $item) {
-        $chartData[] = ['title' => $item['title'], 'todo' => count($item['tasks']), 'done' => count($item['completed'])];
-    }
-    $rendered = $twig->render('chart.twig', ['data' => $chartData, 'hash' => $datahash]);
-    file_put_contents('build/'.$datahash.'.js', $rendered);
-    return $datahash;
+
+    // cache results
+    saveCache($hash, json_encode($return));
+
+    return $return;
 }
 
+function getIssueDetails(string $url): array
+{
+    debugMessage(sprintf('Get issue list for "%s"', $url));
+    $opts = [
+        'headers' => [
+            'Accept'        => 'application/vnd.github+json',
+            'User-Agent'    => 'Firefly III roadmap script/1.0',
+            'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
+        ],
+    ];
+    $hash = hash('sha256', $url);
+    if (hasCache($hash)) {
+        debugMessage('From cache...');
+        return getCache($hash);
+    }
+    $client = new Client;
+    $res    = $client->get($url, $opts);
+    $body   = (string)$res->getBody();
+    $json   = json_decode($body, true);
+    saveCache($hash, json_encode($json));
+    return $json;
+}
+
+
+/**
+ * @param  string  $query
+ * @return array
+ * @throws GuzzleException
+ */
 function countIssues(string $query): array
 {
     debugMessage(sprintf('Collect issue count for "%s"', $query));
-    $result = [];
     $opts   = [
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
@@ -220,6 +251,11 @@ function countIssues(string $query): array
     return $result;
 }
 
+/**
+ * @param  array|null  $labels
+ * @param  string  $label
+ * @return bool
+ */
 function hasLabel(?array $labels, string $label): bool
 {
     if (null === $labels) {
@@ -351,36 +387,6 @@ function lastDockerImage(array $info): ?array
     return null;
 }
 
-function simpleIssueCount(array $info): string
-{
-    debugMessage(sprintf('Collect issue count for "%s"', $info['website']));
-
-    $opts   = [
-        'headers' => [
-            'Accept'        => 'application/vnd.github+json',
-            'User-Agent'    => 'Firefly III roadmap script/1.0',
-            'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
-        ],
-    ];
-    $params = [
-        'q' => $info['query'],
-    ];
-    $full   = $info['data_url'].'?'.http_build_query($params);
-    $hash   = hash('sha256', $full);
-    if (hasCache($hash)) {
-        return getCache($hash);
-    }
-
-    $client = new Client;
-
-    $res  = $client->get($full, $opts);
-    $body = (string)$res->getBody();
-    $json = json_decode($body, true);
-    sleep(2);
-    $total = $json['total_count'] ?? 0;
-    saveCache($hash, json_encode($total));
-    return $total;
-}
 
 /**
  * @param  array  $data
@@ -523,7 +529,14 @@ function lastRelease(string $url): ?array
     return $result;
 }
 
-/** @var array $item */
+/**
+ * @param  string  $repository
+ * @param  string  $key
+ * @param  string  $version
+ * @param  string  $title
+ * @return string
+ * @throws GuzzleException
+ */
 function createOrFindMilestone(string $repository, string $key, string $version, string $title): string
 {
     $url         = sprintf('https://api.github.com/repos/%s/milestones?per_page=100', $repository);
@@ -596,8 +609,9 @@ function createOrFindMilestone(string $repository, string $key, string $version,
 }
 
 /**
- * @param  array  $info
+ * @param  string  $url
  * @return array|null
+ * @throws GuzzleException
  */
 function lastCommit(string $url): ?array
 {
@@ -642,23 +656,6 @@ function lastCommit(string $url): ?array
     debugMessage(sprintf('Last commit was on %s by %s.', $result['last_commit_date'], $result['last_commit_author']));
     saveCache($hash, json_encode($result));
     return $result;
-}
-
-/**
- * Quick loop to find the parent key value.
- *
- * @param  array  $categories
- * @param  mixed  $parent
- * @return string|null
- */
-function findParentKey(array $categories, mixed $parent): ?string
-{
-    foreach ($categories as $key => $entry) {
-        if ($entry['key'] === $parent) {
-            return $key;
-        }
-    }
-    return null;
 }
 
 /**
