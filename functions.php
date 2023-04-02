@@ -16,6 +16,7 @@ function parseProject(array $project): array
     $return = [
         'title'       => $project['title'],
         'description' => $project['description'],
+        'roadmap'     => $project['roadmap'],
         'epics'       => [
             'todo'  => [],
             'doing' => [],
@@ -477,7 +478,7 @@ function lastDockerImage(array $info): ?array
     $url     = 'https://hub.docker.com/v2/users/login';
     $repoURL = sprintf('https://hub.docker.com/v2/namespaces/%s/repositories/%s/tags', $info['namespace'], $info['repository']);
 
-    $hash = hash('sha256', $repoURL);
+    $hash = hash('sha256', $repoURL . $info['prefix']);
     if (hasCache($hash)) {
         return getCache($hash);
     }

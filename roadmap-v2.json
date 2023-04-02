@@ -30,7 +30,8 @@
           "title": "API (v2)",
           "description": "The next major release of Firefly III will feature the ability to manage multiple financial administrations per user. Firefly III is already multi-user but it's one administration per user now. This, in combination with the new layout, requires a major API overhaul.",
           "label": "api-v2",
-          "id": "PVT_kwDOAVw8Ys4AOOVO"
+          "id": "PVT_kwDOAVw8Ys4AOOVO",
+          "roadmap": "https://github.com/orgs/firefly-iii/projects/6/views/2"
         }
       ]
     },
@@ -56,15 +57,15 @@
           "title": "Multi-file and compressed files import",
           "description": "A project to build multi-file import support for the Firefly III data importer. This would allow you to upload multiple files, or even a compressed file with multiple importable files.",
           "label": "multi-file",
-          "id": "PVT_kwDOAVw8Ys4AOOVO",
-          "roadmap": "https://github.com/orgs/firefly-iii/projects/5/views/2"
+          "id": "PVT_kwDOAVw8Ys4AOP3e",
+          "roadmap": "https://github.com/orgs/firefly-iii/projects/8/views/2"
         },
         {
           "title": "Multi-type import",
           "description": "A project to build multi-type import support for the Firefly III data importer. This would allow the data importer to import XML's and other financial data types.",
           "label": "multi-type",
-          "id": "PVT_kwDOAVw8Ys4AOOVO",
-          "roadmap": "https://github.com/orgs/firefly-iii/projects/6/views/1"
+          "id": "PVT_kwDOAVw8Ys4AOP36",
+          "roadmap": "https://github.com/orgs/firefly-iii/projects/9/views/2"
         }
       ]
     }
