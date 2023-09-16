@@ -20,7 +20,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           pwd
           ./build.sh
-          cp -r .well-known dist/.well-known
+          cp -r .well-known build/.well-known
       - uses: bacongobbler/azure-blob-storage-upload@main
         with:
           source_dir: build
