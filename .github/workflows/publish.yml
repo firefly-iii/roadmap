@@ -20,11 +20,11 @@ jobs:
           cd $GITHUB_WORKSPACE
           pwd
           ./build.sh
-          ls dist
+          cp -r .well-known dist/.well-known
       - uses: bacongobbler/azure-blob-storage-upload@main
         with:
           source_dir: build
           container_name: $web
           connection_string: ${{ secrets.connectionString }}
-          extra_args: '--no-progress --overwrite'
+          extra_args: '--overwrite'
           overwrite: 'true'
