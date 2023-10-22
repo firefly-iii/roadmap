@@ -150,14 +150,14 @@
           "title": "Google 2FA",
           "parent": "libraries",
           "order": 2,
-          "description": "A small forked library to assist in generating 2FA codes. Every now and then updates are pull from upstream."
+          "description": "A small forked library to assist in generating 2FA codes. Every now and then updates are pulled from upstream."
         },
         {
           "key": "2fa_recovery",
           "title": "Google 2FA recovery",
           "parent": "libraries",
           "order": 3,
-          "description": "A small forked library to assist in generating 2FA recovery codes. Every now and then updates are pull from upstream."
+          "description": "A small forked library to assist in generating 2FA recovery codes. Every now and then updates are pulled from upstream."
         }
       ]
     },
