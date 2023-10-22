@@ -40,8 +40,10 @@ function parseProject(array $project): array
     foreach ($new as $epic) {
         switch ($epic['status']) {
             default:
+                var_dump($epic);
                 die(sprintf('Cannot deal with status "%s"', $epic['status']));
             case 'Todo':
+            case 'No status':
                 $return['epics']['todo'][] = $epic;
                 break;
             case 'In Progress':
@@ -134,6 +136,32 @@ function getProjectInfo(string $id): array
     $res    = $client->post($full, $opts);
     $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
+    if(!array_key_exists('data', $json)) {
+        var_dump($json);
+        echo PHP_EOL;
+        die('JSON does not have "data" key.');
+    }
+    if(null === $json['data'] || !array_key_exists('node', $json['data'])) {
+        var_dump($json);
+        echo PHP_EOL;
+        die('JSON does not have ["data"]["node"] key.');
+    }
+    if(null === $json['data']['node'] || !array_key_exists('items', $json['data']['node'])) {
+        echo PHP_EOL;
+        echo PHP_EOL;
+        var_dump($json);
+        echo PHP_EOL;
+        echo PHP_EOL;
+        echo $array['query'];
+        echo PHP_EOL;
+        echo PHP_EOL;
+        die('JSON does not have ["data"]["node"]["items"] key.');
+    }
+    if(null === $json['data']['node']['items'] || !array_key_exists('nodes', $json['data']['node']['items'])) {
+        var_dump($json);
+        echo PHP_EOL;
+        die('JSON does not have ["data"]["node"]["items"]["nodes"] key.');
+    }
     $info   = $json['data']['node']['items']['nodes'];
     /** @var array $projectItem */
     foreach ($info as $projectItem) {
@@ -707,8 +735,10 @@ function createOrFindMilestone(string $repository, string $key, string $version,
         } catch (ClientException $e) {
             $body = (string)$e->getRequest()->getBody();
             echo $body;
-            die('here we are');
-            exit;
+            echo 'Got client exception when requesting data from GitHub.'. PHP_EOL;
+            echo PHP_EOL;
+            echo $e->getMessage();
+            die('');
         }
         $body = (string)$res->getBody();
         $json = json_decode($body, true);
@@ -785,8 +815,11 @@ function lastCommit(string $url): ?array
     } catch (ClientException $e) {
         $body = (string)$e->getRequest()->getBody();
         echo $body;
-        die('here we are');
-        exit;
+        echo $body;
+        echo 'Got client exception when requesting data from GitHub.'. PHP_EOL;
+        echo PHP_EOL;
+        echo $e->getMessage();
+        die('');
     }
     $body       = (string)$res->getBody();
     $json       = json_decode($body, true);

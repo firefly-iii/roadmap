@@ -13,17 +13,16 @@
       "milestone_search": "repo:firefly-iii/firefly-iii type:issue state:open -label:fixed milestone:\"%s\"",
       "milestone_name": "firefly-iii-v%s",
       "project_url": {
-        "patch": "https://github.com/orgs/firefly-iii/projects/1/views/18",
         "minor": "https://github.com/orgs/firefly-iii/projects/1/views/17",
         "major": "https://github.com/orgs/firefly-iii/projects/1/views/19"
       },
 
       "projects": [
         {
-          "title": "Layout (v3)",
-          "description": "I'm building a new layout for Firefly III using Quasar. It's a JS based single page application. Every single page needs to be rebuilt in Vue, and also requires the necessary API endpoints.",
+          "title": "Layout (v2)",
+          "description": "I'm building a new layout for Firefly III. It's a JS based application. Every single page needs to be rebuilt. It also requires the necessary API endpoints.",
           "roadmap": "https://github.com/orgs/firefly-iii/projects/5/views/2",
-          "label": "layout-v3",
+          "label": "layout-v2",
           "id": "PVT_kwDOAVw8Ys4AOKxO"
         },
         {
@@ -39,7 +38,6 @@
       "key": "data-importer",
       "title": "Data Importer",
       "project_url": {
-        "patch": "https://github.com/orgs/firefly-iii/projects/4/views/2",
         "minor": "https://github.com/orgs/firefly-iii/projects/4/views/3",
         "major": "https://github.com/orgs/firefly-iii/projects/4/views/4"
       },

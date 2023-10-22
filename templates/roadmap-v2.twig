@@ -96,9 +96,13 @@
                             {% for releaseType in releaseTypes %}
                                 <div class="col">
                                     <h3>Next {{ releaseType }}</h3>
+                                    {% if stream.project_url[releaseType] %}
                                     <p class="mb-1"><small>See also the next <a
                                                     href="{{ stream.project_url[releaseType] }}">{{ releaseType }}
                                                 release roadmap</a></small></p>
+                                        {% else %}
+                                            <p class="mb-1"><small>&nbsp;</small></p>
+                                    {% endif %}
                                     {% for card in stream.info[releaseType] %}
                                         <div class="card mb-1">
                                             <div class="card-header">
