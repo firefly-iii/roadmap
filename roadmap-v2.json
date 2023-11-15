@@ -122,7 +122,7 @@
           "title": "Data generator",
           "parent": "tools",
           "order": 3,
-          "description": "A tool that generates all of the filler data used on the demo site. Also used to fill my development instance with fake data. Currently private."
+          "description": "A tool that generates all of the filler data used on the demo site. Also used to fill my development instance with fake data. Released on Codeberg."
         },
         {
           "key": "import-test",
@@ -255,6 +255,12 @@
       "type": "simple-link",
       "url": "https:\/\/api-docs.firefly-iii.org",
       "title": "API documentation"
+    },
+    {
+      "parent": "data-generator",
+      "type": "simple-link",
+      "url": "https:\/\/codeberg.org\/firefly-iii\/data-generator",
+      "title": "Source @ Codeberg"
     },
     {
       "type": "star-counter",
