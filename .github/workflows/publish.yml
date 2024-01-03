@@ -15,16 +15,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.connectionString }}
         run: |
           cd $GITHUB_WORKSPACE
           pwd
           ./build.sh
           cp -r .well-known build/.well-known
-      - uses: bacongobbler/azure-blob-storage-upload@main
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          source_dir: build
-          container_name: $web
-          connection_string: ${{ secrets.connectionString }}
-          extra_args: '--overwrite'
-          overwrite: 'true'
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: aaf8eef9dd565a13de210d18c7462092
+          projectName: roadmap
+          directory: build
+          wranglerVersion: '3'
