@@ -2,3 +2,4 @@ vendor
 .env
 .parcel-cache
 node_modules
+build
