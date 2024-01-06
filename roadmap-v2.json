@@ -130,6 +130,13 @@
           "parent": "tools",
           "order": 4,
           "description": "A (currently private) collection of import test files. These files to validate the data importer and do exception validation."
+        },
+        {
+          "key": "development-tools",
+          "title": "Development tools",
+          "parent": "tools",
+          "order": 5,
+          "description": "A small set of little development tools, used in the development of Firefly III."
         }
       ]
     },
@@ -263,6 +270,12 @@
       "title": "Source @ Codeberg"
     },
     {
+      "parent": "development-tools",
+      "type": "simple-link",
+      "url": "https:\/\/codeberg.org\/firefly-iii\/development-tools",
+      "title": "Source @ Codeberg"
+    },
+    {
       "type": "star-counter",
       "parent": "api_docs",
       "data_url": "https:\/\/api.github.com\/repos\/firefly-iii\/api-docs",
@@ -303,6 +316,11 @@
     },
     {
       "parent": "data-generator",
+      "type": "badge",
+      "label": "bugfixes"
+    },
+    {
+      "parent": "development-tools",
       "type": "badge",
       "label": "bugfixes"
     },
