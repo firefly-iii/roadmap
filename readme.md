@@ -15,7 +15,7 @@
   </p>
 <!--- END PROJECT LOGO -->
 
-Repository for [roadmap.firefly-iii.org](https://version.firefly-iii.org/), which is a static website that displays the roadmap of Firefly III.
+Repository for [roadmap.firefly-iii.org](https://roadmap.firefly-iii.org/), which is a static website that displays the roadmap of Firefly III.
 
 <!-- HELP TEXT -->
 
