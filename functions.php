@@ -655,6 +655,7 @@ function lastRelease(string $url): ?array
     $lastDate    = Carbon::create(2000, 1, 1);
     $lastVersion = '0.0.1';
     $fullVersion = $lastVersion;
+    # TODO use JSON API isntead https://api.github.com/repos/gorhill/uBlock/releases
     $feed        = new \SimplePie\SimplePie();
     $feed->set_feed_url($url);
     $feed->enable_cache(false);
