@@ -220,7 +220,7 @@
     {
       "parent": "2fa_recovery",
       "type": "last-release",
-      "data_url": "https:\/\/github.com\/jc5\/recovery\/releases.atom",
+      "data_url": "https://api.github.com/repos/jc5/recovery/releases",
       "website": "https:\/\/github.com\/jc5\/recovery\/releases\/%s",
       "release_title": "",
       "release_prefix": ""
@@ -453,7 +453,7 @@
     {
       "parent": "google2fa",
       "type": "last-release",
-      "data_url": "https:\/\/github.com\/jc5\/google2fa-laravel\/releases.atom",
+      "data_url": "https://api.github.com/repos/jc5/google2fa-laravel/releases",
       "website": "https:\/\/github.com\/jc5\/google2fa-laravel\/releases\/%s",
       "release_title": "",
       "release_prefix": ""
@@ -497,7 +497,7 @@
     {
       "parent": "k8s",
       "type": "last-release",
-      "data_url": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases.atom",
+      "data_url": "https://api.github.com/repos/firefly-iii/kubernetes/releases",
       "website": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases\/%s",
       "release_title": "full stack",
       "release_prefix": "firefly-iii-stack-"
@@ -505,7 +505,7 @@
     {
       "parent": "k8s",
       "type": "last-release",
-      "data_url": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases.atom",
+      "data_url": "https://api.github.com/repos/firefly-iii/kubernetes/releases",
       "website": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases\/%s",
       "release_title": "FIDI",
       "release_prefix": "importer-"
@@ -513,7 +513,7 @@
     {
       "parent": "k8s",
       "type": "last-release",
-      "data_url": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases.atom",
+      "data_url": "https://api.github.com/repos/firefly-iii/kubernetes/releases",
       "website": "https:\/\/github.com\/firefly-iii\/kubernetes\/releases\/%s",
       "release_title": "Firefly III",
       "release_prefix": "firefly-iii-"

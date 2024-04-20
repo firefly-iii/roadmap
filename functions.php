@@ -293,6 +293,11 @@ function getIssueList(string $query): array
             'number'   => $item['number'],
         ];
         $moreInfo              = getIssueDetails($item['url']);
+
+        if(!array_key_exists('from_cache', $moreInfo)) {
+            sleep(2);
+        }
+
         $current['task_count'] = $moreInfo['total'];
         $current['tasks']      = $moreInfo['todo_items'];
 
@@ -321,7 +326,9 @@ function getIssueDetails(string $url): array
     $hash = hash('sha256', $url);
     if (hasCache($hash)) {
         debugMessage('From cache...');
-        return getCache($hash);
+        $result = getCache($hash);
+        $result['from_cache'] = true;
+        return $result;
     }
     $client             = new Client;
     $res                = $client->get($url, $opts);
