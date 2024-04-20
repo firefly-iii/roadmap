@@ -5,7 +5,7 @@
       "key": "firefly_iii",
       "title": "Firefly III",
       "description": "Firefly III is the main topic of this overview and the principal tool around which other stuff is built. ",
-      "release_url": "https:\/\/github.com\/firefly-iii\/firefly-iii\/releases.atom",
+      "release_url": "https://api.github.com/repos/firefly-iii/firefly-iii/releases",
       "main_repo_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/main",
       "develop_repo_url": "https://api.github.com/repos/firefly-iii/firefly-iii/branches/develop",
       "repos": "firefly-iii/firefly-iii",
@@ -42,7 +42,7 @@
         "major": "https://github.com/orgs/firefly-iii/projects/4/views/4"
       },
       "description": "The Firefly III Data Importer is the main tool to import external data into Firefly III.",
-      "release_url": "https:\/\/github.com\/firefly-iii\/data-importer\/releases.atom",
+      "release_url": "https://api.github.com/repos/firefly-iii/firefly-iii/releases",
       "main_repo_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/main",
       "develop_repo_url": "https://api.github.com/repos/firefly-iii/data-importer/branches/develop",
       "milestone_search": "repo:firefly-iii/firefly-iii type:issue state:open -label:fixed milestone:\"%s\"",

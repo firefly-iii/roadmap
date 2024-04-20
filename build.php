@@ -34,6 +34,9 @@ $categories = [];
 foreach ($json['streams'] as $item) {
     $stream                        = $item;
     $data                          = lastRelease($item['release_url']);
+    if(null === $data) {
+        continue;
+    }
     $version                       = Version::parse($data['last_release_name']);
     $stream['last_commit_main']    = lastCommit($item['main_repo_url']);
     $stream['last_commit_develop'] = lastCommit($item['develop_repo_url']);

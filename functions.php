@@ -643,7 +643,7 @@ function hasCache(string $hash): bool
  */
 function lastRelease(string $url): ?array
 {
-    debugMessage(sprintf('Getting last release info for %s.', $url));
+    debugMessage(sprintf('Getting last release info for %s', $url));
     $hash = hash('sha256', $url);
     if (hasCache($hash)) {
         $result = getCache($hash);
@@ -655,15 +655,25 @@ function lastRelease(string $url): ?array
     $lastDate    = Carbon::create(2000, 1, 1);
     $lastVersion = '0.0.1';
     $fullVersion = $lastVersion;
-    # TODO use JSON API isntead https://api.github.com/repos/gorhill/uBlock/releases
-    $feed        = new \SimplePie\SimplePie();
-    $feed->set_feed_url($url);
-    $feed->enable_cache(false);
-    $feed->set_useragent('Firefly III get feed/1.0');
-    $feed->init();
-    /** @var Item $item */
-    foreach ($feed->get_items() as $item) {
-        $version = $item->get_title();
+
+    $client = new Client();
+    $res = $client->get($url, [
+        'headers' => [
+            'Accept'        => 'application/vnd.github+json',
+            'User-Agent'    => 'Firefly III roadmap script/1.0',
+        ],
+    ]);
+    $body = (string)$res->getBody();
+    $json = json_decode($body, true);
+
+    /** @var array $item */
+    foreach($json as $item) {
+        $version = $item['name'];
+
+        if (str_starts_with($version, 'Development release')) {
+            debugMessage(sprintf('Skip development release "%s" (%s)', $version, $item['tag_name']));
+            continue;
+        }
 
         // replace some obvious prefixes:
         if (str_starts_with($version, 'v')) {
@@ -686,8 +696,7 @@ function lastRelease(string $url): ?array
         if (-1 === $result) {
             // this one is newer!
             $lastVersion = $version;
-            $fullVersion = $item->get_title();
-            $lastDate    = Carbon::parse($item->get_date())->format('j F Y');
+            $lastDate    = Carbon::parse($item['created_at'])->format('j F Y');
         }
     }
     sleep(2);
