@@ -731,6 +731,7 @@ function lastRelease(string $url): ?array
  */
 function createOrFindMilestone(string $repository, string $key, string $version, string $title): string
 {
+    debugMessage(sprintf('Create or find milestone "%s" ("%s") in "%s".', $key, $version, $repository));
     $url         = sprintf('https://api.github.com/repos/%s/milestones?per_page=100', $repository);
     $client      = new Client;
     $expectedKey = sprintf($key, $version);

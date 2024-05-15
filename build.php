@@ -32,15 +32,19 @@ $categories = [];
  * All big "streams", aka the data importer and Firefly III itself.
  */
 foreach ($json['streams'] as $item) {
+    debugMessage(sprintf('Working on stream "%s"', $item));
     $stream                        = $item;
     $data                          = lastRelease($item['release_url']);
     if(null === $data) {
+        debugMessage('No data, never mind.');
         continue;
     }
     $version                       = Version::parse($data['last_release_name']);
     $stream['last_commit_main']    = lastCommit($item['main_repo_url']);
     $stream['last_commit_develop'] = lastCommit($item['develop_repo_url']);
     $stream['info']                = [];
+
+    debugMessage(sprintf('Version is "%s"', $version));
 
     // go over 3 release types, and then do three next versions?
     // also add project view and link to it.
@@ -49,10 +53,15 @@ foreach ($json['streams'] as $item) {
         $func                     = $releaseFunctions[$index];
         $stream['info'][$release] = $stream['info'][$release] ?? [];
 
+        debugMessage(sprintf('Now getting next versions for release "%s". Start with "%s"', $release, $nextVersion));
+
         for ($i = 0; $i < 3; $i++) {
             $current     = [];
             $nextVersion = $nextVersion->$func();
             $string      = $nextVersion->__toString();
+
+            debugMessage(sprintf('[%d/%d] Next version is "%s"',$i+1, 3, $string));
+
             $milestone   = createOrFindMilestone($item['milestone_repos'], $item['milestone_name'], $string, $item['title']);
 
             // append current
