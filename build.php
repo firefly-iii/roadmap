@@ -32,7 +32,7 @@ $categories = [];
  * All big "streams", aka the data importer and Firefly III itself.
  */
 foreach ($json['streams'] as $item) {
-    debugMessage(sprintf('Working on stream "%s"', $item));
+    debugMessage(sprintf('Working on stream "%s"', $item['key']));
     $stream                        = $item;
     $data                          = lastRelease($item['release_url']);
     if(null === $data) {
