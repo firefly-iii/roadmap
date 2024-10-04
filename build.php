@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use GuzzleHttp\Exception\GuzzleException;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use z4kn4fein\SemVer\SemverException;
 use z4kn4fein\SemVer\Version;
 
 require_once './vendor/autoload.php';
@@ -14,16 +16,16 @@ require_once './config.php';
 /** @var array $releaseFunctions */
 /** @var array $columnTypes */
 
-$loader = new FilesystemLoader(__DIR__.'/templates');
+$loader = new FilesystemLoader(__DIR__ . '/templates');
 $twig   = new Environment($loader, [
-    'cache' => __DIR__.'/cache/templates',
+    'cache' => __DIR__ . '/cache/templates',
     'debug' => true,
 ]);
 
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->safeLoad();
 
-$content    = file_get_contents(__DIR__.'/roadmap-v2.json');
+$content    = file_get_contents(__DIR__ . '/roadmap-v2.json');
 $json       = json_decode($content, true);
 $streams    = [];
 $categories = [];
@@ -33,13 +35,19 @@ $categories = [];
  */
 foreach ($json['streams'] as $item) {
     debugMessage(sprintf('Working on stream "%s"', $item['key']));
-    $stream                        = $item;
-    $data                          = lastRelease($item['release_url']);
-    if(null === $data) {
+    $stream = $item;
+    $data   = null;
+    $data = lastRelease($item['release_url']);
+    if (null === $data) {
         debugMessage('No data, never mind.');
         continue;
     }
-    $version                       = Version::parse($data['last_release_name']);
+    try {
+        $version = Version::parse($data['last_release_name']);
+    } catch (SemverException $e) {
+        debugMessage(sprintf('SemverException: "%s"', $e->getMessage()));
+        exit;
+    }
     $stream['last_commit_main']    = lastCommit($item['main_repo_url']);
     $stream['last_commit_develop'] = lastCommit($item['develop_repo_url']);
     $stream['info']                = [];
@@ -60,19 +68,19 @@ foreach ($json['streams'] as $item) {
             $nextVersion = $nextVersion->$func();
             $string      = $nextVersion->__toString();
 
-            debugMessage(sprintf('[%d/%d] Next version is "%s"',$i+1, 3, $string));
+            debugMessage(sprintf('[%d/%d] Next version is "%s"', $i + 1, 3, $string));
 
-            $milestone   = createOrFindMilestone($item['milestone_repos'], $item['milestone_name'], $string, $item['title']);
+            $milestone = createOrFindMilestone($item['milestone_repos'], $item['milestone_name'], $string, $item['title']);
 
             // append current
-            $search                       = countIssues(sprintf($item['milestone_search'], $milestone));
+            $search                       = countIssues($milestone);
             $current['version']           = $string;
             $current['count']             = $search['count'];
             $current['bug_count']         = $search['bug_count'];
             $current['feature_count']     = $search['feature_count'];
             $current['enhancement_count'] = $search['enhancement_count'];
-            $current['other_count']       = $search['other_count'];
-            $current['url']               = 'https://github.com/firefly-iii/firefly-iii/issues?'.$search['query'];
+            $current['other_count']       = $search['task_count'] + $search['epic_count'];
+            $current['url']               = 'https://github.com/firefly-iii/firefly-iii/issues'; // TODO remove me.
 
             // add to array
             $stream['info'][$release][] = $current;

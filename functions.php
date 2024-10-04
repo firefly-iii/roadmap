@@ -7,7 +7,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use SimplePie\Item;
 
 /**
- * @param  array  $project
+ * @param array $project
+ *
  * @return array
  * @throws GuzzleException
  */
@@ -59,7 +60,8 @@ function parseProject(array $project): array
 }
 
 /**
- * @param  string  $id
+ * @param string $id
+ *
  * @return array
  * @throws GuzzleException
  */
@@ -134,19 +136,19 @@ function getProjectInfo(string $id): array
 
     $client = new Client;
     $res    = $client->post($full, $opts);
-    $body   = (string)$res->getBody();
+    $body   = (string) $res->getBody();
     $json   = json_decode($body, true);
-    if(!array_key_exists('data', $json)) {
+    if (!array_key_exists('data', $json)) {
         var_dump($json);
         echo PHP_EOL;
         die('JSON does not have "data" key.');
     }
-    if(null === $json['data'] || !array_key_exists('node', $json['data'])) {
+    if (null === $json['data'] || !array_key_exists('node', $json['data'])) {
         var_dump($json);
         echo PHP_EOL;
         die('JSON does not have ["data"]["node"] key.');
     }
-    if(null === $json['data']['node'] || !array_key_exists('items', $json['data']['node'])) {
+    if (null === $json['data']['node'] || !array_key_exists('items', $json['data']['node'])) {
         echo PHP_EOL;
         echo PHP_EOL;
         var_dump($json);
@@ -157,12 +159,12 @@ function getProjectInfo(string $id): array
         echo PHP_EOL;
         die('JSON does not have ["data"]["node"]["items"] key.');
     }
-    if(null === $json['data']['node']['items'] || !array_key_exists('nodes', $json['data']['node']['items'])) {
+    if (null === $json['data']['node']['items'] || !array_key_exists('nodes', $json['data']['node']['items'])) {
         var_dump($json);
         echo PHP_EOL;
         die('JSON does not have ["data"]["node"]["items"]["nodes"] key.');
     }
-    $info   = $json['data']['node']['items']['nodes'];
+    $info = $json['data']['node']['items']['nodes'];
     /** @var array $projectItem */
     foreach ($info as $projectItem) {
         $status  = 'No status';
@@ -187,8 +189,9 @@ function getProjectInfo(string $id): array
 }
 
 /**
- * @param  string  $key
- * @param  array  $array
+ * @param string $key
+ * @param array  $array
+ *
  * @return array
  */
 function renderAllInfo(string $key, array $array): array
@@ -237,8 +240,8 @@ function renderAllInfo(string $key, array $array): array
             case 'combined-count':
                 $extra = combinedIssueCount($info);
                 foreach ($extra as $label => $details) {
-                    $info[$label.'_search_link'] = $info['website'].'?'.$details['query'];
-                    $info[$label.'_issue_count'] = $details['count'];
+                    $info[$label . '_search_link'] = $info['website'] . '?' . $details['query'];
+                    $info[$label . '_issue_count'] = $details['count'];
                 }
                 break;
             case 'last-docker-image':
@@ -258,7 +261,8 @@ function renderAllInfo(string $key, array $array): array
 
 
 /**
- * @param  string  $query
+ * @param string $query
+ *
  * @return array
  * @throws GuzzleException
  */
@@ -273,28 +277,28 @@ function getIssueList(string $query): array
         ],
     ];
     $params = ['q' => $query, 'limit' => 100];
-    $full   = 'https://api.github.com/search/issues?'.http_build_query($params);
-    $hash   = hash('sha256', $full.'list');
+    $full   = 'https://api.github.com/search/issues?' . http_build_query($params);
+    $hash   = hash('sha256', $full . 'list');
     if (hasCache($hash)) {
         return getCache($hash);
     }
     $client = new Client;
     $res    = $client->get($full, $opts);
-    $body   = (string)$res->getBody();
+    $body   = (string) $res->getBody();
     $json   = json_decode($body, true);
     $total  = $json['total_count'] ?? 0;
     $return = [];
     debugMessage(sprintf('Found %d issue(s)', $total));
     foreach ($json['items'] as $item) {
         sleep(2);
-        $current               = [
+        $current  = [
             'html_url' => $item['html_url'],
             'title'    => $item['title'],
             'number'   => $item['number'],
         ];
-        $moreInfo              = getIssueDetails($item['url']);
+        $moreInfo = getIssueDetails($item['url']);
 
-        if(!array_key_exists('from_cache', $moreInfo)) {
+        if (!array_key_exists('from_cache', $moreInfo)) {
             sleep(2);
         }
 
@@ -326,13 +330,13 @@ function getIssueDetails(string $url): array
     $hash = hash('sha256', $url);
     if (hasCache($hash)) {
         debugMessage('From cache...');
-        $result = getCache($hash);
+        $result               = getCache($hash);
         $result['from_cache'] = true;
         return $result;
     }
     $client             = new Client;
     $res                = $client->get($url, $opts);
-    $body               = (string)$res->getBody();
+    $body               = (string) $res->getBody();
     $json               = json_decode($body, true);
     $json['total']      = 0;
     $json['todo_items'] = [
@@ -361,81 +365,132 @@ function getIssueDetails(string $url): array
 
 
 /**
- * @param  string  $query
+ * @param string $query
+ *
  * @return array
- * @throws GuzzleException
  */
-function countIssues(string $query): array
+function countIssues(string $milestone): array
 {
-    debugMessage(sprintf('Collect issue count for "%s"', $query));
-    $opts   = [
+    debugMessage(sprintf('Collect issue count for milestone "%s"', $milestone));
+    $opts = [
         'headers' => [
             'Accept'        => 'application/vnd.github+json',
             'User-Agent'    => 'Firefly III roadmap script/1.0',
             'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
         ],
     ];
-    $params = ['q' => $query,];
-    $full   = 'https://api.github.com/search/issues?'.http_build_query($params);
-    $hash   = hash('sha256', $full);
-    if (hasCache($hash)) {
-        $array  = getCache($hash);
-        $result = [
-            'query'             => http_build_query($params),
-            'count'             => $array['count'],
-            'bug_count'         => $array['bug_count'],
-            'feature_count'     => $array['feature_count'],
-            'enhancement_count' => $array['enhancement_count'],
-            'other_count'       => $array['other_count'],
-        ];
-        return $result;
-    }
-    $client = new Client;
-    $res    = $client->get($full, $opts);
-    $body   = (string)$res->getBody();
-    $json   = json_decode($body, true);
-    sleep(2);
-    $total = $json['total_count'] ?? 0;
 
-
-    // also do separate count for bug, feature, enhancement.
-    $bugCount         = 0;
-    $featureCount     = 0;
-    $enhancementCount = 0;
-    $otherCount       = 0;
-    if ($total > 0) {
-        foreach ($json['items'] as $item) {
-            if (hasLabel($item['labels'], 'bug')) {
-                $bugCount++;
-                continue;
-            }
-            if (hasLabel($item['labels'], 'feature')) {
-                $featureCount++;
-                continue;
-            }
-            if (hasLabel($item['labels'], 'enhancement')) {
-                $enhancementCount++;
-                continue;
-            }
-            $otherCount++;
-        }
-    }
     $result = [
-        'query'             => http_build_query($params),
-        'count'             => $total,
-        'bug_count'         => $bugCount,
-        'feature_count'     => $featureCount,
-        'enhancement_count' => $enhancementCount,
-        'other_count'       => $otherCount,
+        'count'             => 0,
+        'bug_count'         => 0,
+        'feature_count'     => 0,
+        'enhancement_count' => 0,
+        'other_count'       => 0,
     ];
-    debugMessage(sprintf('"%s" issue count is %d', $query, $total));
-    saveCache($hash, json_encode($result));
+
+    $issueTypes = ['Bug', 'Enhancement', 'Feature', 'Epic', 'Task'];
+    foreach ($issueTypes as $issueType) {
+        // search for issues with this issue type, possibly over multiple pages.
+        // Cache the first time we look for this.
+        $searchResult                                        = searchForTypeInMilestone($issueType, $milestone);
+        $result[sprintf('%s_count', strtolower($issueType))] = $searchResult['count'];
+    }
     return $result;
 }
 
+function searchForTypeInMilestone(string $issueType, string $milestone): array
+{
+    $return       = [
+        'count' => 0,
+    ];
+    $hasMorePages = true;
+    $nextCursor   = '';
+    while ($hasMorePages) {
+        // shitty graphql query but im lazy.
+        if ('' !== $nextCursor) {
+            $nextCursor = sprintf('after: "%s",', $nextCursor);
+        }
+        $query = [
+            'query' => sprintf('
+                query {
+                search(type: ISSUE, %s first: 50,  query: "type:%s repo:firefly-iii/firefly-iii") {
+                    issueCount
+                    nodes {
+                      ... on Issue {
+                        id
+                        number
+                        title
+                        
+                        milestone {
+                         id
+                                title
+                            }
+                        }
+                      }
+                  pageInfo {
+                        endCursor
+                        startCursor
+                        hasNextPage
+                        hasPreviousPage
+                      }
+                    }
+                  }',
+                               $nextCursor, $issueType),
+        ];
+        $hash  = hash('sha256', json_encode($query));
+        $info  = [];
+        if (hasCache($hash)) {
+            $info = getCache($hash);
+        }
+        if (!hasCache($hash)) {
+            // send query, copy-paste from before.
+            $opts = [
+                'headers' => [
+                    'Accept'        => 'application/vnd.github+json',
+                    'User-Agent'    => 'Firefly III roadmap script/1.0',
+                    'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
+                ],
+                'json'    => $query,
+            ];
+            $full = 'https://api.github.com/graphql';
+
+            $client = new Client;
+            try {
+                $res = $client->post($full, $opts);
+            } catch (GuzzleException $e) {
+                die('error.');
+            }
+            $body = (string) $res->getBody();
+            $json = json_decode($body, true);
+            $info = $json['data']['search'] ?? false;
+            saveCache($hash, json_encode($info));
+        }
+
+        foreach ($info['nodes'] as $node) {
+            if (null === $node) {
+                continue;
+            }
+            if (null === $node['milestone']) {
+                continue;
+            }
+            if ($node['milestone']['title'] === $milestone) {
+                $return['count']++;
+            }
+        }
+        $hasMorePages = $info['pageInfo']['hasNextPage'] ?? false;
+        if (true === $hasMorePages) {
+            $nextCursor = $info['pageInfo']['endCursor'];
+        }
+    }
+    debugMessage(sprintf('Search for "%s" in "%s", found: %d issue(s)', $issueType, $milestone, $return['count']));
+    return $return;
+}
+
+
 /**
- * @param  array|null  $labels
- * @param  string  $label
+ * @param array|null $labels
+ * @param string     $label
+ *
  * @return bool
  */
 function hasLabel(?array $labels, string $label): bool
@@ -452,7 +507,8 @@ function hasLabel(?array $labels, string $label): bool
 }
 
 /**
- * @param  array  $info
+ * @param array $info
+ *
  * @return array
  * @throws GuzzleException
  */
@@ -474,7 +530,7 @@ function combinedIssueCount(array $info): array
         $params = [
             'q' => $query,
         ];
-        $full   = $info['data_url'].'?'.http_build_query($params);
+        $full   = $info['data_url'] . '?' . http_build_query($params);
         $hash   = hash('sha256', $full);
         if (hasCache($hash)) {
             $count          = getCache($hash);
@@ -487,7 +543,7 @@ function combinedIssueCount(array $info): array
         }
         $client = new Client;
         $res    = $client->get($full, $opts);
-        $body   = (string)$res->getBody();
+        $body   = (string) $res->getBody();
         $json   = json_decode($body, true);
         sleep(2);
         $total          = $json['total_count'] ?? 0;
@@ -503,7 +559,8 @@ function combinedIssueCount(array $info): array
 
 
 /**
- * @param  array  $info
+ * @param array $info
+ *
  * @return array|null
  */
 function lastDockerImage(array $info): ?array
@@ -529,7 +586,7 @@ function lastDockerImage(array $info): ?array
         ],
     ];
     $res    = $client->post($url, $opts);
-    $body   = (string)$res->getBody();
+    $body   = (string) $res->getBody();
     $json   = json_decode($body, true);
     $token  = $json['token'];
     sleep(2);
@@ -544,7 +601,7 @@ function lastDockerImage(array $info): ?array
         ],
     ];
     $res    = $client->get($repoURL, $opts);
-    $body   = (string)$res->getBody();
+    $body   = (string) $res->getBody();
     $json   = json_decode($body, true);
 
     // if it has prefix, return with prefix, otherwise simply return the first one:
@@ -571,7 +628,8 @@ function lastDockerImage(array $info): ?array
 
 
 /**
- * @param  array  $data
+ * @param array $data
+ *
  * @return string
  */
 function starCounter(array $data): string
@@ -593,14 +651,14 @@ function starCounter(array $data): string
     try {
         $res = $client->get($data['data_url'], $opts);
     } catch (ClientException $e) {
-        $body = (string)$e->getResponse()->getBody();
+        $body = (string) $e->getResponse()->getBody();
         echo $body;
         echo 'Error in star counter';
         exit;
     }
-    $body   = (string)$res->getBody();
+    $body   = (string) $res->getBody();
     $json   = json_decode($body, true);
-    $result = (int)($json['stargazers_count'] ?? 0);
+    $result = (int) ($json['stargazers_count'] ?? 0);
 
     debugMessage(sprintf('Star count is %d.', $result));
 
@@ -611,7 +669,8 @@ function starCounter(array $data): string
 }
 
 /**
- * @param  string  $hash
+ * @param string $hash
+ *
  * @return mixed
  */
 function getCache(string $hash): mixed
@@ -621,8 +680,9 @@ function getCache(string $hash): mixed
 }
 
 /**
- * @param  string  $hash
- * @param  string  $json
+ * @param string $hash
+ * @param string $json
+ *
  * @return void
  */
 function saveCache(string $hash, string $json): void
@@ -632,7 +692,8 @@ function saveCache(string $hash, string $json): void
 }
 
 /**
- * @param  string  $hash
+ * @param string $hash
+ *
  * @return bool
  */
 function hasCache(string $hash): bool
@@ -645,7 +706,8 @@ function hasCache(string $hash): bool
 }
 
 /**
- * @param  array  $info
+ * @param string $url
+ *
  * @return array|null
  */
 function lastRelease(string $url): ?array
@@ -661,20 +723,23 @@ function lastRelease(string $url): ?array
     // information:
     $lastDate    = Carbon::create(2000, 1, 1);
     $lastVersion = '0.0.1';
-    $fullVersion = $lastVersion;
-
-    $client = new Client();
-    $res = $client->get($url, [
-        'headers' => [
-            'Accept'        => 'application/vnd.github+json',
-            'User-Agent'    => 'Firefly III roadmap script/1.0',
-        ],
-    ]);
-    $body = (string)$res->getBody();
+    $client      = new Client();
+    try {
+        $res = $client->get($url, [
+            'headers' => [
+                'Accept'     => 'application/vnd.github+json',
+                'User-Agent' => 'Firefly III roadmap script/1.0',
+            ],
+        ]);
+    } catch (GuzzleException $e) {
+        debugMessage(sprintf('Could not fetch data from GitHub: %s', $e->getMessage()));
+        return null;
+    }
+    $body = (string) $res->getBody();
     $json = json_decode($body, true);
 
     /** @var array $item */
-    foreach($json as $item) {
+    foreach ($json as $item) {
         $version = $item['name'];
 
         if (str_starts_with($version, 'Development release')) {
@@ -711,21 +776,22 @@ function lastRelease(string $url): ?array
         debugMessage('Could not find last release.');
         return null;
     }
-    $result =
-        [
-            'last_release_date' => $lastDate,
-            'last_release_name' => $lastVersion,
-        ];
+    $result
+        = [
+        'last_release_date' => $lastDate,
+        'last_release_name' => $lastVersion,
+    ];
     debugMessage(sprintf('Last release was "%s" on %s.', $lastVersion, $lastDate));
     saveCache($hash, json_encode($result));
     return $result;
 }
 
 /**
- * @param  string  $repository
- * @param  string  $key
- * @param  string  $version
- * @param  string  $title
+ * @param string $repository
+ * @param string $key
+ * @param string $version
+ * @param string $title
+ *
  * @return string
  * @throws GuzzleException
  */
@@ -734,7 +800,7 @@ function createOrFindMilestone(string $repository, string $key, string $version,
     $url         = sprintf('https://api.github.com/repos/%s/milestones?per_page=100', $repository);
     $client      = new Client;
     $expectedKey = sprintf($key, $version);
-    $hash        = hash('sha256', $url.$expectedKey);
+    $hash        = hash('sha256', $url . $expectedKey);
     $cached      = hasCache($hash);
     $result      = null;
     debugMessage(sprintf('Create or find milestone "%s" in %s.', $expectedKey, $repository));
@@ -750,14 +816,14 @@ function createOrFindMilestone(string $repository, string $key, string $version,
         try {
             $res = $client->get($url, $opts);
         } catch (ClientException $e) {
-            $body = (string)$e->getRequest()->getBody();
+            $body = (string) $e->getRequest()->getBody();
             echo $body;
-            echo 'Got client exception when requesting data from GitHub.'. PHP_EOL;
+            echo 'Got client exception when requesting data from GitHub.' . PHP_EOL;
             echo PHP_EOL;
             echo $e->getMessage();
             die('');
         }
-        $body = (string)$res->getBody();
+        $body = (string) $res->getBody();
         $json = json_decode($body, true);
         foreach ($json as $item) {
             if ($item['title'] === $expectedKey) {
@@ -774,7 +840,7 @@ function createOrFindMilestone(string $repository, string $key, string $version,
 
     if ($cached) {
         $result = getCache($hash);
-        debugMessage('Returning cache: '.$result['url']);
+        debugMessage('Returning cache: ' . $result['url']);
     }
     if (null === $result) {
         debugMessage(sprintf('Create new milestone "%s"', $expectedKey));
@@ -792,7 +858,7 @@ function createOrFindMilestone(string $repository, string $key, string $version,
             $res = $client->post($url, $opts);
         } catch (ClientException $e) {
             $response = $e->getResponse();
-            $body     = (string)$response->getBody();
+            $body     = (string) $response->getBody();
             echo $response->getStatusCode();
             echo PHP_EOL;
             echo $body;
@@ -803,9 +869,9 @@ function createOrFindMilestone(string $repository, string $key, string $version,
 }
 
 /**
- * @param  string  $url
+ * @param string $url
+ *
  * @return array|null
- * @throws GuzzleException
  */
 function lastCommit(string $url): ?array
 {
@@ -830,15 +896,15 @@ function lastCommit(string $url): ?array
     try {
         $res = $client->get($url, $opts);
     } catch (ClientException $e) {
-        $body = (string)$e->getRequest()->getBody();
+        $body = (string) $e->getRequest()->getBody();
         echo $body;
         echo $body;
-        echo 'Got client exception when requesting data from GitHub.'. PHP_EOL;
+        echo 'Got client exception when requesting data from GitHub.' . PHP_EOL;
         echo PHP_EOL;
         echo $e->getMessage();
-        die('');
+        return null;
     }
-    $body       = (string)$res->getBody();
+    $body       = (string) $res->getBody();
     $json       = json_decode($body, true);
     $lastCommit = $json['commit'] ?? null;
     if (null === $lastCommit) {
@@ -856,7 +922,8 @@ function lastCommit(string $url): ?array
 }
 
 /**
- * @param  string  $string
+ * @param string $string
+ *
  * @return void
  */
 function debugMessage(string $string): void
@@ -866,8 +933,10 @@ function debugMessage(string $string): void
 
 /**
  * I think there is a better way to do this but OK.
- * @param  array  $left
- * @param  array  $right
+ *
+ * @param array $left
+ * @param array $right
+ *
  * @return int
  */
 function customItemOrder(array $left, array $right): int
