@@ -75,12 +75,12 @@ foreach ($json['streams'] as $item) {
             // append current
             $search                       = countIssues($milestone);
             $current['version']           = $string;
-            $current['count']             = $search['count'];
+            $current['count']             = array_sum($search);
             $current['bug_count']         = $search['bug_count'];
             $current['feature_count']     = $search['feature_count'];
             $current['enhancement_count'] = $search['enhancement_count'];
             $current['other_count']       = $search['task_count'] + $search['epic_count'];
-            $current['url']               = 'https://github.com/firefly-iii/firefly-iii/issues'; // TODO remove me.
+            $current['url']               = sprintf('https://github.com/firefly-iii/firefly-iii/issues?q=is%%3Aissue%%20state%%3Aopen%%20milestone%%3A%%22%s%%22', $milestone); // TODO remove me.
 
             // add to array
             $stream['info'][$release][] = $current;
