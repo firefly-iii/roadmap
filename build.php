@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Exception\GuzzleException;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use z4kn4fein\SemVer\SemverException;
@@ -37,7 +36,7 @@ foreach ($json['streams'] as $item) {
     debugMessage(sprintf('Working on stream "%s"', $item['key']));
     $stream = $item;
     $data   = null;
-    $data = lastRelease($item['release_url']);
+    $data   = lastRelease($item['release_url']);
     if (null === $data) {
         debugMessage('No data, never mind.');
         continue;

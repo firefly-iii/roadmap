@@ -1,9 +1,9 @@
 {
     "require": {
-        "php": ">=8.1",
-        "twig/twig": "^3.0",
+        "php": ">=8.4",
+        "twig/twig": "^3",
         "guzzlehttp/guzzle": "^7.0",
-        "nesbot/carbon": "^2.63",
+        "nesbot/carbon": "^3",
         "vlucas/phpdotenv": "^5.5",
         "ext-tidy": "*",
         "z4kn4fein/php-semver": "^2.0"
