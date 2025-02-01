@@ -17,7 +17,7 @@ jobs:
           git config user.name "Firefly III build robot"
           echo $(date '+%d-%m-%Y %T %Z') > date.txt
           git add date.txt
-          git commit -m "Auto commit date on $(date '+%d-%m-%Y')"
+          git commit -m "Auto commit date on $(date '+%d-%m-%Y') [skip ci]"
           git push
       - name: Build roadmap
         env:
