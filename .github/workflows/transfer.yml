@@ -3,7 +3,6 @@ name: Transfer issues
 on:
   issues:
     types:
-      - opened
       - labeled
 
 
