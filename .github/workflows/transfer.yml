@@ -3,7 +3,7 @@ name: Transfer issues
 on:
   issues:
     types:
-      - created
+      - opened
 
 jobs:
   transfer:
