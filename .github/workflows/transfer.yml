@@ -6,6 +6,8 @@ on:
       - opened
       - labeled
 
+
+
 jobs:
   transfer:
     runs-on: ubuntu-latest
@@ -14,6 +16,5 @@ jobs:
         uses: lando/transfer-issue-action@v2
         with:
           token: ${{ secrets.TRANSFER_ISSUE_TOKEN }}
-          router: holla:firefly-iii
-          apply_label: "Needs Triage:FF0000"
+          router: move:firefly-iii
           create_stub: false
