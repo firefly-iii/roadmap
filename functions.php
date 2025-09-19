@@ -789,10 +789,9 @@ function lastRelease(string $url): ?array
 
 function cleanupMilestones(array $item, Version $version)
 {
-    $url    = sprintf('https://api.github.com/repos/%s/milestones?per_page=100', $item['repos']);
+    $url    = 'https://api.github.com/repos/firefly-iii/firefly-iii/milestones?per_page=100';
     $prefix = str_replace('%s', '', $item['milestone_name']);
     $client = new Client;
-    $result = null;
     debugMessage(sprintf('Clean up milestones before version "%s" in %s.', $version, $url));
     $opts = [
         'headers' => [
@@ -816,6 +815,7 @@ function cleanupMilestones(array $item, Version $version)
     $json = json_decode($body, true);
     foreach ($json as $entry) {
         if (!str_starts_with($entry['title'], $prefix)) {
+            debugMessage(sprintf('Skip milestone "%s"', $entry['title']));;
             continue;
         }
         $currentVersion = Version::parse(str_replace($prefix, '', $entry['title']));
@@ -823,6 +823,9 @@ function cleanupMilestones(array $item, Version $version)
             debugMessage(sprintf('Milestone "%s" with version "%s" will be deleted.', $entry['title'], $currentVersion));;
             $deleteClient = new Client;
             $deleteClient->delete($entry['url'], $opts);
+        }
+        if (!$currentVersion->isLessThan($version)) {
+            debugMessage(sprintf('Milestone "%s" with version "%s" will be kept.', $entry['title'], $currentVersion));;
         }
     }
 }
