@@ -5,6 +5,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use SimplePie\Item;
+use z4kn4fein\SemVer\Version;
 
 /**
  * @param array $project
@@ -136,7 +137,7 @@ function getProjectInfo(string $id): array
 
     $client = new Client;
     $res    = $client->post($full, $opts);
-    $body   = (string) $res->getBody();
+    $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
     if (!array_key_exists('data', $json)) {
         var_dump($json);
@@ -190,7 +191,7 @@ function getProjectInfo(string $id): array
 
 /**
  * @param string $key
- * @param array  $array
+ * @param array $array
  *
  * @return array
  */
@@ -284,7 +285,7 @@ function getIssueList(string $query): array
     }
     $client = new Client;
     $res    = $client->get($full, $opts);
-    $body   = (string) $res->getBody();
+    $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
     $total  = $json['total_count'] ?? 0;
     $return = [];
@@ -336,7 +337,7 @@ function getIssueDetails(string $url): array
     }
     $client             = new Client;
     $res                = $client->get($url, $opts);
-    $body               = (string) $res->getBody();
+    $body               = (string)$res->getBody();
     $json               = json_decode($body, true);
     $json['total']      = 0;
     $json['todo_items'] = [
@@ -460,7 +461,7 @@ function searchForTypeInMilestone(string $issueType, string $milestone): array
             } catch (GuzzleException $e) {
                 die('error.');
             }
-            $body = (string) $res->getBody();
+            $body = (string)$res->getBody();
             $json = json_decode($body, true);
             $info = $json['data']['search'] ?? false;
             saveCache($hash, json_encode($info));
@@ -489,7 +490,7 @@ function searchForTypeInMilestone(string $issueType, string $milestone): array
 
 /**
  * @param array|null $labels
- * @param string     $label
+ * @param string $label
  *
  * @return bool
  */
@@ -543,7 +544,7 @@ function combinedIssueCount(array $info): array
         }
         $client = new Client;
         $res    = $client->get($full, $opts);
-        $body   = (string) $res->getBody();
+        $body   = (string)$res->getBody();
         $json   = json_decode($body, true);
         sleep(2);
         $total          = $json['total_count'] ?? 0;
@@ -586,7 +587,7 @@ function lastDockerImage(array $info): ?array
         ],
     ];
     $res    = $client->post($url, $opts);
-    $body   = (string) $res->getBody();
+    $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
     $token  = $json['token'];
     sleep(2);
@@ -601,7 +602,7 @@ function lastDockerImage(array $info): ?array
         ],
     ];
     $res    = $client->get($repoURL, $opts);
-    $body   = (string) $res->getBody();
+    $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
 
     // if it has prefix, return with prefix, otherwise simply return the first one:
@@ -651,14 +652,14 @@ function starCounter(array $data): string
     try {
         $res = $client->get($data['data_url'], $opts);
     } catch (ClientException $e) {
-        $body = (string) $e->getResponse()->getBody();
+        $body = (string)$e->getResponse()->getBody();
         echo $body;
         echo 'Error in star counter';
         exit;
     }
-    $body   = (string) $res->getBody();
+    $body   = (string)$res->getBody();
     $json   = json_decode($body, true);
-    $result = (int) ($json['stargazers_count'] ?? 0);
+    $result = (int)($json['stargazers_count'] ?? 0);
 
     debugMessage(sprintf('Star count is %d.', $result));
 
@@ -735,7 +736,7 @@ function lastRelease(string $url): ?array
         debugMessage(sprintf('Could not fetch data from GitHub: %s', $e->getMessage()));
         return null;
     }
-    $body = (string) $res->getBody();
+    $body = (string)$res->getBody();
     $json = json_decode($body, true);
 
     /** @var array $item */
@@ -786,6 +787,47 @@ function lastRelease(string $url): ?array
     return $result;
 }
 
+function cleanupMilestones(array $item, Version $version)
+{
+    $url    = sprintf('https://api.github.com/repos/%s/milestones?per_page=100', $item['repos']);
+    $prefix = str_replace('%s', '', $item['milestone_name']);
+    $client = new Client;
+    $result = null;
+    debugMessage(sprintf('Clean up milestones before version "%s" in %s.', $version, $url));
+    $opts = [
+        'headers' => [
+            'Accept'               => 'application/vnd.github+json',
+            'User-Agent'           => 'Firefly III roadmap script/1.0',
+            'X-GitHub-Api-Version' => '2022-11-28',
+            'Authorization'        => sprintf('Bearer %s', getenv('GH_TOKEN')),
+        ],
+    ];
+    try {
+        $res = $client->get($url, $opts);
+    } catch (ClientException $e) {
+        $body = (string)$e->getRequest()->getBody();
+        echo $body;
+        echo 'Got client exception when requesting data from GitHub.' . PHP_EOL;
+        echo PHP_EOL;
+        echo $e->getMessage();
+        die('');
+    }
+    $body = (string)$res->getBody();
+    $json = json_decode($body, true);
+    foreach ($json as $entry) {
+        if (!str_starts_with($entry['title'], $prefix)) {
+            continue;
+        }
+        $currentVersion = Version::parse(str_replace($prefix, '', $entry['title']));
+        if ($currentVersion->isLessThan($version)) {
+            debugMessage(sprintf('Milestone "%s" with version "%s" will be deleted.', $entry['title'], $currentVersion));;
+            $deleteClient = new Client;
+            $deleteClient->delete($entry['url'], $opts);
+        }
+    }
+}
+
+
 /**
  * @param string $repository
  * @param string $key
@@ -816,14 +858,14 @@ function createOrFindMilestone(string $repository, string $key, string $version,
         try {
             $res = $client->get($url, $opts);
         } catch (ClientException $e) {
-            $body = (string) $e->getRequest()->getBody();
+            $body = (string)$e->getRequest()->getBody();
             echo $body;
             echo 'Got client exception when requesting data from GitHub.' . PHP_EOL;
             echo PHP_EOL;
             echo $e->getMessage();
             die('');
         }
-        $body = (string) $res->getBody();
+        $body = (string)$res->getBody();
         $json = json_decode($body, true);
         foreach ($json as $item) {
             if ($item['title'] === $expectedKey) {
@@ -858,7 +900,7 @@ function createOrFindMilestone(string $repository, string $key, string $version,
             $res = $client->post($url, $opts);
         } catch (ClientException $e) {
             $response = $e->getResponse();
-            $body     = (string) $response->getBody();
+            $body     = (string)$response->getBody();
             echo $response->getStatusCode();
             echo PHP_EOL;
             echo $body;
@@ -896,7 +938,7 @@ function lastCommit(string $url): ?array
     try {
         $res = $client->get($url, $opts);
     } catch (ClientException $e) {
-        $body = (string) $e->getRequest()->getBody();
+        $body = (string)$e->getRequest()->getBody();
         echo $body;
         echo $body;
         echo 'Got client exception when requesting data from GitHub.' . PHP_EOL;
@@ -904,7 +946,7 @@ function lastCommit(string $url): ?array
         echo $e->getMessage();
         return null;
     }
-    $body       = (string) $res->getBody();
+    $body       = (string)$res->getBody();
     $json       = json_decode($body, true);
     $lastCommit = $json['commit'] ?? null;
     if (null === $lastCommit) {

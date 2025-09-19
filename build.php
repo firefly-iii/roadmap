@@ -51,8 +51,6 @@ foreach ($json['streams'] as $item) {
     $stream['last_commit_develop'] = lastCommit($item['develop_repo_url']);
     $stream['info']                = [];
 
-    debugMessage(sprintf('Version is "%s"', $version));
-
     // go over 3 release types, and then do three next versions?
     // also add project view and link to it.
     foreach ($releaseTypes as $index => $release) {
@@ -91,6 +89,7 @@ foreach ($json['streams'] as $item) {
             $stream['projects'][] = $current;
         }
     }
+    cleanupMilestones($item, $version);
     $streams[] = $stream;
 }
 unset($stream);
