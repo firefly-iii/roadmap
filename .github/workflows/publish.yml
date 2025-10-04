@@ -33,11 +33,10 @@ jobs:
           pwd
           ./build.sh
           cp -r .well-known build/.well-known
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+      - uses: cloudflare/wrangler-action@v3
+        name: Publish to Cloudflare
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: aaf8eef9dd565a13de210d18c7462092
-          projectName: roadmap
-          directory: build
-          wranglerVersion: '3'
+          command: |
+            pages deploy build --project-name=roadmap --commit-dirty=true
