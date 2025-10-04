@@ -27,14 +27,6 @@ body:
 
   - type: textarea
     attributes:
-      label: Debug information
-      description: Please provide the table from the /debug page. Do not add backticks or quotes.
-      placeholder: The output from the /debug page
-    validations:
-      required: true
-
-  - type: textarea
-    attributes:
       label: Expected behaviour
       description: Please describe precisely what you'd expect to happen. Be specific.
     validations:
