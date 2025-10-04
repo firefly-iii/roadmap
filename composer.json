@@ -6,6 +6,6 @@
         "nesbot/carbon": "^3",
         "vlucas/phpdotenv": "^5.5",
         "ext-tidy": "*",
-        "z4kn4fein/php-semver": "^2.0"
+        "z4kn4fein/php-semver": "^3"
     }
 }
