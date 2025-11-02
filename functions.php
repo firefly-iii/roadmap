@@ -819,12 +819,16 @@ function cleanupMilestones(array $item, Version $version)
             continue;
         }
         $currentVersion = Version::parse(str_replace($prefix, '', $entry['title']));
-        if ($currentVersion->isLessThan($version)) {
-            debugMessage(sprintf('Milestone "%s" with version "%s" will be deleted.', $entry['title'], $currentVersion));;
-            $deleteClient = new Client;
-            $deleteClient->delete($entry['url'], $opts);
+        if ($currentVersion->isLessThanOrEqual($version)) {
+            debugMessage(sprintf('Milestone "%s" with version "%s" will be closed.', $entry['title'], $currentVersion));;
+
+            $patchOpts = $opts;
+            $patchOpts['json'] = ['state' => 'closed'];
+
+            $patchClient = new Client;
+            $patchClient->patch($entry['url'], $opts);
         }
-        if (!$currentVersion->isLessThan($version)) {
+        if (!$currentVersion->isLessThanOrEqual($version)) {
             debugMessage(sprintf('Milestone "%s" with version "%s" will be kept.', $entry['title'], $currentVersion));;
         }
     }
