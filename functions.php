@@ -826,7 +826,7 @@ function cleanupMilestones(array $item, Version $version)
             $patchOpts['json'] = ['state' => 'closed'];
 
             $patchClient = new Client;
-            $patchClient->patch($entry['url'], $opts);
+            $patchClient->patch($entry['url'], $patchOpts);
         }
         if (!$currentVersion->isLessThanOrEqual($version)) {
             debugMessage(sprintf('Milestone "%s" with version "%s" will be kept.', $entry['title'], $currentVersion));;
