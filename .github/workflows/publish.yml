@@ -33,7 +33,7 @@ jobs:
           pwd
           ./build.sh
           cp -r .well-known build/.well-known
-      - uses: cloudflare/wrangler-action@v3
+      - uses: cloudflare/wrangler-action@v4
         name: Publish to Cloudflare
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
