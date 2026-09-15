@@ -191,7 +191,7 @@ function getProjectInfo(string $id): array
 
 /**
  * @param string $key
- * @param array $array
+ * @param array  $array
  *
  * @return array
  */
@@ -373,14 +373,6 @@ function getIssueDetails(string $url): array
 function countIssues(string $milestone): array
 {
     debugMessage(sprintf('Collect issue count for milestone "%s"', $milestone));
-    $opts = [
-        'headers' => [
-            'Accept'        => 'application/vnd.github+json',
-            'User-Agent'    => 'Firefly III roadmap script/1.0',
-            'Authorization' => sprintf('Bearer %s', getenv('GH_TOKEN')),
-        ],
-    ];
-
     $result = [
         'count'             => 0,
         'bug_count'         => 0,
@@ -401,47 +393,52 @@ function countIssues(string $milestone): array
 
 function searchForTypeInMilestone(string $issueType, string $milestone): array
 {
+    debugMessage(sprintf('Search for milestone "%s" and issue type "%s"', $milestone, $issueType));
     $return       = [
         'count' => 0,
     ];
     $hasMorePages = true;
-    $nextCursor   = '';
+    $nextCursor   = null;
     while ($hasMorePages) {
-        // shitty graphql query but im lazy.
-        if ('' !== $nextCursor) {
-            $nextCursor = sprintf('after: "%s",', $nextCursor);
-        }
+        debugMessage(sprintf('Search for milestone "%s" and issue type "%s", cursor "%s"', $milestone, $issueType, $nextCursor));
         $query = [
-            'query' => sprintf('
-                query {
-                search(type: ISSUE, %s first: 50,  query: "type:%s repo:firefly-iii/firefly-iii") {
-                    issueCount
-                    nodes {
-                      ... on Issue {
-                        id
-                        number
-                        title
-                        
-                        milestone {
-                         id
+            'variables' => [
+                'cursor' => $nextCursor,
+            ],
+            'query'     => sprintf('
+                    query ($cursor: String) {
+                      repository(owner: "firefly-iii", name: "firefly-iii") {
+                        issues(first: 100
+                        after: $cursor
+                        states: OPEN
+                        filterBy: { type: "%s" }
+                        ) {
+                          nodes {
+                            ... on Issue {
+                              id
+                              number
+                              title
+                              milestone {
+                                id
                                 title
+                              }
                             }
+                          }
+                          pageInfo {
+                            endCursor
+                            startCursor
+                            hasNextPage
+                            hasPreviousPage
+                          }
                         }
                       }
-                  pageInfo {
-                        endCursor
-                        startCursor
-                        hasNextPage
-                        hasPreviousPage
-                      }
-                    }
-                  }',
-                               $nextCursor, $issueType),
-        ];
-        $hash  = hash('sha256', json_encode($query));
-        $info  = [];
+                    }', $issueType),
+                            ];
+        $hash = hash('sha256', json_encode($query) );
+        $nodes = [];
         if (hasCache($hash)) {
-            $info = getCache($hash);
+            debugMessage(sprintf('Search for "%s" in "%s", found: %d issue(s) in CACHE', $issueType, $milestone, $return['count']));
+            $nodes = getCache($hash);
         }
         if (!hasCache($hash)) {
             // send query, copy-paste from before.
@@ -461,13 +458,14 @@ function searchForTypeInMilestone(string $issueType, string $milestone): array
             } catch (GuzzleException $e) {
                 die('error.');
             }
-            $body = (string)$res->getBody();
-            $json = json_decode($body, true);
-            $info = $json['data']['search'] ?? false;
-            saveCache($hash, json_encode($info));
-        }
 
-        foreach ($info['nodes'] as $node) {
+            $body  = (string)$res->getBody();
+            $json  = json_decode($body, true);
+            $nodes = $json['data']['repository'] ?? [];
+            saveCache($hash, json_encode($nodes));
+        }
+        debugMessage(sprintf('Found %d issue(s)', count($nodes['issues']['nodes'])));
+        foreach ($nodes['issues']['nodes'] as $node) {
             if (null === $node) {
                 continue;
             }
@@ -478,19 +476,22 @@ function searchForTypeInMilestone(string $issueType, string $milestone): array
                 $return['count']++;
             }
         }
-        $hasMorePages = $info['pageInfo']['hasNextPage'] ?? false;
+        $hasMorePages = $nodes['issues']['pageInfo']['hasNextPage'] ?? false;
         if (true === $hasMorePages) {
-            $nextCursor = $info['pageInfo']['endCursor'];
+            $nextCursor = $nodes['issues']['pageInfo']['endCursor'];
         }
+        debugMessage(sprintf('Total is now %d issue(s)', $return['count']));
     }
     debugMessage(sprintf('Search for "%s" in "%s", found: %d issue(s)', $issueType, $milestone, $return['count']));
+
+
     return $return;
 }
 
 
 /**
  * @param array|null $labels
- * @param string $label
+ * @param string     $label
  *
  * @return bool
  */
@@ -822,7 +823,7 @@ function cleanupMilestones(array $item, Version $version)
         if ($currentVersion->isLessThanOrEqual($version)) {
             debugMessage(sprintf('Milestone "%s" with version "%s" will be closed.', $entry['title'], $currentVersion));;
 
-            $patchOpts = $opts;
+            $patchOpts         = $opts;
             $patchOpts['json'] = ['state' => 'closed'];
 
             $patchClient = new Client;

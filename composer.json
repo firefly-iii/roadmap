@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "twig/twig": "^3",
         "guzzlehttp/guzzle": "^8",
         "nesbot/carbon": "^3",
