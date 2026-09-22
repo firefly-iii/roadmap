@@ -14,7 +14,6 @@ jobs:
       - name: Prune cancelled/skipped runs
         uses: actions/github-script@v9
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
           script: |
             const cancelled = await github.rest.actions.listWorkflowRunsForRepo({
               owner: context.repo.owner,
@@ -44,7 +43,6 @@ jobs:
       - name: Prune runs older than 3 days
         uses: actions/github-script@v9
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
           script: |
             const days_to_expiration = 3;
             const ms_in_day = 86400000;
